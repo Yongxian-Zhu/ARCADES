@@ -252,6 +252,7 @@ class ReducedSpaceMfa:
                     if not(pd.isna(rv.iloc[ds])):
                         self.score_matrix[flow_id, ds] = rv.iloc[ds]
             f1 = np.vectorize(lambda x: 0.4 * (1.5 - x))
+            # this is actually the sigma of the noise
             self.score_matrix = f1(self.score_matrix)
 
     # ##########################################################################
@@ -485,10 +486,11 @@ class ReducedSpaceMfa:
         self.Z = Z
         self.Y = Y
 
-    def red_space_sampling(self, mu0):
-        n_minus_m = mu0.size
-        cov_prior = np.eye(n_minus_m) * 1e-3
-        mu_prior = mu0
+    def red_space_sampling(self, mu_z, sigma_z):
+        n_minus_m = mu_z.size
+        mu_prior = mu_z
+        cov_prior = sigma_z
+
         data_matrix = self.data_matrix
 
         n_arc = self.n_arc
@@ -501,40 +503,69 @@ class ReducedSpaceMfa:
         observed_matrix = np.zeros(n_var)
         observed_matrix[:dr] = data_matrix[:, 1]
 
+
+        sigma_noise = np.multiply(self.score_matrix, self.data_matrix)
+        min_v_1e_3 = np.vectorize(lambda x: max(x, 1e-03))
+        sigma_noise = min_v_1e_3(sigma_noise)
+        vector_sqrt = np.vectorize(lambda x: 0.4 * (1.5 - x))
+        sigma_noise = vector_sqrt(sigma_noise)
+
         print(f"Data matrix has dimensions of {dr, dc}")
         if dr != n_arc:
             raise Exception("The number of arcs is inconsistent with the data\n"
                             f"by {dr-n_arcs}")
 
-        print(f"mu0 shape = {mu0.shape}")
+        print(f"mu_z shape = {mu_z.shape}")
+        print(f"cov_z shape = {sigma_z.shape}")
         print(f"Z shape = {self.Z.shape}")
         print(f"n_arc + n_node shape = {n_arc + n_node}")
 
-        # Z = np.ones((n_arc + n_node, n_minus_m))
         Z = self.Z
 
         with pm.Model() as multivariate_model:
             # Priors for the mean vector
-            mu_z = pm.MvNormal('mu_z', mu=mu_prior,
+            mu_z = pm.MvNormal('mu_z',
+                               mu=mu_prior,
                                cov=cov_prior,
                                shape=n_minus_m)
 
             mu = pm.Deterministic('mu', pm.math.dot(Z, mu_z)) # or use Z @ x
 
-            sd_dist = pm.Exponential.dist(1.0, size=n_var)
-            packed_L = pm.LKJCholeskyCov("packed_L", n=n_var,
-                                         eta=2.0,
-                                         sd_dist=sd_dist,
-                                         compute_corr=False)
+            #sd_dist = pm.Exponential.dist(1.0, shape=n_var)
+            sd_dist = pm.HalfNormal.dist(1.0, shape=n_var)
 
-            L = pm.expand_packed_triangular(n_var, packed_L)
+            L, _, _ = pm.LKJCholeskyCov("chol_cov", n=n_var,
+                                        eta=2.0,
+                                        sd_dist=sd_dist,
+                                        compute_corr=True)
+
+            #L = pm.expand_packed_triangular(n_var, packed_L)
 
             # first n_arc elements are the flows
 
             #obs = pm.MvNormal("obs", mu=mu, chol=L, observed=data)
 
-            likelihood = pm.MvNormal('likelihood', mu=mu, chol=L, observed=observed_matrix)
+            likelihood = pm.MvNormal('likelihood', mu=mu, chol=L,
+                                     observed=observed_matrix)
             trace = pm.sample(1000, chains=1, cores=1, return_inferencedata=True)
+        return trace
+
+        #print(az.summary(trace, var_names=["mu_z", "mu"]))
 
 
-        # print(az.summary(trace, var_names=["mu_z", "mu"]))
+    def simple_data_variance(self):
+        data_matrix = self.data_matrix
+        data_flag = self.data_flag
+        nrow, ncol = data_matrix.shape
+        n_var = self.n_arc + len(self.ds_nodes)
+        variance = np.ones(n_var)*1e-03
+        for row in range(nrow):
+            if data_flag[row, :].sum() > 1:
+                s = sum(data_matrix[row, col] for col in range(ncol) if data_flag[row, col])
+                mu = s / data_flag[row, :].sum()
+                s = sum((data_matrix[row, col] - mu)**2 for col in range(ncol) if
+                        data_flag[row, col])
+                variance[row] = s / data_flag[row, :].sum()
+        return variance
+
+
