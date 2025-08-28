@@ -239,7 +239,7 @@ class ReducedSpaceMfa:
         self.data_flag = data_flag
         #
         if has_scores:
-            score_file = "/Users/dthierry/Projects/tue-27-may-25/input_file_score.csv"
+            #score_file =
             df_scores = pd.read_csv(score_file)
             if df.shape[0] != df_scores.shape[0]:
                 raise Exception("The scores and the data are inconsistent.")
@@ -250,10 +250,7 @@ class ReducedSpaceMfa:
             for index, rv in df_scores.iterrows():
                 for ds in range(n_dataset):
                     if not(pd.isna(rv.iloc[ds])):
-                        self.score_matrix[flow_id, ds] = rv.iloc[ds]
-            f1 = np.vectorize(lambda x: 0.4 * (1.5 - x))
-            # this is actually the sigma of the noise
-            self.score_matrix = f1(self.score_matrix)
+                        self.score_matrix[index, ds] = rv.iloc[ds]
 
     # ##########################################################################
     def read_problem_graph(self) -> tuple:
@@ -321,7 +318,8 @@ class ReducedSpaceMfa:
             # expression for convenience
             def likelihood_expr_(m, i, k):
                 #return m.flow[i] - f_data0[i]
-                sigma_0 = np.multiply(self.score_matrix, self.data_matrix)
+                f1 = np.vectorize(lambda x: 0.4 * (1.5 - x))
+                sigma_0 = np.multiply(f1(self.score_matrix), self.data_matrix)
                 min_v_1e_3 = np.vectorize(lambda x: max(x, 1e-03))
                 sigma_0 = min_v_1e_3(sigma_0)
 
@@ -501,12 +499,13 @@ class ReducedSpaceMfa:
         dr, dc = data_matrix.shape
 
         observed_matrix = np.zeros(n_var)
+        # first rows are the arcs
         observed_matrix[:dr] = data_matrix[:, 1]
-
 
         sigma_noise = np.multiply(self.score_matrix, self.data_matrix)
         min_v_1e_3 = np.vectorize(lambda x: max(x, 1e-03))
         sigma_noise = min_v_1e_3(sigma_noise)
+        # TODO revise this:
         vector_sqrt = np.vectorize(lambda x: 0.4 * (1.5 - x))
         sigma_noise = vector_sqrt(sigma_noise)
 
@@ -521,7 +520,9 @@ class ReducedSpaceMfa:
         print(f"n_arc + n_node shape = {n_arc + n_node}")
 
         Z = self.Z
-
+        # there should be a global mean
+        # there should be data set mean
+        # there should be data set sigma
         with pm.Model() as multivariate_model:
             # Priors for the mean vector
             mu_z = pm.MvNormal('mu_z',
@@ -531,10 +532,9 @@ class ReducedSpaceMfa:
 
             mu = pm.Deterministic('mu', pm.math.dot(Z, mu_z)) # or use Z @ x
 
-            #sd_dist = pm.Exponential.dist(1.0, shape=n_var)
-            sd_dist = pm.HalfNormal.dist(1.0, shape=n_var)
-
-            L, _, _ = pm.LKJCholeskyCov("chol_cov", n=n_var,
+            sd_dist = pm.Exponential.dist(1.0, shape=n_var)
+            L, _, _ = pm.LKJCholeskyCov("chol_cov",
+                                        n=n_var,
                                         eta=2.0,
                                         sd_dist=sd_dist,
                                         compute_corr=True)
@@ -544,11 +544,12 @@ class ReducedSpaceMfa:
             # first n_arc elements are the flows
 
             #obs = pm.MvNormal("obs", mu=mu, chol=L, observed=data)
-
+            # TODO: have all datasets and the scores.
             likelihood = pm.MvNormal('likelihood', mu=mu, chol=L,
                                      observed=observed_matrix)
-            trace = pm.sample(1000, chains=1, cores=1, return_inferencedata=True)
-        return trace
+
+            idata = pm.sample(draws=2000, tune=2000, chains=4, cores=1, target_accept=0.9, return_inferencedata=True)
+        return idata
 
         #print(az.summary(trace, var_names=["mu_z", "mu"]))
 
@@ -568,4 +569,112 @@ class ReducedSpaceMfa:
                 variance[row] = s / data_flag[row, :].sum()
         return variance
 
+
+    def red_space_mult_data_sampling(self, mu_z, sigma_z):
+        n_minus_m = mu_z.size
+        mu_prior = mu_z
+        #cov_prior = sigma_z
+        L_cholesky_cov = np.linalg.cholesky(sigma_z)
+        print("Cholesky")
+        print(L_cholesky_cov.shape)
+        data_matrix = self.data_matrix
+
+        n_arc = self.n_arc
+        n_node = self.n_node
+
+        n_var = n_arc + len(self.ds_nodes)
+
+        dr, dc = data_matrix.shape
+
+        observed_matrix = np.zeros(n_var)
+        # first rows are the arcs
+        observed_matrix[:dr] = data_matrix[:, 1]
+
+
+        f1 = np.vectorize(lambda x: 0.4 * (1.5 - x))
+        sigma_noise = np.multiply(f1(self.score_matrix), self.data_matrix)
+        min_v_1e_3 = np.vectorize(lambda x: max(x, 1e-03))
+        sigma_noise = min_v_1e_3(sigma_noise)
+
+        print(f"Data matrix has dimensions of {dr, dc}")
+        if dr != n_arc:
+            raise Exception("The number of arcs is inconsistent with the data\n"
+                            f"by {dr-n_arcs}")
+
+        print(f"mu_z shape = {mu_z.shape}")
+        print(f"cov_z shape = {sigma_z.shape}")
+        print(f"Z shape = {self.Z.shape}")
+        print(f"n_arc + n_node shape = {n_arc + n_node}")
+
+
+        permutation_mat = []
+        cholesky_data = []
+        observation_data = []
+
+        for ds in range(self.n_dataset):
+            a_k = np.zeros((self.data_flag[:, ds].sum(), self.data_flag.shape[0]))
+            new_row = 0
+            for row in range(self.data_flag.shape[0]):
+                if self.data_flag[row, ds]:
+                    a_k[new_row, row] = 1
+                    new_row += 1
+
+
+            #sigma_noise_k = np.diag(sigma_noise[:, ds]) @ a_k.T
+            #sigma_noise_k = a_k @ sigma_noise_k
+
+            sigma_noise_k = np.linalg.multi_dot([a_k, np.diag(sigma_noise[:, ds]), a_k.T])
+
+
+            cholesky_L_k = np.sqrt(sigma_noise_k)
+            cholesky_data.append(cholesky_L_k)
+
+            observation_k = a_k @ self.data_matrix[:, ds]
+            observation_data.append(observation_k)
+
+            a_perm = np.block([a_k, np.zeros((a_k.shape[0], len(self.ds_nodes)))])
+            permutation_mat.append(a_perm)
+
+
+
+
+        Z = self.Z
+        # there should be a global mean
+        # there should be data set mean
+        # there should be data set sigma
+        with pm.Model() as multivariate_model:
+            # Priors for the mean vector
+            # sd_dist = pm.HalfNormal.dist(1.0, shape=n_minus_m)
+            # L, _, _ = pm.LKJCholeskyCov("chol_cov",
+            #                             n=n_minus_m,
+            #                             eta=2.0,
+            #                             sd_dist=sd_dist,
+            #                             compute_corr=True)
+
+            mu_z = pm.MvNormal('mu_z',
+                               mu=mu_prior,
+                               chol=L_cholesky_cov,
+                               # chol=L,
+                               shape=n_minus_m)
+
+            mu = pm.Deterministic('mu', pm.math.dot(Z, mu_z)) # or use Z @ x
+
+
+            #obs = pm.MvNormal("obs", mu=mu, chol=L, observed=data)
+            # TODO: have all datasets and the scores.
+            for ds in range(self.n_dataset):
+                a_perm = permutation_mat[ds]
+                cholesky_L_k = cholesky_data[ds]
+                observation_k = observation_data[ds]
+
+                mu_k = pm.Deterministic(f"mu_{ds}", pm.math.dot(a_perm, mu))
+
+                pm.MvNormal(f'L_{ds}',
+                            mu=mu_k,
+                            chol=cholesky_L_k,
+                            observed=observation_k
+                            )
+
+            idata = pm.sample(draws=2000, tune=2000, chains=4, cores=1, target_accept=0.9, return_inferencedata=True)
+        return idata
 
