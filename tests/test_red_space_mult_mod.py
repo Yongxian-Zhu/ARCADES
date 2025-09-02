@@ -30,10 +30,11 @@ mu_z = Zpseudo @ mu
 
 # quadratic form affine transformation of sigma
 
-variance = rmfa.simple_data_variance()
+_, variance = rmfa.simple_data_moments()
 print(f"variance shape = {variance.shape}")
 print(f"Z shape = {rmfa.Z.shape}")
 print(f"Zpseudo shape = {Zpseudo.shape}")
+
 variance_z = np.diag(variance) @ Zpseudo.transpose()
 variance_z = Zpseudo @ variance_z
 

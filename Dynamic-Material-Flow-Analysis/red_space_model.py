@@ -272,7 +272,8 @@ class ReducedSpaceMfa:
     # ##########################################################################
     def run_parametric_optimization(self, is_q_param: bool,
                                     q_val: np.ndarray=np.zeros(1),
-                                    has_data: bool=False):
+                                    has_data: bool=False,
+                                    is_bayesian: bool=False):
 
         inc_matrix = self.inc_matrix
         node_type = self.node_type
@@ -316,15 +317,13 @@ class ReducedSpaceMfa:
 
         if has_data:
             # expression for convenience
+            f1 = np.vectorize(lambda x: 0.4 * (1.5 - x))
+            variance_obs = np.multiply(f1(self.score_matrix), self.data_matrix)
+            min_v_1e_3 = np.vectorize(lambda x: max(x, 1e-03))
+            variance_obs = min_v_1e_3(variance_obs)
             def likelihood_expr_(m, i, k):
-                #return m.flow[i] - f_data0[i]
-                f1 = np.vectorize(lambda x: 0.4 * (1.5 - x))
-                sigma_0 = np.multiply(f1(self.score_matrix), self.data_matrix)
-                min_v_1e_3 = np.vectorize(lambda x: max(x, 1e-03))
-                sigma_0 = min_v_1e_3(sigma_0)
-
                 if self.data_flag[i, k]:
-                    return (m.flow[i] - self.data_matrix[i, k])**2/sigma_0[i, k]
+                    return (m.flow[i] - self.data_matrix[i, k])**2/variance_obs[i, k]
                 else:
                     return Expression.Skip
 
@@ -333,10 +332,25 @@ class ReducedSpaceMfa:
             m.likelihood_expr = Expression(m.arcs, m.data_set,
                                            expr=likelihood_expr_)
 
-            m.obj_fun = Objective(rule=(sum(m.likelihood_expr[i, k]
-                                            for i in m.arcs for k in
-                                            m.data_set if self.data_flag[i, k])
-                                        ))
+            if is_bayesian:
+                prior_mu, prior_variance = self.simple_data_moments()
+                print(prior_mu)
+                print(prior_variance)
+                m.obj_fun = Objective(rule=sum(m.likelihood_expr[i, k]
+                                               for i in m.arcs for k in
+                                               m.data_set if self.data_flag[i, k]) \
+                                      + sum((m.flow[i] -
+                                             prior_mu[i])**2/prior_variance[i]
+                                            for i in m.arcs if prior_mu[i] > 0
+                                            )
+                                      )
+
+            else:
+                m.obj_fun = Objective(rule=(sum(m.likelihood_expr[i, k]
+                                                for i in m.arcs for k in
+                                                m.data_set if self.data_flag[i, k]))
+                                      )
+
             # Objective
         else:
             # least squares
@@ -353,6 +367,8 @@ class ReducedSpaceMfa:
                                    inc_matrix[no,ar] != 0)
 
             m.res_expr = Expression(m.nodes, expr=res_expr)
+            # true LS would require eliminating the constraint set
+            m.flow_con.deactivate()
 
             m.obj_fun = Objective(rule=(sum(m.res_expr[no]**2 for no in m.nodes)))
 
@@ -551,29 +567,31 @@ class ReducedSpaceMfa:
             idata = pm.sample(draws=2000, tune=2000, chains=4, cores=1, target_accept=0.9, return_inferencedata=True)
         return idata
 
-        #print(az.summary(trace, var_names=["mu_z", "mu"]))
 
-
-    def simple_data_variance(self):
+    def simple_data_moments(self):
         data_matrix = self.data_matrix
         data_flag = self.data_flag
         nrow, ncol = data_matrix.shape
         n_var = self.n_arc + len(self.ds_nodes)
+        mean = np.zeros(n_var)
         variance = np.ones(n_var)*1e-03
         for row in range(nrow):
             if data_flag[row, :].sum() > 1:
                 s = sum(data_matrix[row, col] for col in range(ncol) if data_flag[row, col])
                 mu = s / data_flag[row, :].sum()
+                mean[row] = mu
                 s = sum((data_matrix[row, col] - mu)**2 for col in range(ncol) if
                         data_flag[row, col])
                 variance[row] = s / data_flag[row, :].sum()
-        return variance
+                variance[row] = variance[row] if variance[row] > 1e-08 else 1e-03
+        return mean, variance
 
 
     def red_space_mult_data_sampling(self, mu_z, sigma_z):
         n_minus_m = mu_z.size
         mu_prior = mu_z
         #cov_prior = sigma_z
+        # if sigma_z is not positive definite this _should_ fail.?
         L_cholesky_cov = np.linalg.cholesky(sigma_z)
         print("Cholesky")
         print(L_cholesky_cov.shape)

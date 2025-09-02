@@ -34,10 +34,14 @@ variance = rmfa.simple_data_variance()
 print(f"variance shape = {variance.shape}")
 print(f"Z shape = {rmfa.Z.shape}")
 print(f"Zpseudo shape = {Zpseudo.shape}")
-variance_z = np.diag(variance) @ Zpseudo.transpose()
-variance_z = Zpseudo @ variance_z
 
-z_samples = rmfa.red_space_sampling(mu_z, variance_z)
+#variance_z = np.diag(variance) @ Zpseudo.transpose()
+#variance_z = Zpseudo @ variance_z
+
+covariance_z = np.linalg.multi_dot([Zpseudo, np.diag(variance), Zpseudo.T])
+
+z_samples = rmfa.red_space_sampling(mu_z, covariance_z)
+
 #
 print(az.summary(z_samples, var_names=["mu_z", "mu"]))
 
