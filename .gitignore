@@ -172,3 +172,9 @@ poetry.toml
 pyrightconfig.json
 
 
+.DS_Store
+docs/multiset-priors.txt
+tests/a_test.csv
+tests/inc_matrix.csv
+tests/test_result.csv
+Dynamic-Material-Flow-Analysis/example.csv

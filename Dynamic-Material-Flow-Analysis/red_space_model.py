@@ -148,6 +148,8 @@ class ReducedSpaceMfa:
         new_keys1 = tokenize_and_normalize(keys_1)
 
         arc_list = [k for k in zip(new_keys0, new_keys1)]
+        # should do unique_arcs = dict.fromkeys(arc_list)
+        # then unique_arcs = list(unique_arcs.keys())
         unique_arcs = set(arc_list)
 
         inconsistent_arcs = len(arc_list) - len(unique_arcs)
