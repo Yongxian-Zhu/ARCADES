@@ -18,6 +18,8 @@ import sys
 
 from pyomo.environ import *
 import pymc as pm
+import time
+
 
 def find_unique_strings(string_list, threshold=3):
     """
@@ -127,6 +129,7 @@ class ReducedSpaceMfa:
         self.data_matrix = np.zeros((1, 1))
         self.data_flag = np.full((1, 1), False, dtype=bool)
         self.score_matrix = np.zeros((1, 1))
+        self.A_mfa = np.zeros((0, 0))
 
     # ##########################################################################
 
@@ -279,7 +282,6 @@ class ReducedSpaceMfa:
 
         inc_matrix = self.inc_matrix
         node_type = self.node_type
-        variable_names = self.variable_names
 
         m = ConcreteModel()
 
@@ -290,7 +292,8 @@ class ReducedSpaceMfa:
 
         m.flow = Var(m.arcs, bounds=(0, None))
         # put this residual as temporarily
-        m.residual = Var(m.nodes, initialize=0)
+        m.res_p = Var(m.nodes, initialize=0, bounds=(0, None))
+        m.res_n = Var(m.nodes, initialize=0, bounds=(0, None))
 
         # we want a sparse index only for the q in the ds_node list
         m.q_set = Set(initialize=[i for i in range(n_node) if self.node_list[i]
@@ -336,8 +339,6 @@ class ReducedSpaceMfa:
 
             if is_bayesian:
                 prior_mu, prior_variance = self.simple_data_moments()
-                print(prior_mu)
-                print(prior_variance)
                 m.obj_fun = Objective(rule=sum(m.likelihood_expr[i, k]
                                                for i in m.arcs for k in
                                                m.data_set if self.data_flag[i, k]) \
@@ -378,14 +379,16 @@ class ReducedSpaceMfa:
 
         ipexe = "/Users/dthierry/Apps/ipopt_dir/bin/ipopt"
 
-        solver = SolverFactory(ipexe)
+        self.solver = SolverFactory(ipexe)
         # solver.options["outlev"] = 4
 
 
         # Solve
-        solver.solve(m, tee=True)
+        self.solver.solve(m, tee=True)
         self.model = m
 
+    def process_opt_result_vector(self):
+        m = self.model
         non_stale_count = 0
         for ar in m.arcs:
             if not(m.flow[ar].stale):
@@ -419,6 +422,12 @@ class ReducedSpaceMfa:
                     q_id += 1
 
         return result_vector
+
+    def balance_residuals(self, result_vector, norm_kind = np.inf):
+        res_opt = np.matmul(self.A_mfa, result_vector)
+        inf_res_opt = np.linalg.norm(res_opt, np.inf)
+        return inf_res_opt
+
 
     # ##########################################################################
     def create_mfa_matrix(self):#, fixed_q_dict: dict):
@@ -476,6 +485,9 @@ class ReducedSpaceMfa:
         Then let x = Y*(A*Y)^-1 * b + Z*x_z
         """
 
+        if self.A_mfa.shape == (0, 0):
+            print("A_mfa matrix generated...")
+            rmfa.create_mfa_matrix()
         # perform QR factorization
         Q, R = np.linalg.qr(self.A_mfa.transpose(), mode="complete")
 
@@ -697,4 +709,65 @@ class ReducedSpaceMfa:
 
             idata = pm.sample(draws=2000, tune=2000, chains=4, cores=1, target_accept=0.9, return_inferencedata=True)
         return idata
+
+    def conf_int_init(self, rho_value: np.float64=7e0):
+        m = self.model
+        inc_matrix = self.inc_matrix
+
+        if self.A_mfa.shape == (0, 0):
+            print("A_mfa matrix generated...")
+            rmfa.create_mfa_matrix()
+
+        # use elastic mode
+        m.flow_con.deactivate()
+
+        m.rho = Param(initialize=rho_value, mutable=True)
+
+        def r_flow_con(m, no):
+            if sum(np.abs(inc_matrix[no, :])) == 0:
+                print(f"Node {no} balance needs checking?")
+                return Constraint.Skip
+            else:
+                if self.node_list[no] in self.ds_nodes:
+                    return sum(inc_matrix[no, ar] * m.flow[ar] for ar in m.arcs if
+                               inc_matrix[no,ar] != 0) - m.q[no] == \
+                        m.res_p[no] - m.res_n[no]
+                else:
+                    return sum(inc_matrix[no, ar] * m.flow[ar] for ar in m.arcs if
+                               inc_matrix[no,ar] != 0) == \
+                        m.res_p[no] - m.res_n[no]
+
+
+        m.r_flow_con = Constraint(m.nodes, rule=r_flow_con)
+
+        # replace the objective function
+        m.del_component(m.obj_fun)
+        prior_mu, prior_variance = self.simple_data_moments()
+        m.obj_fun = Objective(rule=sum(m.likelihood_expr[i, k]
+                                       for i in m.arcs for k in
+                                       m.data_set if self.data_flag[i, k]) \
+                              + sum((m.flow[i] -
+                                     prior_mu[i])**2/prior_variance[i]
+                                    for i in m.arcs if prior_mu[i] > 0
+                                    ) \
+                              + m.rho * sum(m.res_p[no] for no in m.nodes) \
+                              + m.rho * sum(m.res_n[no] for no in m.nodes)
+                              )
+
+        self.solver.solve(m, tee=True)
+
+        result_vector = self.process_opt_result_vector()
+        inf_res = self.balance_residuals(result_vector)
+        ts = hex(int(time.time()))
+        print(f"{ts}: \u03C1 = {value(m.rho)} inf_res = {inf_res}")
+        return inf_res
+
+    def rho_change(self, rho_value):
+        self.model.rho = rho_value
+        self.solver.solve(self.model, tee=True)
+        result_vector = self.process_opt_result_vector()
+        inf_res = self.balance_residuals(result_vector)
+        ts = hex(int(time.time()))
+        print(f"{ts}: \u03C1 = {value(self.model.rho)} inf_res = {inf_res}")
+        return inf_res
 
