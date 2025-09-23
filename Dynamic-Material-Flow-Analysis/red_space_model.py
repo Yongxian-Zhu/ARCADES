@@ -118,8 +118,7 @@ def tokenize_and_normalize(keys):
     return new_keys
 
 class ReducedSpaceMfa:
-    def __init__(self, mfa_xlsx: str):
-        self.mfa_xlsx = mfa_xlsx
+    def __init__(self):
         self.n_node = 1
         self.n_arc = 1
         self.inc_matrix = np.zeros((1,1))
@@ -143,11 +142,11 @@ class ReducedSpaceMfa:
                       'Value 2': np.float64,
                       'Value 3': np.float64
                       }
-        df = pd.read_csv(input_file, dtype=dict_types)
+        raw_data = pd.read_csv(input_file, dtype=dict_types)
 
-        keys_0 = df["from_node_name"].to_list()
+        keys_0 = raw_data["from_node_name"].to_list()
         new_keys0 = tokenize_and_normalize(keys_0)
-        keys_1 = df["to_node_name"].to_list()
+        keys_1 = raw_data["to_node_name"].to_list()
         new_keys1 = tokenize_and_normalize(keys_1)
 
         arc_list = [k for k in zip(new_keys0, new_keys1)]
@@ -157,9 +156,9 @@ class ReducedSpaceMfa:
 
         inconsistent_arcs = len(arc_list) - len(unique_arcs)
 
-        df["from_node_name"] = new_keys0
-        df["to_node_name"] = new_keys1
-        df.to_csv("example.csv")
+        raw_data["from_node_name"] = new_keys0
+        raw_data["to_node_name"] = new_keys1
+        raw_data.to_csv("example.csv")
 
         if inconsistent_arcs > 0:
             seen = set()
@@ -190,6 +189,7 @@ class ReducedSpaceMfa:
 
 
         node_list = list(set(new_keys0).union(new_keys1))
+        arc_list = []
 
         n_node = len(node_list)
         # inc_matrix has the row order of the node_list and the column order of
@@ -197,9 +197,10 @@ class ReducedSpaceMfa:
         inc_matrix = np.zeros((n_node, n_arc), dtype=np.int8)
 
         # arc id is given by the position in the list
-        for arc_id, row in df.iterrows():
+        for arc_id, row in raw_data.iterrows():
             node_i = node_list.index(row.loc["from_node_name"])
             node_j = node_list.index(row.loc["to_node_name"])
+            arc_list.append((row.loc["from_node_name"], row.loc["to_node_name"]))
             inc_matrix[node_i, arc_id] = -1 # from is -1
             inc_matrix[node_j, arc_id] = 1
 
@@ -208,7 +209,8 @@ class ReducedSpaceMfa:
         self.inc_matrix = inc_matrix
         self.ds_nodes = ds_nodes
         self.node_list = node_list
-        self.df = df
+        self.raw_data = raw_data
+        self.arc_list = arc_list
 
 
     # ##########################################################################
@@ -225,16 +227,16 @@ class ReducedSpaceMfa:
                   score_file: str=""):
         # infer the number of datasets
         # assume: from_node_name to_node_name from_node_number to_node_number...
-        df = self.df
+        raw_data = self.raw_data
         data_matrix = np.zeros((self.n_arc, n_dataset))
         data_flag = np.full((self.n_arc, n_dataset), False, dtype=bool)
 
         # we need to find the position in the dataset
-        for index, rv in df.iterrows():
+        for index, rv in raw_data.iterrows():
             # in this case the flow has the same order
             # look at each column
             for ds in range(n_dataset):
-                col = df.columns.get_loc("Value 1") + ds
+                col = raw_data.columns.get_loc("Value 1") + ds
                 if not(pd.isna(rv.iloc[col])):
                     data_matrix[index, ds] = rv.iloc[col]
                     data_flag[index, ds] = True
@@ -245,14 +247,14 @@ class ReducedSpaceMfa:
         #
         if has_scores:
             #score_file =
-            df_scores = pd.read_csv(score_file)
-            if df.shape[0] != df_scores.shape[0]:
+            raw_scores = pd.read_csv(score_file)
+            if raw_data.shape[0] != raw_scores.shape[0]:
                 raise Exception("The scores and the data are inconsistent.")
 
             self.score_matrix = np.zeros((self.n_arc, self.n_dataset))
 
             i = 0
-            for index, rv in df_scores.iterrows():
+            for index, rv in raw_scores.iterrows():
                 for ds in range(n_dataset):
                     if not(pd.isna(rv.iloc[ds])):
                         self.score_matrix[index, ds] = rv.iloc[ds]
@@ -277,7 +279,7 @@ class ReducedSpaceMfa:
     # ##########################################################################
     def run_parametric_optimization(self, is_q_param: bool,
                                     q_val: np.ndarray=np.zeros(1),
-                                    has_data: bool=False,
+                                    has_data: bool=False, # false= least-squares
                                     is_bayesian: bool=False):
 
         inc_matrix = self.inc_matrix
@@ -357,6 +359,8 @@ class ReducedSpaceMfa:
             # Objective
         else:
             # least squares
+            ts = hex(int(time.time()))
+            print(f"{ts}: Least-squares objective.")
 
             def res_expr(m, no):
                 if sum(np.abs(inc_matrix[no, :])) == 0:
@@ -618,9 +622,9 @@ class ReducedSpaceMfa:
 
         dr, dc = data_matrix.shape
 
-        observed_matrix = np.zeros(n_var)
+        #observed_matrix = np.zeros(n_var)
         # first rows are the arcs
-        observed_matrix[:dr] = data_matrix[:, 1]
+        #observed_matrix[:dr] = data_matrix[:, 1]
 
 
         f1 = np.vectorize(lambda x: 0.4 * (1.5 - x))
@@ -668,8 +672,6 @@ class ReducedSpaceMfa:
             permutation_mat.append(a_perm)
 
 
-
-
         Z = self.Z
         # there should be a global mean
         # there should be data set mean
@@ -683,11 +685,15 @@ class ReducedSpaceMfa:
             #                             sd_dist=sd_dist,
             #                             compute_corr=True)
 
-            mu_z = pm.MvNormal('mu_z',
-                               mu=mu_prior,
-                               chol=L_cholesky_cov,
-                               # chol=L,
-                               shape=n_minus_m)
+            # davids prior
+            # mu_z = pm.MvNormal('mu_z',
+            #                    mu=mu_prior,
+            #                    chol=L_cholesky_cov,
+            #                    # chol=L,
+            #                    shape=n_minus_m)
+
+            # non informative prior
+            mu_z = pm.Normal('mu_z', mu=0, sigma=1e5, shape=n_minus_m)
 
             mu = pm.Deterministic('mu', pm.math.dot(Z, mu_z)) # or use Z @ x
 
@@ -759,7 +765,7 @@ class ReducedSpaceMfa:
         result_vector = self.process_opt_result_vector()
         inf_res = self.balance_residuals(result_vector)
         ts = hex(int(time.time()))
-        print(f"{ts}: \u03C1 = {value(m.rho)} inf_res = {inf_res}")
+        print(f"{ts}: \u03c1 = {value(m.rho)} inf_res = {inf_res}")
         return inf_res
 
     def rho_change(self, rho_value):
@@ -770,4 +776,82 @@ class ReducedSpaceMfa:
         ts = hex(int(time.time()))
         print(f"{ts}: \u03C1 = {value(self.model.rho)} inf_res = {inf_res}")
         return inf_res
+
+
+    def full_space_sampling(self, mu_prior, cov_prior):
+        n = mu_prior.size
+        A = self.A_mfa
+        # cholesky factor of the covariance.
+        cov_cholesky_L = np.linalg.cholesky(cov_prior)
+
+        f1 = np.vectorize(lambda x: 0.4 * (1.5 - x))
+        cov_noise = np.multiply(f1(self.score_matrix), self.data_matrix)
+        min_v_1e_3 = np.vectorize(lambda x: max(x, 1e-03))
+        cov_noise = min_v_1e_3(cov_noise)
+
+        permutation_mat = []
+        cholesky_data = []
+        observation_data = []
+
+        # for each dataset we compute the cov noise matrices
+        for ds in range(self.n_dataset):
+            a_k = np.zeros((self.data_flag[:, ds].sum(), self.data_flag.shape[0]))
+            new_row = 0
+            for row in range(self.data_flag.shape[0]):
+                if self.data_flag[row, ds]:
+                    a_k[new_row, row] = 1
+                    new_row += 1
+
+
+            cov_noise_k = np.linalg.multi_dot([a_k, np.diag(cov_noise[:, ds]), a_k.T])
+
+
+            noise_cholesky_L = np.sqrt(cov_noise_k)
+            cholesky_data.append(noise_cholesky_L)
+
+            observation_k = a_k @ self.data_matrix[:, ds]
+            observation_data.append(observation_k)
+
+            a_perm = np.block([a_k, np.zeros((a_k.shape[0], len(self.ds_nodes)))])
+            permutation_mat.append(a_perm)
+
+        m = A.shape[0]
+
+        eta_0_cov = np.eye(m) * 1e-03
+        eta_0_cholesky_L = np.sqrt(eta_0_cov)
+
+        eta_0_obs = np.zeros(m) # mass balance should have 0 residual
+
+        with pm.Model() as mv_model:
+            # prior
+            #mu_x = pm.MvNormal("mu_x",
+            #                   #mu=mu_prior,
+            #                   mu=np.zeros(n),
+            #                   #chol=cov_cholesky_L,
+            #                   chol= np.sqrt(np.eye(n)),
+            #                   shape=n)
+            # non-informative prior
+            mu_x = pm.Normal('mu_x', mu=0, sigma=1e5, shape=n)
+
+            # data likelihood
+            for ds in range(self.n_dataset):
+                a_perm = permutation_mat[ds]
+                noise_cholesky_L = cholesky_data[ds]
+                observation_k = observation_data[ds]
+
+                #mu_k = pm.Deterministic(f"mu_{ds}", pm.math.dot(a_perm, mu_x))
+
+                pm.MvNormal(f'eta_d_{ds}',
+                            # mu=mu_k,
+                            mu=pm.math.dot(a_perm, mu_x),
+                            chol=noise_cholesky_L,
+                            observed=observation_k
+                            )
+
+            # model noise likelihood
+            pm.MvNormal("eta_0", mu=pm.math.dot(A, mu_x), chol=eta_0_cholesky_L,
+                        observed=eta_0_obs)
+
+            idata = pm.sample(draws=2000, tune=2000, chains=4, cores=1, target_accept=0.9, return_inferencedata=True)
+        return idata
 
