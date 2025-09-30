@@ -19,6 +19,7 @@ import sys
 from pyomo.environ import *
 import pymc as pm
 import time
+import multiprocessing as mp
 
 
 def find_unique_strings(string_list, threshold=3):
@@ -119,6 +120,7 @@ def tokenize_and_normalize(keys):
 
 class ReducedSpaceMfa:
     def __init__(self):
+        self.mp_ctx = mp.get_context("spawn")
         self.n_node = 1
         self.n_arc = 1
         self.inc_matrix = np.zeros((1,1))
@@ -188,7 +190,7 @@ class ReducedSpaceMfa:
 
 
 
-        node_list = list(set(new_keys0).union(new_keys1))
+        node_list = sorted(set(new_keys0).union(new_keys1))
         arc_list = []
 
         n_node = len(node_list)
@@ -673,6 +675,9 @@ class ReducedSpaceMfa:
 
 
         Z = self.Z
+
+        sigma_0 = np.eye(n_minus_m) * 10
+        sigma_0_cholesky_L = np.sqrt(sigma_0)
         # there should be a global mean
         # there should be data set mean
         # there should be data set sigma
@@ -692,8 +697,9 @@ class ReducedSpaceMfa:
             #                    # chol=L,
             #                    shape=n_minus_m)
 
-            # non informative prior
-            mu_z = pm.Normal('mu_z', mu=0, sigma=1e5, shape=n_minus_m)
+            # regularizing
+            #mu_z = pm.Normal('mu_z', mu=0, sigma=1e5, shape=n_minus_m)
+            mu_z = pm.MvNormal('mu_z', mu=np.zeros(n_minus_m), chol=sigma_0_cholesky_L)
 
             mu = pm.Deterministic('mu', pm.math.dot(Z, mu_z)) # or use Z @ x
 
@@ -778,7 +784,7 @@ class ReducedSpaceMfa:
         return inf_res
 
 
-    def full_space_sampling(self, mu_prior, cov_prior):
+    def full_space_sampling(self, mu_prior, cov_prior, regularizing=False):
         n = mu_prior.size
         A = self.A_mfa
         # cholesky factor of the covariance.
@@ -817,10 +823,13 @@ class ReducedSpaceMfa:
 
         m = A.shape[0]
 
-        eta_0_cov = np.eye(m) * 1e-03
+        eta_0_cov = np.eye(m) * 1e-01
         eta_0_cholesky_L = np.sqrt(eta_0_cov)
 
         eta_0_obs = np.zeros(m) # mass balance should have 0 residual
+
+        sigma_0 = np.eye(n) * 10
+        sigma_0_cholesky_L = np.sqrt(sigma_0)
 
         with pm.Model() as mv_model:
             # prior
@@ -831,7 +840,8 @@ class ReducedSpaceMfa:
             #                   chol= np.sqrt(np.eye(n)),
             #                   shape=n)
             # non-informative prior
-            mu_x = pm.Normal('mu_x', mu=0, sigma=1e5, shape=n)
+            #mu_x = pm.Normal('mu_x', mu=0, sigma=1e5, shape=n)
+            mu_x = pm.MvNormal('mu_x', mu=np.zeros(n), chol=sigma_0_cholesky_L)
 
             # data likelihood
             for ds in range(self.n_dataset):
@@ -853,5 +863,8 @@ class ReducedSpaceMfa:
                         observed=eta_0_obs)
 
             idata = pm.sample(draws=2000, tune=2000, chains=4, cores=1, target_accept=0.9, return_inferencedata=True)
+            #idata = pm.sample(draws=3000, tune=3000, chains=4, cores=4,
+            #                  target_accept=0.99, return_inferencedata=True,
+            #                  mp_ctx=self.mp_ctx )
         return idata
 
