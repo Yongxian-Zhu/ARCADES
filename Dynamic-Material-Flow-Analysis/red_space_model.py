@@ -186,7 +186,7 @@ class ReducedSpaceMfa:
         start_nodes = set(new_keys0).difference(new_keys1)
         end_nodes = set(new_keys1).difference(new_keys0)
 
-        ds_nodes = start_nodes.union(end_nodes)
+        ds_nodes = sorted(start_nodes.union(end_nodes))
 
 
 
@@ -343,14 +343,26 @@ class ReducedSpaceMfa:
 
             if is_bayesian:
                 prior_mu, prior_variance = self.simple_data_moments()
+                #m.obj_fun = Objective(rule=sum(m.likelihood_expr[i, k]
+                #                               for i in m.arcs for k in
+                #                               m.data_set if self.data_flag[i, k]) \
+                #                      + sum((m.flow[i] -
+                #                             prior_mu[i])**2/prior_variance[i]
+                #                            for i in m.arcs if prior_mu[i] > 0
+                #                            )
+                #                      )
+                # regularizing prior i.e. mu = 0, and arbitrary sigma of 10
+                prior_mean0 = 0.0
+                prior_variance0 = 10.0
                 m.obj_fun = Objective(rule=sum(m.likelihood_expr[i, k]
                                                for i in m.arcs for k in
                                                m.data_set if self.data_flag[i, k]) \
-                                      + sum((m.flow[i] -
-                                             prior_mu[i])**2/prior_variance[i]
-                                            for i in m.arcs if prior_mu[i] > 0
-                                            )
+                                      +
+                                      sum((m.flow[i]-prior_mean0)**2/prior_variance0 for i in m.arcs)
+                                      + sum((m.q[i]-prior_mean0)**2/prior_variance0 for i in m.q_set)
                                       )
+                # turn of the bounds
+                m.flow[:].setlb(None)
 
             else:
                 m.obj_fun = Objective(rule=(sum(m.likelihood_expr[i, k]
@@ -431,9 +443,18 @@ class ReducedSpaceMfa:
 
     def balance_residuals(self, result_vector, norm_kind = np.inf):
         res_opt = np.matmul(self.A_mfa, result_vector)
-        inf_res_opt = np.linalg.norm(res_opt, np.inf)
+        inf_res_opt = np.linalg.norm(res_opt, norm_kind)
         return inf_res_opt
 
+
+    def write_result_csv(self, result_vector, file_name):
+        v_names = self.arc_list + self.ds_nodes
+        d = pd.DataFrame({"v_name":v_names, "result_vector": result_vector})
+        d.to_csv(file_name+".csv")
+        # write residual
+        resid = self.balance_residuals(result_vector, norm_kind=1)
+        pd.DataFrame([resid]).to_csv(file_name+"_resid.csv")
+        return d
 
     # ##########################################################################
     def create_mfa_matrix(self):#, fixed_q_dict: dict):
@@ -675,8 +696,9 @@ class ReducedSpaceMfa:
 
 
         Z = self.Z
-
-        sigma_0 = np.eye(n_minus_m) * 10
+        sigma_0_0 = 10
+        sigma_0 = np.eye(n_minus_m) * sigma_0_0
+        #sigma_0 = np.eye(n_minus_m) * 10
         sigma_0_cholesky_L = np.sqrt(sigma_0)
         # there should be a global mean
         # there should be data set mean
@@ -701,7 +723,7 @@ class ReducedSpaceMfa:
             #mu_z = pm.Normal('mu_z', mu=0, sigma=1e5, shape=n_minus_m)
             mu_z = pm.MvNormal('mu_z', mu=np.zeros(n_minus_m), chol=sigma_0_cholesky_L)
 
-            mu = pm.Deterministic('mu', pm.math.dot(Z, mu_z)) # or use Z @ x
+            mu_x = pm.Deterministic('mu_x', pm.math.dot(Z, mu_z)) # or use Z @ x
 
 
             #obs = pm.MvNormal("obs", mu=mu, chol=L, observed=data)
@@ -711,7 +733,7 @@ class ReducedSpaceMfa:
                 cholesky_L_k = cholesky_data[ds]
                 observation_k = observation_data[ds]
 
-                mu_k = pm.Deterministic(f"mu_{ds}", pm.math.dot(a_perm, mu))
+                mu_k = pm.Deterministic(f"mu_{ds}", pm.math.dot(a_perm, mu_x))
 
                 pm.MvNormal(f'L_{ds}',
                             mu=mu_k,
@@ -720,6 +742,9 @@ class ReducedSpaceMfa:
                             )
 
             idata = pm.sample(draws=2000, tune=2000, chains=4, cores=1, target_accept=0.9, return_inferencedata=True)
+
+        pd.DataFrame(idata.sample_stats.attrs.values(),
+                     index=idata.sample_stats.attrs.keys()).to_csv("red_space_stats.csv")
         return idata
 
     def conf_int_init(self, rho_value: np.float64=7e0):
@@ -823,13 +848,19 @@ class ReducedSpaceMfa:
 
         m = A.shape[0]
 
-        eta_0_cov = np.eye(m) * 1e-01
+        eta_0_cov = np.eye(m) * 1e-03
         eta_0_cholesky_L = np.sqrt(eta_0_cov)
 
         eta_0_obs = np.zeros(m) # mass balance should have 0 residual
-
-        sigma_0 = np.eye(n) * 10
+        sigma_0_0 = 10
+        sigma_0 = np.eye(n) * sigma_0_0
         sigma_0_cholesky_L = np.sqrt(sigma_0)
+
+        # projection matrices
+        arc_proj = np.block([[np.eye(self.n_arc)], [np.zeros((n - self.n_arc,
+                                                              self.n_arc))]])
+        nod_proj = np.block([[np.zeros((self.n_arc, n - self.n_arc))],
+                             [np.eye(n - self.n_arc)]])
 
         with pm.Model() as mv_model:
             # prior
@@ -841,7 +872,15 @@ class ReducedSpaceMfa:
             #                   shape=n)
             # non-informative prior
             #mu_x = pm.Normal('mu_x', mu=0, sigma=1e5, shape=n)
-            mu_x = pm.MvNormal('mu_x', mu=np.zeros(n), chol=sigma_0_cholesky_L)
+            #mu_x = pm.MvNormal('mu_x', mu=np.zeros(n), chol=sigma_0_cholesky_L)
+            #mu_x = pm.HalfNormal('mu_x', sigma=sigma_0_0, shape=n)
+            # split the priors
+            mu_arc = pm.HalfNormal('mu_arc', sigma=sigma_0_0, shape=self.n_arc)
+            mu_nod = pm.Normal('mu_nod', mu=0, sigma=sigma_0_0, shape=(n - self.n_arc))
+
+            mu_x = pm.Deterministic('mu_x',
+                                    pm.math.dot(arc_proj, mu_arc)+pm.math.dot(nod_proj, mu_nod)
+                                    )
 
             # data likelihood
             for ds in range(self.n_dataset):
@@ -866,5 +905,7 @@ class ReducedSpaceMfa:
             #idata = pm.sample(draws=3000, tune=3000, chains=4, cores=4,
             #                  target_accept=0.99, return_inferencedata=True,
             #                  mp_ctx=self.mp_ctx )
+        pd.DataFrame(idata.sample_stats.attrs.values(),
+                     index=idata.sample_stats.attrs.keys()).to_csv("full_space_stats.csv")
         return idata
 

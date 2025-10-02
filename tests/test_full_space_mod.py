@@ -33,12 +33,11 @@ _, variance = rmfa.simple_data_moments()
 
 samples = rmfa.full_space_sampling(mu, np.diag(variance))
 print(az.summary(samples))
-mean_posterior = az.summary(samples, var_names=["mu_x"])["mean"].to_frame()
-mean_posterior["MAP_QP"] = mu
-vlist = rmfa.node_list + [f"n_{i}" for i in range(rmfa.n_node)]
-mean_posterior["vname"] = vlist
-mean_posterior.to_csv("test_full_space_result.csv")
-
-resid = rmfa.balance_residuals(mean_posterior["mean"])
+#mean_posterior = az.summary(samples, var_names=["mu_x"])["mean"].to_frame()
+#mean_posterior["MAP_QP"] = mu
+#mean_posterior.to_csv("test_full_space_result.csv")
+x_posterior = az.summary(samples, var_names=["mu_x"])["mean"].to_numpy()
+rmfa.write_result_csv(x_posterior, "full_space_res")
+resid = rmfa.balance_residuals(x_posterior)
 
 
