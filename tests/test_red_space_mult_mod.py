@@ -6,7 +6,6 @@ sys.path.insert(1, "../Dynamic-Material-Flow-Analysis")
 
 from red_space_model import ReducedSpaceMfa
 
-f = "/Users/dthierry/Projects/tue-27-may-25/data/2017_MFA_file.xlsx"
 f_score = "/Users/dthierry/Projects/tue-27-may-25/input_file_score.csv"
 f_input = "/Users/dthierry/Projects/tue-27-may-25/input_file.csv"
 

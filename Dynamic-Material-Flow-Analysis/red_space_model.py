@@ -703,6 +703,14 @@ class ReducedSpaceMfa:
         # there should be a global mean
         # there should be data set mean
         # there should be data set sigma
+
+        # narc rows by n columns
+        # [e_a, 0]
+        full_to_arc_proj = np.block([np.eye(self.n_arc),
+                                     np.zeros((self.n_arc, n_var - self.n_arc))
+                                     ])
+        alpha = 1e2
+
         with pm.Model() as multivariate_model:
             # Priors for the mean vector
             # sd_dist = pm.HalfNormal.dist(1.0, shape=n_minus_m)
@@ -725,6 +733,10 @@ class ReducedSpaceMfa:
 
             mu_x = pm.Deterministic('mu_x', pm.math.dot(Z, mu_z)) # or use Z @ x
 
+            mu_arc = pm.Deterministic("mu_arc",
+                                      pm.math.dot(full_to_arc_proj, mu_x))
+            pen_lb = -alpha * pm.math.sum(pm.math.log1pexp(-mu_arc))
+            pm.Potential("soft_lb", pen_lb)
 
             #obs = pm.MvNormal("obs", mu=mu, chol=L, observed=data)
             # TODO: have all datasets and the scores.
@@ -812,6 +824,11 @@ class ReducedSpaceMfa:
     def full_space_sampling(self, mu_prior, cov_prior, regularizing=False):
         n = mu_prior.size
         A = self.A_mfa
+
+        n_arc = self.n_arc
+        n_node = self.n_node
+        n_var = n_arc + len(self.ds_nodes)
+
         # cholesky factor of the covariance.
         cov_cholesky_L = np.linalg.cholesky(cov_prior)
 
@@ -862,6 +879,13 @@ class ReducedSpaceMfa:
         nod_proj = np.block([[np.zeros((self.n_arc, n - self.n_arc))],
                              [np.eye(n - self.n_arc)]])
 
+        # penalize the arc var lower bound
+        full_to_arc_proj = np.block([np.eye(self.n_arc),
+                                     np.zeros((self.n_arc, n_var - self.n_arc))
+                                     ])
+        alpha = 1e2
+
+
         with pm.Model() as mv_model:
             # prior
             #mu_x = pm.MvNormal("mu_x",
@@ -872,15 +896,21 @@ class ReducedSpaceMfa:
             #                   shape=n)
             # non-informative prior
             #mu_x = pm.Normal('mu_x', mu=0, sigma=1e5, shape=n)
-            #mu_x = pm.MvNormal('mu_x', mu=np.zeros(n), chol=sigma_0_cholesky_L)
-            #mu_x = pm.HalfNormal('mu_x', sigma=sigma_0_0, shape=n)
-            # split the priors
-            mu_arc = pm.HalfNormal('mu_arc', sigma=sigma_0_0, shape=self.n_arc)
-            mu_nod = pm.Normal('mu_nod', mu=0, sigma=sigma_0_0, shape=(n - self.n_arc))
+            mu_x = pm.MvNormal('mu_x', mu=np.zeros(n), chol=sigma_0_cholesky_L)
 
-            mu_x = pm.Deterministic('mu_x',
-                                    pm.math.dot(arc_proj, mu_arc)+pm.math.dot(nod_proj, mu_nod)
-                                    )
+            # split the priors # this doues not work very well :(
+            #mu_arc = pm.HalfNormal('mu_arc', sigma=sigma_0_0, shape=self.n_arc)
+            #mu_nod = pm.Normal('mu_nod', mu=0, sigma=sigma_0_0, shape=(n - self.n_arc))
+            #mu_x = pm.Deterministic('mu_x',
+            #                        pm.math.dot(arc_proj, mu_arc)
+            #                        +pm.math.dot(nod_proj, mu_nod)
+            #                        )
+
+            # put the bounds on the arc variables
+            mu_arc = pm.Deterministic("mu_arc",
+                                      pm.math.dot(full_to_arc_proj, mu_x))
+            pen_lb = -alpha * pm.math.sum(pm.math.log1pexp(-mu_arc))
+            pm.Potential("soft_lb", pen_lb)
 
             # data likelihood
             for ds in range(self.n_dataset):
