@@ -21,6 +21,11 @@ import pymc as pm
 import time
 import multiprocessing as mp
 
+from enum import Enum
+
+class prior_type(Enum):
+    regularizing = 1
+    uniform = 2
 
 def find_unique_strings(string_list, threshold=3):
     """
@@ -627,9 +632,36 @@ class ReducedSpaceMfa:
                 variance[row] = variance[row] if variance[row] > 1e-08 else 1e-03
         return mean, variance
 
+    def simple_data_moments2(self):
+        data_matrix = self.data_matrix
+        data_flag = self.data_flag
+        nrow, ncol = data_matrix.shape
+        n_var = self.n_arc + len(self.ds_nodes)
+        mean = np.zeros(n_var)
+        variance = np.ones(n_var)*1e-03
+        for row in range(nrow):
+            s = sum(data_matrix[row, col] for col in range(ncol) if data_flag[row, col])
+            mu = s / data_flag[row, :].sum()
+            mean[row] = mu
+            s = sum((data_matrix[row, col] - mu)**2 for col in range(ncol) if
+                    data_flag[row, col])
+            variance[row] = s / data_flag[row, :].sum()
+            variance[row] = variance[row] if variance[row] > 1e-08 else 1e-03
+        return mean, variance
 
-    def red_space_mult_data_sampling(self, mu_z, sigma_z):
+
+    def red_space_mult_data_sampling(self, mu_z, sigma_z,
+                                     prior: prior_type,
+                                     x_zlb=np.ones(1),
+                                     x_zub=np.ones(1)):
+
+        print("has_nans")
+        print(np.any(np.isnan(x_zlb)))
+        print(np.any(np.isnan(x_zub)))
+
         n_minus_m = mu_z.size
+        print(f"n_minus = {n_minus_m}")
+        print(f"x_zlb = {x_zlb.size}")
         mu_prior = mu_z
         #cov_prior = sigma_z
         # if sigma_z is not positive definite this _should_ fail.?
@@ -660,7 +692,6 @@ class ReducedSpaceMfa:
             raise Exception("The number of arcs is inconsistent with the data\n"
                             f"by {dr-n_arcs}")
 
-        print(f"mu_z shape = {mu_z.shape}")
         print(f"cov_z shape = {sigma_z.shape}")
         print(f"Z shape = {self.Z.shape}")
         print(f"n_arc + n_node shape = {n_arc + n_node}")
@@ -727,14 +758,25 @@ class ReducedSpaceMfa:
             #                    # chol=L,
             #                    shape=n_minus_m)
 
-            # regularizing
-            #mu_z = pm.Normal('mu_z', mu=0, sigma=1e5, shape=n_minus_m)
-            mu_z = pm.MvNormal('mu_z', mu=np.zeros(n_minus_m), chol=sigma_0_cholesky_L)
+
+            if prior == prior_type.regularizing:
+                print("Regularizing prior")
+                mu_z = pm.MvNormal('mu_z',
+                                   mu=np.zeros(n_minus_m),
+                                   chol=sigma_0_cholesky_L)
+
+            elif prior == prior_type.uniform:
+                print("Uniform prior")
+                mu_z = pm.Uniform("mu_z",
+                                  lower=x_zlb,
+                                  upper=x_zub,
+                                  shape=n_minus_m)
 
             mu_x = pm.Deterministic('mu_x', pm.math.dot(Z, mu_z)) # or use Z @ x
 
             mu_arc = pm.Deterministic("mu_arc",
-                                      pm.math.dot(full_to_arc_proj, mu_x))
+                                      pm.math.dot(full_to_arc_proj, mu_x)
+                                      )
             pen_lb = -alpha * pm.math.sum(pm.math.log1pexp(-mu_arc))
             pm.Potential("soft_lb", pen_lb)
 
@@ -753,8 +795,13 @@ class ReducedSpaceMfa:
                             observed=observation_k
                             )
 
-            idata = pm.sample(draws=2000, tune=2000, chains=4, cores=1, target_accept=0.9, return_inferencedata=True)
+            idata = pm.sample(draws=2000, tune=2000,
+                              chains=4, cores=1,
+                              target_accept=0.9,
+                              return_inferencedata=True,
+                              init_val= {"mu_z": mu_prior})
 
+        #az.summary(idata).to_csv("red_space_summary.csv")
         pd.DataFrame(idata.sample_stats.attrs.values(),
                      index=idata.sample_stats.attrs.keys()).to_csv("red_space_stats.csv")
         return idata
@@ -821,7 +868,10 @@ class ReducedSpaceMfa:
         return inf_res
 
 
-    def full_space_sampling(self, mu_prior, cov_prior, regularizing=False):
+    def full_space_sampling(self, mu_prior, cov_prior,
+                            prior: prior_type,
+                            x_lb=np.ones(1),
+                            x_ub=np.ones(1)):
         n = mu_prior.size
         A = self.A_mfa
 
@@ -885,6 +935,153 @@ class ReducedSpaceMfa:
                                      ])
         alpha = 1e2
 
+        start_dict = {"mu_x": mu_prior}
+
+        with pm.Model() as mv_model:
+            # prior
+            #mu_x = pm.MvNormal("mu_x",
+            #                   #mu=mu_prior,
+            #                   mu=np.zeros(n),
+            #                   #chol=cov_cholesky_L,
+            #                   chol= np.sqrt(np.eye(n)),
+            #                   shape=n)
+            # non-informative prior
+            #mu_x = pm.Normal('mu_x', mu=0, sigma=1e5, shape=n)
+
+            # split the priors # this doues not work very well :(
+            #mu_arc = pm.HalfNormal('mu_arc', sigma=sigma_0_0, shape=self.n_arc)
+            #mu_nod = pm.Normal('mu_nod', mu=0, sigma=sigma_0_0, shape=(n - self.n_arc))
+            #mu_x = pm.Deterministic('mu_x',
+            #                        pm.math.dot(arc_proj, mu_arc)
+            #                        +pm.math.dot(nod_proj, mu_nod)
+            #                        )
+
+            # put the bounds on the arc variables
+            if prior == prior_type.regularizing:
+                mu_x = pm.MvNormal('mu_x',
+                                   mu=np.zeros(n),
+                                   chol=sigma_0_cholesky_L)
+            elif prior == prior_type.uniform:
+                mu_x = pm.Uniform("mu_x",
+                                  lower=x_lb,
+                                  upper=x_ub,
+                                  shape=n)
+            mu_arc = pm.Deterministic("mu_arc",
+                                      pm.math.dot(full_to_arc_proj, mu_x))
+            pen_lb = -alpha * pm.math.sum(pm.math.log1pexp(-mu_arc))
+            pm.Potential("soft_lb", pen_lb)
+
+
+            # data likelihood
+            for ds in range(self.n_dataset):
+                a_perm = permutation_mat[ds]
+                noise_cholesky_L = cholesky_data[ds]
+                observation_k = observation_data[ds]
+
+                #mu_k = pm.Deterministic(f"mu_{ds}", pm.math.dot(a_perm, mu_x))
+
+                pm.MvNormal(f'eta_d_{ds}',
+                            # mu=mu_k,
+                            mu=pm.math.dot(a_perm, mu_x),
+                            chol=noise_cholesky_L,
+                            observed=observation_k
+                            )
+
+            # model noise likelihood
+            pm.MvNormal("eta_0", mu=pm.math.dot(A, mu_x), chol=eta_0_cholesky_L,
+                        observed=eta_0_obs)
+
+            idata = pm.sample(draws=2000, tune=2000, chains=4, cores=1,
+                              target_accept=0.95,
+                              return_inferencedata=True,
+                              max_treedepth=12,
+                              start=start_dict
+                              )
+            #idata = pm.sample(draws=3000, tune=3000, chains=4, cores=4,
+            #                  target_accept=0.99, return_inferencedata=True,
+            #                  mp_ctx=self.mp_ctx )
+        pd.DataFrame(idata.sample_stats.attrs.values(),
+                     index=idata.sample_stats.attrs.keys()).to_csv("full_space_stats.csv")
+        #az.summary(idata).to_csv("full_space_summary.csv")
+        return idata
+
+    # mixture noise
+    def gaussian_mixture_sampling(self, mu_prior, cov_prior, regularizing=False):
+        n = mu_prior.size
+        A = self.A_mfa
+
+        n_arc = self.n_arc
+        n_node = self.n_node
+        n_var = n_arc + len(self.ds_nodes)
+
+        # cholesky factor of the covariance.
+        cov_cholesky_L = np.linalg.cholesky(cov_prior)
+
+        f1 = np.vectorize(lambda x: 0.4 * (1.5 - x))
+        cov_noise = np.multiply(f1(self.score_matrix), self.data_matrix)
+        min_v_1e_3 = np.vectorize(lambda x: max(x, 1e-03))
+        cov_noise = min_v_1e_3(cov_noise)
+
+        permutation_mat = []
+        cholesky_data = []
+        observation_data = []
+
+        # we want some nans in the data
+        def nan_data_matrix(a, b):
+            if b:
+                return a
+            else:
+                return 1.0
+
+        #vnan_data_matrix = np.vectorize(nan_data_matrix)
+        #data = vnan_data_matrix(self.data_matrix, self.data_flag)
+        data = self.data_matrix
+
+        # for each dataset we compute the cov noise matrices
+        for ds in range(self.n_dataset):
+            a_k = np.zeros((self.data_flag[:, ds].sum(), self.data_flag.shape[0]))
+            new_row = 0
+            for row in range(self.data_flag.shape[0]):
+                if self.data_flag[row, ds]:
+                    a_k[new_row, row] = 1
+                    new_row += 1
+
+
+            cov_noise_k = np.linalg.multi_dot([a_k, np.diag(cov_noise[:, ds]), a_k.T])
+
+
+            noise_cholesky_L = np.sqrt(cov_noise_k)
+            cholesky_data.append(noise_cholesky_L)
+
+            observation_k = a_k @ self.data_matrix[:, ds]
+            observation_data.append(observation_k)
+
+            a_perm = np.block([a_k, np.zeros((a_k.shape[0], len(self.ds_nodes)))])
+            permutation_mat.append(a_perm)
+
+        m = A.shape[0]
+
+        eta_0_cov = np.eye(m) * 1e-03
+        eta_0_cholesky_L = np.sqrt(eta_0_cov)
+
+        eta_0_obs = np.zeros(m) # mass balance should have 0 residual
+        sigma_0_0 = 10
+        sigma_0 = np.eye(n) * sigma_0_0
+        sigma_0_cholesky_L = np.sqrt(sigma_0)
+
+        # projection matrices
+        arc_proj = np.block([[np.eye(self.n_arc)], [np.zeros((n - self.n_arc,
+                                                              self.n_arc))]])
+        nod_proj = np.block([[np.zeros((self.n_arc, n - self.n_arc))],
+                             [np.eye(n - self.n_arc)]])
+
+        # penalize the arc var lower bound
+        full_to_arc_proj = np.block([np.eye(self.n_arc),
+                                     np.zeros((self.n_arc, n_var - self.n_arc))
+                                     ])
+        alpha = 1e2
+
+        #weights = [0.8, 0.1, 0.5]
 
         with pm.Model() as mv_model:
             # prior
@@ -912,30 +1109,69 @@ class ReducedSpaceMfa:
             pen_lb = -alpha * pm.math.sum(pm.math.log1pexp(-mu_arc))
             pm.Potential("soft_lb", pen_lb)
 
+            #components = []
+            # observations = np.array([])
+            #observations = []#np.array([])
             # data likelihood
-            for ds in range(self.n_dataset):
-                a_perm = permutation_mat[ds]
-                noise_cholesky_L = cholesky_data[ds]
-                observation_k = observation_data[ds]
+            #for ds in range(self.n_dataset):
+            #    a_perm = permutation_mat[ds]
+            #    noise_cholesky_L = cholesky_data[ds]
+            #    observation_k = observation_data[ds]
+            #    observations.append(observation_k)
 
-                #mu_k = pm.Deterministic(f"mu_{ds}", pm.math.dot(a_perm, mu_x))
+            #    #name = f"eta_ds_{ds}"
+            #    components.append(pm.MvNormal.dist(mu=pm.math.dot(a_perm, mu_x),
+            #                                       chol=noise_cholesky_L))
 
-                pm.MvNormal(f'eta_d_{ds}',
-                            # mu=mu_k,
-                            mu=pm.math.dot(a_perm, mu_x),
-                            chol=noise_cholesky_L,
-                            observed=observation_k
-                            )
+            weights = pm.Dirichlet("weights", a=np.ones(self.n_dataset))
 
-            # model noise likelihood
+            component_dists = []
+            for k in range(self.n_dataset):
+                #chol, corr, stds = pm.LKJCholeskyCov("chol_cov_" + str(k),
+                #                                     n=self.data_matrix.shape[0],
+                #                                     eta=2.0,
+                #                                     sd_dist=pm.Exponential.dist(1.0, shape=self.data_matrix.shape[0])
+                #                                     )
+                #cov = pm.Deterministic("cov_" + str(k), chol @ chol.T)
+
+                chol = np.eye(self.data_matrix.shape[0]) * np.random.rand()
+
+                comp_dist = pm.MvNormal.dist(mu=mu_arc+np.random.rand(),
+                                             chol=chol
+                                             #cov=cov
+                                             )
+
+                component_dists.append(comp_dist)
+
+            likelihood = pm.Mixture(
+                "likelihood",
+                w=weights,
+                comp_dists=component_dists,
+                observed=data.transpose(), # observed data is (k, m)
+                shape=data.transpose().shape # shape of the observed data
+            )
+
+
+            # model noise likelihood (constraints)
             pm.MvNormal("eta_0", mu=pm.math.dot(A, mu_x), chol=eta_0_cholesky_L,
                         observed=eta_0_obs)
+
+            #observations = np.asarray(observations, dtype=float) # This will still fail if ragged; it’s a test.
+            #likelihood = pm.Mixture("likelihood",
+            #                        w=weights,
+            #                        comp_dists=components,
+            #                        observed=observations
+            #                        )
+
+
+
 
             idata = pm.sample(draws=2000, tune=2000, chains=4, cores=1, target_accept=0.9, return_inferencedata=True)
             #idata = pm.sample(draws=3000, tune=3000, chains=4, cores=4,
             #                  target_accept=0.99, return_inferencedata=True,
             #                  mp_ctx=self.mp_ctx )
         pd.DataFrame(idata.sample_stats.attrs.values(),
-                     index=idata.sample_stats.attrs.keys()).to_csv("full_space_stats.csv")
+                     index=idata.sample_stats.attrs.keys()).to_csv("mixture_stats.csv")
+        #az.summary(idata).to_csv("mixture_summary.csv")
         return idata
 
