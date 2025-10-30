@@ -30,7 +30,6 @@ A = rmfa.create_mfa_matrix()
 mu = resv
 _, variance = rmfa.simple_data_moments()
 
-
 sup_dem_bound = rmfa.data_matrix.max() * 1.8
 mu_0, variance = rmfa.simple_data_moments2()
 x_lb = mu_0 * 0.2

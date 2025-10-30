@@ -161,19 +161,9 @@ z_samples = rmfa.red_space_mult_data_sampling(mu_z,
                                               x_zlb=a_z_bounds,
                                               x_zub=b_z_bounds
                                               )
-# print(az.summary(z_samples))
-# #
-# # #mean_posterior = az.summary(z_samples, var_names=["mu"])["mean"].to_frame()
-# # #mean_posterior["MAP_QP"] = mu
-# # #mean_posterior.to_csv("test_red_space_result.csv")
-# # #
-# # #resid = rmfa.balance_residuals(mean_posterior["mean"])
-# #
-# #
-# # x_posterior = az.summary(z_samples, var_names=["mu_x"])["mean"].to_numpy()
-# # rmfa.write_result_csv(x_posterior, "red_space_res")
-# # resid = rmfa.balance_residuals(x_posterior)
-#
-# x_posterior = az.summary(z_samples, var_names=["mu_x"])["mean"].to_numpy()
-# rmfa.write_result_csv(x_posterior, "red_space_res")
-# resid = rmfa.balance_residuals(x_posterior)
+print(az.summary(z_samples))
+
+x_posterior = az.summary(z_samples, var_names=["mu_x"])["mean"].to_numpy()
+rmfa.write_result_csv(x_posterior, "red_space_res")
+resid = rmfa.balance_residuals(x_posterior)
+

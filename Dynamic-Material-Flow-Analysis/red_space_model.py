@@ -287,7 +287,11 @@ class ReducedSpaceMfa:
     def run_parametric_optimization(self, is_q_param: bool,
                                     q_val: np.ndarray=np.zeros(1),
                                     has_data: bool=False, # false= least-squares
-                                    is_bayesian: bool=False):
+                                    is_bayesian: bool=False,
+                                    prior: prior_type=prior_type(1),
+                                    x_lb=np.ones(1),
+                                    x_ub=np.ones(1)
+                                    ):
 
         inc_matrix = self.inc_matrix
         node_type = self.node_type
@@ -356,18 +360,35 @@ class ReducedSpaceMfa:
                 #                            for i in m.arcs if prior_mu[i] > 0
                 #                            )
                 #                      )
-                # regularizing prior i.e. mu = 0, and arbitrary sigma of 10
-                prior_mean0 = 0.0
-                prior_variance0 = 10.0
-                m.obj_fun = Objective(rule=sum(m.likelihood_expr[i, k]
-                                               for i in m.arcs for k in
-                                               m.data_set if self.data_flag[i, k]) \
-                                      +
-                                      sum((m.flow[i]-prior_mean0)**2/prior_variance0 for i in m.arcs)
-                                      + sum((m.q[i]-prior_mean0)**2/prior_variance0 for i in m.q_set)
-                                      )
-                # turn of the bounds
-                m.flow[:].setlb(None)
+                if prior == prior_type.regularizing:
+                    # regularizing prior i.e. mu = 0, and arbitrary sigma of 10
+                    prior_mean0 = 0.0
+                    prior_variance0 = 10.0
+                    m.obj_fun = Objective(rule=sum(m.likelihood_expr[i, k]
+                                                   for i in m.arcs for k in
+                                                   m.data_set if self.data_flag[i, k]) \
+                                          +
+                                          sum((m.flow[i]-prior_mean0)**2/prior_variance0 for i in m.arcs)
+                                          + sum((m.q[i]-prior_mean0)**2/prior_variance0 for i in m.q_set)
+                                          )
+                    # turn of the bounds
+                    m.flow[:].setlb(None)
+                elif prior == prior_type.uniform:
+                    # uniform prior, set bounds to the specificied values.
+                    # objective is just likelihood minimization
+
+                    m.obj_fun = Objective(rule=sum(m.likelihood_expr[i, k]
+                                                   for i in m.arcs for k in
+                                                   m.data_set if self.data_flag[i, k]))
+                    for i in range(self.n_arc):
+                        m.flow[i].setlb(x_lb[i])
+                        m.flow[i].setub(x_ub[i])
+                    i = 0
+                    for j in m.q_set:
+                        m.q[j].setlb(x_lb[self.n_arc+i])
+                        m.q[j].setub(x_ub[self.n_arc+i])
+                        i += 1
+
 
             else:
                 m.obj_fun = Objective(rule=(sum(m.likelihood_expr[i, k]
@@ -795,10 +816,15 @@ class ReducedSpaceMfa:
                             observed=observation_k
                             )
 
-            idata = pm.sample(draws=2000, tune=2000,
-                              chains=4, cores=1,
-                              target_accept=0.9,
+            idata = pm.sample(draws=2000,
+                              tune=2000,
+                              chains=4,
+                              cores=1,
+                              iter_warmup = 1000,
+                              iter_sampling = 2000,
+                              target_accept=0.95,
                               return_inferencedata=True,
+                              max_treedepth=15,
                               init_val= {"mu_z": mu_prior})
 
         #az.summary(idata).to_csv("red_space_summary.csv")
@@ -991,10 +1017,15 @@ class ReducedSpaceMfa:
             pm.MvNormal("eta_0", mu=pm.math.dot(A, mu_x), chol=eta_0_cholesky_L,
                         observed=eta_0_obs)
 
-            idata = pm.sample(draws=2000, tune=2000, chains=4, cores=1,
+            idata = pm.sample(draws=2000,
+                              tune=2000,
+                              chains=4,
+                              cores=1,
+                              iter_warmup = 1000,
+                              iter_sampling = 2000,
                               target_accept=0.95,
                               return_inferencedata=True,
-                              max_treedepth=12,
+                              max_treedepth=15,
                               start=start_dict
                               )
             #idata = pm.sample(draws=3000, tune=3000, chains=4, cores=4,
@@ -1006,7 +1037,7 @@ class ReducedSpaceMfa:
         return idata
 
     # mixture noise
-    def gaussian_mixture_sampling(self, mu_prior, cov_prior, regularizing=False):
+    def gaussian_mixture_likelihood_sampling(self, mu_prior, cov_prior, regularizing=False):
         n = mu_prior.size
         A = self.A_mfa
 
