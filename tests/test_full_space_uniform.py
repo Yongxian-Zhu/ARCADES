@@ -3,6 +3,8 @@ import arviz as az
 import sys
 import os
 import multiprocessing as mp
+import matplotlib.pyplot as plt
+import os
 
 # 1. Get the 'spawn' context
 mp_ctx = mp.get_context("spawn")
@@ -59,4 +61,40 @@ x_posterior = az.summary(samples, var_names=["mu_x"])["mean"].to_numpy()
 rmfa.write_result_csv(x_posterior, "full_space_res")
 resid = rmfa.balance_residuals(x_posterior)
 
+
+# save the samples
+az.to_netcdf(samples, "full_space_res.nc")
+
+mu_flat = samples.posterior["mu_x"].stack(sample=("chain", "draw")).values
+
+# save the posterior values
+np.save("full_space_res.npy", mu_flat)
+
+# plot result folders
+res_dir_path = 'full_space_res'
+if not os.path.exists(res_dir_path):
+    os.mkdir(res_dir_path)
+else:
+    print(f"The directory {res_dir_path} already exists.")
+
+for flow_idx in range(rmfa.n_arc):
+    # choose an index
+
+    # plot histograms
+    plt.figure(figsize=(7, 4))
+    plt.hist(mu_flat[flow_idx, :], bins=50, density=True, alpha=0.6, color="steelblue")
+
+    mean = mu_flat[flow_idx, :].mean()
+    low, high = np.quantile(mu_flat[flow_idx, :], [0.025, 0.975])
+
+    plt.axvline(mean, color="k", linestyle="--", label=f"mean = {mean:.3f}")
+    plt.axvline(low,  color="red", linestyle=":", label=f"2.5% = {low:.3f}")
+    plt.axvline(high, color="red", linestyle=":")
+    plt.title("Posterior of μ")
+    plt.xlabel("μ")
+    plt.ylabel("Density")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(res_dir_path + f"/hist_{flow_idx}.png")
+    plt.close()
 

@@ -785,7 +785,6 @@ class ReducedSpaceMfa:
                 mu_z = pm.MvNormal('mu_z',
                                    mu=np.zeros(n_minus_m),
                                    chol=sigma_0_cholesky_L)
-
             elif prior == prior_type.uniform:
                 print("Uniform prior")
                 mu_z = pm.Uniform("mu_z",
@@ -816,8 +815,9 @@ class ReducedSpaceMfa:
                             observed=observation_k
                             )
 
+            #idata = pm.sample(draws=1000, tune=1000, chains=1, cores=1)
             idata = pm.sample(draws=2000,
-                              tune=2000,
+                              tune=3000,
                               chains=4,
                               cores=1,
                               iter_warmup = 1000,
@@ -825,7 +825,7 @@ class ReducedSpaceMfa:
                               target_accept=0.95,
                               return_inferencedata=True,
                               max_treedepth=15,
-                              init_val= {"mu_z": mu_prior})
+                              start={"mu_z": mu_prior})
 
         #az.summary(idata).to_csv("red_space_summary.csv")
         pd.DataFrame(idata.sample_stats.attrs.values(),
@@ -1028,9 +1028,6 @@ class ReducedSpaceMfa:
                               max_treedepth=15,
                               start=start_dict
                               )
-            #idata = pm.sample(draws=3000, tune=3000, chains=4, cores=4,
-            #                  target_accept=0.99, return_inferencedata=True,
-            #                  mp_ctx=self.mp_ctx )
         pd.DataFrame(idata.sample_stats.attrs.values(),
                      index=idata.sample_stats.attrs.keys()).to_csv("full_space_stats.csv")
         #az.summary(idata).to_csv("full_space_summary.csv")
@@ -1197,10 +1194,7 @@ class ReducedSpaceMfa:
 
 
 
-            idata = pm.sample(draws=2000, tune=2000, chains=4, cores=1, target_accept=0.9, return_inferencedata=True)
-            #idata = pm.sample(draws=3000, tune=3000, chains=4, cores=4,
-            #                  target_accept=0.99, return_inferencedata=True,
-            #                  mp_ctx=self.mp_ctx )
+            idata = pm.sample(draws=2000, tune=2000, chains=4, cores=1, target_accept=0.9, return_inferencedata=true)
         pd.DataFrame(idata.sample_stats.attrs.values(),
                      index=idata.sample_stats.attrs.keys()).to_csv("mixture_stats.csv")
         #az.summary(idata).to_csv("mixture_summary.csv")

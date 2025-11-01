@@ -3,6 +3,8 @@ import arviz as az
 import sys
 from scipy.optimize import linprog
 from typing import Tuple
+import matplotlib.pyplot as plt
+import os
 
 sys.path.insert(1, "../Dynamic-Material-Flow-Analysis")
 
@@ -135,25 +137,10 @@ print(f"The tightest bounding box for z is defined by:")
 for i in range(len(a_z_bounds)):
     print(f"  z_{i+1} is in [{a_z_bounds[i]:.4f}, {b_z_bounds[i]:.4f}]")
 
-
-#
-#
-# x_zlb = Zpseudo @ x_lb
-# x_zub = Zpseudo @ x_ub
-#
-# print(f"variance shape = {variance.shape}")
-# print(f"Z shape = {rmfa.Z.shape}")
-# print(f"Zpseudo shape = {Zpseudo.shape}")
 #
 variance_z = np.diag(variance) @ Zpseudo.transpose()
 variance_z = Zpseudo @ variance_z
 # #
-# # print(variance_z)
-# #
-# #
-# # # now we want to have a lower bound and an upper bound for the uniform
-# # # distribution
-# # n_var = rmfa.n_arc + len(rmfa.ds_nodes)
 # #
 z_samples = rmfa.red_space_mult_data_sampling(mu_z,
                                               variance_z,
@@ -166,4 +153,40 @@ print(az.summary(z_samples))
 x_posterior = az.summary(z_samples, var_names=["mu_x"])["mean"].to_numpy()
 rmfa.write_result_csv(x_posterior, "red_space_res")
 resid = rmfa.balance_residuals(x_posterior)
+
+# save the samples
+az.to_netcdf(z_samples, "red_space_res.nc")
+
+mu_flat = z_samples.posterior["mu_x"].stack(sample=("chain", "draw")).values
+
+# save the posterior values
+np.save("red_space_res.npy", mu_flat)
+
+# plot result folders
+res_dir_path = 'red_space_res'
+if not os.path.exists(res_dir_path):
+    os.mkdir(res_dir_path)
+else:
+    print(f"The directory {res_dir_path} already exists.")
+
+for flow_idx in range(rmfa.n_arc):
+    # choose an index
+
+    # plot histograms
+    plt.figure(figsize=(7, 4))
+    plt.hist(mu_flat[flow_idx, :], bins=50, density=True, alpha=0.6, color="steelblue")
+
+    mean = mu_flat[flow_idx, :].mean()
+    low, high = np.quantile(mu_flat[flow_idx, :], [0.025, 0.975])
+
+    plt.axvline(mean, color="k", linestyle="--", label=f"mean = {mean:.3f}")
+    plt.axvline(low,  color="red", linestyle=":", label=f"2.5% = {low:.3f}")
+    plt.axvline(high, color="red", linestyle=":")
+    plt.title("Posterior of μ")
+    plt.xlabel("μ")
+    plt.ylabel("Density")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(res_dir_path + f"/hist_{flow_idx}.png")
+    plt.close()
 
