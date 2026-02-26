@@ -1,7 +1,0 @@
-,0
-created_at,2025-10-02T18:27:24.140989+00:00
-arviz_version,0.22.0
-inference_library,pymc
-inference_library_version,5.25.1
-sampling_time,1339.8235812187195
-tuning_steps,2000
