@@ -1,0 +1,4 @@
+description,formula,dest_node
+Total production capacity,1*2=1100,
+Recycling rate target,1*8=0.75*6,8
+End-of-life split,1*8+1*9=1*6,

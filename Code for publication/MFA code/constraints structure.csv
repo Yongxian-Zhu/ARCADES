@@ -1,0 +1,4 @@
+﻿"Column","Type","Description"
+"description","str","Human-readable constraint label"
+"formula","str","Linear constraint in the form c1*node1 + c2*node2 = target"
+"dest_node","int","Destination node for disambiguating multi-flow terms"
