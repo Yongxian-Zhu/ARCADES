@@ -1,0 +1,50 @@
+flow_index,flow_idx,from_node_name,to_node_name,observation_2022,coverage,frequency,spatial_boundary,relative_sigma,sigma_kt,score_basis
+1,0,Bauxite mining,Bauxite,164.00915,1.0,2.0,4.0,0.32449,53.2193,2017 USGS observation
+2,1,Import of bauxite,Bauxite,3280.183,4.0,3.0,4.0,0.097141,318.6412,2017 USGS observation
+3,2,Bauxite,Export bauxite,6.0,4.0,3.0,4.0,0.097141,0.5828,2017 USGS observation
+4,3,Bauxite,Bauxite non-aluminum use,164.00915,1.0,2.0,4.0,0.32449,53.2193,2017 USGS observation
+5,4,Bauxite,Bauxite refining (to alumina),3280.183,1.0,1.0,4.0,0.368403,1208.4297,2017 USGS observation
+7,6,Bauxite refining (to alumina),Waste bauxite,1804.10065,1.0,1.0,4.0,0.368403,664.6364,2017 USGS observation
+8,7,Bauxite refining (to alumina),Export alumina,174.0,4.0,3.0,4.0,0.097141,16.9026,2017 USGS observation
+9,8,Bauxite refining (to alumina),Alumina non-aluminum use,744.628,4.0,3.0,4.0,0.097141,72.3341,2017 USGS observation
+10,9,Bauxite refining (to alumina),Primary smelting (Hall-Hauroult to aluminum),557.45435,4.0,3.0,4.0,0.097141,54.1518,2017 USGS observation
+11,10,Primary smelting (Hall-Hauroult to aluminum),Waste Alumina,1352.934,1.0,1.0,4.0,0.368403,498.4251,2017 USGS observation
+12,11,Primary smelting (Hall-Hauroult to aluminum),Remelting,528.7105257,1.0,1.0,3.0,0.715743,378.4209,2017 USGS observation
+13,12,Primary smelting (Hall-Hauroult to aluminum),Refining,332.2894743,1.0,1.0,3.0,0.715743,237.8339,2017 USGS observation
+14,13,Import unwrought aluminum ingot,Remelting,2829.794168,1.0,1.0,3.0,0.715743,2025.4055,2017 USGS observation
+15,14,Import unwrought aluminum ingot,Refining,1320.205832,1.0,1.0,3.0,0.715743,944.9282,2017 USGS observation
+17,16,Remelting,Wrought aluminum ingot,8005.61,1.0,1.0,4.0,0.368403,2949.2919,2017 USGS observation
+19,18,Refining,Cast aluminum ingot,2490.138,1.0,1.0,4.0,0.368403,917.3747,2017 USGS observation
+26,25,Import scrap,EOL scrap (generated),685.0,4.0,3.0,4.0,0.097141,66.5418,2017 USGS observation
+27,26,EOL scrap (generated),Export EOL scrap,2000.0,4.0,3.0,4.0,0.097141,194.2826,2017 USGS observation
+29,28,EOL scrap (generated),EOL scrap (recycled),1590.0,4.0,3.0,4.0,0.097141,154.4546,2017 USGS observation
+33,32,Forming scrap (generated),Forming scrap (recycled),2083.0,1.0,1.0,3.0,0.715743,1490.8928,2017 USGS observation
+71,70,Cast aluminum ingot,Export cast aluminum ingot,300.0,4.0,3.0,4.0,0.097141,29.1424,2017 USGS observation
+132,131,Import mill semifinished products,Rolling,1460.0,1.0,1.0,3.0,0.715743,1044.9849,2017 USGS observation
+133,132,Import mill semifinished products,Extrusion,44.39,1.0,1.0,3.0,0.715743,31.7718,2017 USGS observation
+137,136,Import mill semifinished products,Foil,148.0,1.0,1.0,3.0,0.715743,105.93,2017 USGS observation
+139,138,Import mill semifinished products,Wire,7.16,1.0,1.0,3.0,0.715743,5.1247,2017 USGS observation
+141,140,Import mill semifinished products,Powerder & Paste,18.6,1.0,1.0,3.0,0.715743,13.3128,2017 USGS observation
+143,142,Rolling,Sheet & Plate,4002.691813,1.0,1.0,3.0,0.715743,2864.8989,2017 USGS observation
+145,144,Rolling,Export milling semifinished products,826.6,1.0,1.0,3.0,0.715743,591.6332,2017 USGS observation
+148,147,Extrusion,Extruded Products,2873.886133,1.0,1.0,3.0,0.715743,2056.964,2017 USGS observation
+149,148,Extrusion,Export milling semifinished products,51.1,1.0,1.0,3.0,0.715743,36.5745,2017 USGS observation
+153,152,Drawing,Export milling semifinished products,8.36,1.0,1.0,3.0,0.715743,5.9836,2017 USGS observation
+156,155,Other milling processes,Forging & impacts,149.1596564,1.0,1.0,3.0,0.715743,106.76,2017 USGS observation
+158,157,Other milling processes,Export milling semifinished products,65.8,1.0,1.0,3.0,0.715743,47.0959,2017 USGS observation
+212,211,Building & construction,Consumption Building & construction,1405.574107,1.0,3.0,2.0,0.630427,886.1116,2017 end-use consumption observation
+214,213,Transportation auto,Consumption Transportation auto,1737.166733,1.0,3.0,2.0,0.630427,1095.1565,2017 end-use consumption observation
+216,215,Transportation other,Consumption Transportation other,918.4631329,1.0,3.0,2.0,0.630427,579.0238,2017 end-use consumption observation
+218,217,Machine & industry,Consumption Machine & industry,736.4747668,1.0,3.0,2.0,0.630427,464.2934,2017 end-use consumption observation
+220,219,Electrical & equipment,Consumption Electrical & equipment,957.242923,1.0,3.0,2.0,0.630427,603.4716,2017 end-use consumption observation
+222,221,Consumer durables,Consumption Consumer durables,1465.714087,1.0,3.0,2.0,0.630427,924.0255,2017 end-use consumption observation
+224,223,Container & packages,Consumption Container & packages,1699.839931,1.0,3.0,2.0,0.630427,1071.6247,2017 end-use consumption observation
+226,225,Other end uses,Consumption Other end uses,268.7354505,1.0,3.0,2.0,0.630427,169.418,2017 end-use consumption observation
+227,226,EOL scrap Building & construction,EOL scrap (generated),294.296832,1.0,1.0,3.0,0.715743,210.6409,2017 USGS observation
+228,227,EOL scrap Transportation auto,EOL scrap (generated),1401.194965,1.0,1.0,3.0,0.715743,1002.8956,2017 USGS observation
+229,228,EOL scrap Transportation other,EOL scrap (generated),565.5488941,1.0,1.0,3.0,0.715743,404.7877,2017 USGS observation
+230,229,EOL scrap Machine & industry,EOL scrap (generated),282.9262632,1.0,1.0,3.0,0.715743,202.5025,2017 USGS observation
+231,230,EOL scrap Electrical & equipment,EOL scrap (generated),378.8634735,1.0,1.0,3.0,0.715743,271.1689,2017 USGS observation
+232,231,EOL scrap Consumer durables,EOL scrap (generated),944.0480768,1.0,1.0,3.0,0.715743,675.6959,2017 USGS observation
+233,232,EOL scrap Container & packages,EOL scrap (generated),1699.847102,4.0,3.0,4.0,0.097141,165.1253,packaging turnover ~1 yr; scored as USGS-quality
+234,233,EOL scrap Other end uses,EOL scrap (generated),262.6861837,1.0,1.0,3.0,0.715743,188.0158,2017 USGS observation

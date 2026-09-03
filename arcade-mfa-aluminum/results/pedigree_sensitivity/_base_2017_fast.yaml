@@ -1,0 +1,108 @@
+run:
+  name: aluminum_2017_baseline
+  year: 2017
+  seed: 42
+data:
+  workbook_path: data/raw/aluminum/US aluminum flows.xlsx
+  source_name: 2017 data
+  n_flows: 234
+  n_internal_nodes: 62
+formulation:
+  type: flow_based
+  space: linear
+prior:
+  enabled: false
+observation_sources: {}
+observation_overrides:
+- flow_idx: 26
+  relative_sigma: 0.05
+  justification: customs-tracked scrap export, better measured than the source-level
+    score implies
+- flow_idx: 1
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 5
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 13
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 14
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 25
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 131
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 133
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 136
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 138
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 140
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 202
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 203
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 204
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 205
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 206
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 207
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+mass_balance:
+  mode: soft
+  rel_sigma: 0.01
+bounds:
+  observed_lower_frac: 0.2
+  observed_upper_frac: 1.8
+  zero_flow_upper: 1.0
+observation_sigma:
+  scale: pedigree
+  pedigree_mapping:
+    scale_max: 4.0
+    sigma_rel_best: 0.05
+    sigma_rel_worst: 1.0
+    global_multiplier: 1.0
+    combiner: geometric_mean
+    direction: higher_is_better
+inference:
+  method: truncated_gibbs
+  map:
+    method: trust-constr
+    maxiter: 20000
+  sampling:
+    n_chains: 4
+    n_draws: 800
+    n_tune: 2000
+    thin: 5
+diagnostics:
+  compute_node_balance: true
+  compute_convergence_summary: true
+  output_dir: runs/aluminum_2017_baseline
+output:
+  posterior_mean_csv: runs/aluminum_2017_baseline/posterior_mean.csv
+  posterior_samples_npy: runs/aluminum_2017_baseline/posterior_samples.npy
+  save_prior_for_transfer: false
+  transfer_inflation_factor: 1.5
+  save_allocation_shares: false
+  allocation_shares_out: data/canonical/aluminum/allocation_shares_2017.npz
+  allocation_min_outflows: 2
+  prior_mean_out: data/canonical/aluminum/prior_mean_2017_to_2022.npy
+  prior_cov_out: data/canonical/aluminum/prior_cov_2017_to_2022.npy

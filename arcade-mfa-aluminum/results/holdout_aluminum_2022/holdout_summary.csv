@@ -1,0 +1,3 @@
+n_withheld,n_scored_pct,coverage_95,median_abs_pct_error,mean_abs_pct_error,median_abs_z,max_abs_z,withheld_source,kind,error
+5.0,5.0,0.0,27.09655188799748,32.71246395887796,5.419310377599496,10.144427930267812,Aluminum Association,aggregate,
+,,,,,,,observation_2022,,ValueError: observation_sources: holding out ['observation_2022'] leaves no observations at all.

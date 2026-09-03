@@ -1,0 +1,110 @@
+bounds:
+  observed_lower_frac: 0.2
+  observed_upper_frac: 1.8
+  zero_flow_upper: 1.0
+data:
+  n_flows: 234
+  n_internal_nodes: 62
+  source_name: 2017 data
+  workbook_path: data/raw/aluminum/US aluminum flows.xlsx
+diagnostics:
+  compute_convergence_summary: true
+  compute_node_balance: true
+  output_dir: runs\holdout_aluminum_2017\usgs_value_2
+formulation:
+  space: linear
+  type: flow_based
+inference:
+  map:
+    maxiter: 20000
+    method: trust-constr
+  method: truncated_gibbs
+  sampling:
+    n_chains: 4
+    n_draws: 800
+    n_tune: 2000
+    thin: 5
+mass_balance:
+  mode: soft
+  rel_sigma: 0.01
+observation_overrides:
+- flow_idx: 26
+  justification: customs-tracked scrap export, better measured than the source-level
+    score implies
+  relative_sigma: 0.05
+- flow_idx: 1
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 5
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 13
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 14
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 25
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 131
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 133
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 136
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 138
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 140
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 202
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 203
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 204
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 205
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 206
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+- flow_idx: 207
+  justification: customs-tracked trade flow
+  relative_sigma: 0.05
+observation_sigma:
+  pedigree_mapping:
+    combiner: geometric_mean
+    direction: higher_is_better
+    global_multiplier: 1.0
+    scale_max: 4.0
+    sigma_rel_best: 0.05
+    sigma_rel_worst: 1.0
+  scale: pedigree
+observation_sources:
+  USGS value 2:
+    enabled: false
+output:
+  allocation_min_outflows: 2
+  allocation_shares_out: data/canonical/aluminum/allocation_shares_2017.npz
+  posterior_mean_csv: runs\holdout_aluminum_2017\usgs_value_2\posterior_mean.csv
+  posterior_samples_npy: runs\holdout_aluminum_2017\usgs_value_2\posterior_samples.npy
+  prior_cov_out: data/canonical/aluminum/prior_cov_2017_to_2022.npy
+  prior_mean_out: data/canonical/aluminum/prior_mean_2017_to_2022.npy
+  save_allocation_shares: false
+  save_prior_for_transfer: false
+  transfer_inflation_factor: 1.5
+prior:
+  enabled: false
+run:
+  name: holdout_usgs_value_2
+  seed: 42
+  year: 2017

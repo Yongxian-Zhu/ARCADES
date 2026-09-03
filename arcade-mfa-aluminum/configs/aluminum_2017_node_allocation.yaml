@@ -1,0 +1,113 @@
+# configs/aluminum_2017_node_allocation.yaml
+#
+# Node-allocation formulation (SI Equations S15-S18): node throughputs and the
+# allocation shares that split them are the variables, with flows recovered as
+# x_j = T_p * s_pj. Equation S17 maps each node's pedigree score to a Dirichlet
+# concentration on its split.
+#
+# DERIVED from configs/aluminum_2017.yaml -- the data block, pedigree mapping and per-flow sigma
+# overrides are copied verbatim so the two formulations differ only in
+# parameterisation and likelihood. Regenerate rather than editing by hand if the
+# flow config changes.
+
+run:
+  name: aluminum_2017_node_allocation
+  year: 2017
+  seed: 42
+data:
+  workbook_path: data/raw/aluminum/US aluminum flows.xlsx
+  source_name: 2017 data
+  n_flows: 234
+  n_internal_nodes: 62
+formulation:
+  type: flow_based
+  space: linear
+prior:
+  enabled: false
+observation_sources: {}
+observation_overrides:
+- flow_idx: 26
+  relative_sigma: 0.05
+  justification: customs-tracked scrap export, better measured than the source-level score implies
+- flow_idx: 1
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 5
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 13
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 14
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 25
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 131
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 133
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 136
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 138
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 140
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 202
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 203
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 204
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 205
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 206
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+- flow_idx: 207
+  relative_sigma: 0.05
+  justification: customs-tracked trade flow
+mass_balance:
+  mode: soft
+  rel_sigma: 0.01
+bounds:
+  observed_lower_frac: 0.2
+  observed_upper_frac: 1.8
+  zero_flow_upper: 1.0
+observation_sigma:
+  scale: pedigree
+  pedigree_mapping:
+    scale_max: 4.0
+    sigma_rel_best: 0.05
+    sigma_rel_worst: 1.0
+    global_multiplier: 1.0
+    combiner: geometric_mean
+    direction: higher_is_better
+diagnostics:
+  compute_node_balance: true
+  compute_convergence_summary: true
+  output_dir: runs/aluminum_2017_node_allocation
+output:
+  posterior_mean_csv: runs/aluminum_2017_node_allocation/posterior_mean.csv
+  posterior_samples_npy: runs/aluminum_2017_node_allocation/posterior_samples.npy
+  save_prior_for_transfer: false
+  save_allocation_shares: false
+node_allocation:
+  kappa_min: 2.0
+  kappa_max: 200.0
+  r_min: 0.05
+  r_max: 1.0
+  warm_start_from: runs/aluminum_2017_baseline/posterior_mean.csv
+  map_maxiter: 20000
+  n_draws: 4000
+  max_sd_z: 10.0

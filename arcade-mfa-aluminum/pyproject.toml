@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arcade-mfa-aluminum"
+version = "1.0.0"
+description = "Bayesian material flow analysis of the U.S. aluminum cycle (2017, 2022): constrained MAP estimation and truncated-normal posterior sampling under mass-balance and bound constraints, with 2017-to-2022 transfer of the posterior and of node allocation ratios."
+requires-python = ">=3.10"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+readme = "README.md"
+keywords = ["material flow analysis", "aluminum", "Bayesian inference", "industrial ecology"]
+authors = [
+    { name = "Yongxian Zhu", email = "yongxian.zhu@anl.gov" },
+    { name = "David Thierry" },
+    { name = "Barbara K. Reck" },
+    { name = "Madeleine Wahl" },
+    { name = "Sarang Supekar" },
+]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.10",
+    "pyyaml>=6.0",
+    "openpyxl>=3.1",
+    "plotly>=5.18",
+    "kaleido>=0.2.1",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7.4"]
+
+[project.scripts]
+arcade-mfa-aluminum = "arcade_mfa_aluminum.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.urls]
+Paper = "https://doi.org/10.26434/chemrxiv.15000222/v1"
