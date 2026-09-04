@@ -1,0 +1,109 @@
+node_id,node_name,node_type
+1,Bauxite mining,process
+2,Import of bauxite,import
+3,Bauxite,process
+4,Import alumina,import
+5,Bauxite refining (to alumina),process
+6,Primary smelting (Hall-Hauroult to aluminum),process
+7,Import unwrought aluminum ingot,import
+8,Remelting,process
+9,Refining,process
+10,Alloying element - Si,process
+11,Alloying element - Cu,process
+12,Alloying element - Mg,process
+13,Alloying element - Mn,process
+14,Alloying element - Fe,process
+15,Alloying element - Zn,process
+16,Alloying element - Other,process
+17,Import scrap,import
+18,EOL scrap (generated),process
+19,EOL scrap (recycled),process
+20,Forming scrap (generated),process
+21,Forming scrap (recycled),process
+22,Fabrication scrap (generated),process
+23,Fabrication scrap (recycled),process
+24,Wrought aluminum ingot,process
+25,Cast aluminum ingot,process
+26,36x,process
+27,38x,process
+28,2xx,process
+29,3xx,process
+30,4xx,process
+31,5xx,process
+32,7xx,process
+33,Other,process
+34,die cast,process
+35,Scrap - cast,process
+36,sand cast,process
+37,Scrap sand cast,process
+38,permanent- & semi-permanent mold cast,process
+39,Scrap semi-permanent mold cast,process
+40,other cast,process
+41,Scrap other cast,process
+42,1xxx,process
+43,2xxx,process
+44,3xxx,process
+45,4xxx,process
+46,5xxx,process
+47,6xxx,process
+48,7xxx,process
+49,8xxx,process
+50,Import mill semifinished products,import
+51,Rolling,process
+52,Scrap Rolling,process
+53,Extrusion,process
+54,Scrap Extrusion,process
+55,Drawing,process
+56,Scrap Drawing,process
+57,Other milling processes,process
+58,Scrap Other milling processes,process
+59,Sheet & Plate,process
+60,Scrap Sheet & Plate,process
+61,Foil,process
+62,Scrap Foil,process
+63,Extruded Products,process
+64,Scrap Extruded Products,process
+65,Wire,process
+66,Forging & impacts,process
+67,Powerder & Paste,process
+68,Import finished consumption,import
+69,Building & construction,process
+70,Transportation auto,process
+71,Transportation other,process
+72,Machine & industry,process
+73,Electrical & equipment,process
+74,Consumer durables,process
+75,Container & packages,process
+76,Other end uses,process
+77,EOL scrap Building & construction,process
+78,EOL scrap Transportation auto,process
+79,EOL scrap Transportation other,process
+80,EOL scrap Machine & industry,process
+81,EOL scrap Electrical & equipment,process
+82,EOL scrap Consumer durables,process
+83,EOL scrap Container & packages,process
+84,EOL scrap Other end uses,process
+85,Export bauxite,export
+86,Bauxite non-aluminum use,process
+87,Waste bauxite,loss
+88,Export alumina,export
+89,Alumina non-aluminum use,process
+90,Waste Alumina,loss
+91,Loss remelting,loss
+92,Loss refining,loss
+93,Export EOL scrap,export
+94,Loss EOL scrap,loss
+95,Loss forming scrap,loss
+96,Loss fabrication scrap,loss
+97,Export cast aluminum ingot,export
+98,Export cast semifinished products,export
+99,Export milling semifinished products,export
+100,Export finished consumption,export
+101,Consumption Building & construction,consumption
+102,Consumption Transportation auto,consumption
+103,Consumption Transportation other,consumption
+104,Consumption Machine & industry,consumption
+105,Consumption Electrical & equipment,consumption
+106,Consumption Consumer durables,consumption
+107,Consumption Container & packages,consumption
+108,Consumption Other end uses,consumption

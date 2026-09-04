@@ -1,0 +1,242 @@
+Flow index,from_node_name,to_node_name,coverage,frequency,spatial_boundary,obs_std
+1,Bauxite mining,Bauxite,3,1,2,38.268801666666675
+2,Import of bauxite,Bauxite,1,3,2,765.3760333333336
+3,Bauxite,Export bauxite,3,2,2,1.766666666666667
+4,Bauxite,Bauxite non-aluminum use,3,1,1,28.246020277777795
+5,Bauxite,Bauxite refining (to alumina),1,3,2,765.3760333333336
+6,Import alumina,Primary smelting (Hall-Hauroult to aluminum),1,3,2,0.2333333333333334
+7,Bauxite refining (to alumina),Waste bauxite,3,3,2,641.4580088888888
+8,Bauxite refining (to alumina),Export alumina,2,2,2,40.60000000000001
+9,Bauxite refining (to alumina),Alumina non-aluminum use,3,3,2,264.75662222222223
+10,Bauxite refining (to alumina),Primary smelting (Hall-Hauroult to aluminum),3,3,1,164.13933638888892
+11,Primary smelting (Hall-Hauroult to aluminum),Waste Alumina,3,3,1,398.36390000000006
+12,Primary smelting (Hall-Hauroult to aluminum),Remelting,3,3,2,187.9859646933333
+13,Primary smelting (Hall-Hauroult to aluminum),Refining,1,1,1,16.614473715000013
+14,Import unwrought aluminum ingot,Remelting,3,1,2,660.2853058666668
+15,Import unwrought aluminum ingot,Refining,2,3,2,388.72727275555565
+16,Remelting,Loss remelting,1,2,1,0.1111111111111111
+17,Remelting,Wrought aluminum ingot,2,1,1,691.6388888888888
+18,Refining,Loss refining,2,3,2,0.2944444444444445
+19,Refining,Cast aluminum ingot,2,1,2,374.49722222222243
+20,Alloying element - Si,Remelting,2,1,2,0.17222222222222233
+21,Alloying element - Si,Refining,1,2,1,0.1111111111111111
+22,Alloying element - Cu,Remelting,1,3,2,0.2333333333333334
+23,Alloying element - Cu,Refining,2,3,2,0.2944444444444445
+24,Alloying element - Mg,Remelting,2,2,2,0.2333333333333334
+25,Alloying element - Mg,Refining,1,2,1,0.1111111111111111
+26,Alloying element - Mn,Remelting,1,3,2,0.2333333333333334
+27,Alloying element - Mn,Refining,1,3,2,0.2333333333333334
+28,Alloying element - Fe,Remelting,3,2,1,0.2333333333333334
+29,Alloying element - Fe,Refining,3,1,2,0.2333333333333334
+30,Alloying element - Zn,Remelting,3,1,2,0.2333333333333334
+31,Alloying element - Zn,Refining,2,2,1,0.17222222222222233
+32,Alloying element - Other,Remelting,3,1,2,0.2333333333333334
+33,Alloying element - Other,Refining,2,2,1,0.17222222222222233
+34,Import scrap,EOL scrap (generated),2,1,1,76.1111111111111
+35,EOL scrap (generated),Export EOL scrap,3,1,2,466.6666666666668
+36,EOL scrap (generated),Loss EOL scrap,2,3,2,0.2944444444444445
+37,EOL scrap (generated),EOL scrap (recycled),3,3,2,565.3333333333333
+38,EOL scrap (recycled),Remelting,3,1,2,0.2333333333333334
+39,EOL scrap (recycled),Refining,1,1,1,0.050000000000000044
+40,Forming scrap (generated),Loss forming scrap,3,3,2,0.3555555555555555
+41,Forming scrap (generated),Forming scrap (recycled),1,3,1,358.7388888888891
+42,Forming scrap (recycled),Remelting,3,3,2,0.3555555555555555
+43,Forming scrap (recycled),Refining,3,2,2,0.2944444444444445
+44,Fabrication scrap (generated),Loss fabrication scrap,1,1,2,0.1111111111111111
+45,Fabrication scrap (generated),Fabrication scrap (recycled),1,3,1,0.17222222222222233
+46,Fabrication scrap (recycled),Remelting,3,1,2,0.2333333333333334
+47,Fabrication scrap (recycled),Refining,2,2,2,0.2333333333333334
+48,Wrought aluminum ingot,1xxx,1,2,2,0.17222222222222233
+49,Wrought aluminum ingot,2xxx,2,3,2,0.2944444444444445
+50,Wrought aluminum ingot,3xxx,2,2,1,0.17222222222222233
+51,Wrought aluminum ingot,4xxx,2,1,2,0.17222222222222233
+52,Wrought aluminum ingot,5xxx,1,3,1,0.17222222222222233
+53,Wrought aluminum ingot,6xxx,2,1,1,0.1111111111111111
+54,Wrought aluminum ingot,7xxx,1,1,1,0.050000000000000044
+55,Wrought aluminum ingot,8xxx,2,2,1,0.17222222222222233
+56,Cast aluminum ingot,36x,3,2,1,0.2333333333333334
+57,Cast aluminum ingot,38x,3,2,1,0.2333333333333334
+58,Cast aluminum ingot,2xx,1,2,2,0.17222222222222233
+59,Cast aluminum ingot,3xx,3,2,1,0.2333333333333334
+60,Cast aluminum ingot,4xx,3,3,1,0.2944444444444445
+61,Cast aluminum ingot,5xx,2,1,1,0.1111111111111111
+62,Cast aluminum ingot,7xx,1,1,2,0.1111111111111111
+63,Cast aluminum ingot,Other,2,1,2,0.17222222222222233
+64,36x,die cast,2,1,1,0.1111111111111111
+65,38x,die cast,2,2,2,0.2333333333333334
+66,2xx,sand cast,2,1,1,0.1111111111111111
+67,3xx,sand cast,2,3,1,0.2333333333333334
+68,4xx,sand cast,2,3,2,0.2944444444444445
+69,5xx,sand cast,2,1,1,0.1111111111111111
+70,7xx,sand cast,1,1,2,0.1111111111111111
+71,Other,sand cast,3,3,2,0.3555555555555555
+72,2xx,permanent- & semi-permanent mold cast,2,3,1,0.2333333333333334
+73,3xx,permanent- & semi-permanent mold cast,2,2,1,0.17222222222222233
+74,4xx,permanent- & semi-permanent mold cast,2,3,2,0.2944444444444445
+75,5xx,permanent- & semi-permanent mold cast,2,2,1,0.17222222222222233
+76,7xx,permanent- & semi-permanent mold cast,2,2,1,0.17222222222222233
+77,Other,permanent- & semi-permanent mold cast,2,2,1,0.17222222222222233
+78,Other,other cast,3,2,2,0.2944444444444445
+79,Cast aluminum ingot,Export cast aluminum ingot,3,2,2,88.33333333333336
+80,die cast,Scrap - cast,2,1,1,0.1111111111111111
+81,Scrap - cast,die cast,3,3,2,0.3555555555555555
+82,sand cast,Scrap sand cast,1,2,2,0.17222222222222233
+83,Scrap sand cast,sand cast,2,3,2,0.2944444444444445
+84,permanent- & semi-permanent mold cast,Scrap semi-permanent mold cast,1,3,2,0.2333333333333334
+85,Scrap semi-permanent mold cast,permanent- & semi-permanent mold cast,1,2,2,0.17222222222222233
+86,other cast,Scrap other cast,2,1,1,0.1111111111111111
+87,Scrap other cast,other cast,3,2,1,0.2333333333333334
+88,die cast,Export cast semifinished products,1,1,1,0.050000000000000044
+89,1xxx,Rolling,2,3,2,0.2944444444444445
+90,1xxx,Extrusion,1,1,2,0.1111111111111111
+91,1xxx,Drawing,1,1,1,0.050000000000000044
+92,1xxx,Other milling processes,1,1,2,0.1111111111111111
+93,2xxx,Rolling,1,3,1,0.17222222222222233
+94,2xxx,Extrusion,3,3,1,0.2944444444444445
+95,2xxx,Drawing,1,1,1,0.050000000000000044
+96,2xxx,Other milling processes,1,1,2,0.1111111111111111
+97,3xxx,Rolling,1,2,2,0.17222222222222233
+98,3xxx,Extrusion,3,1,1,0.17222222222222233
+99,3xxx,Drawing,1,2,1,0.1111111111111111
+100,3xxx,Other milling processes,1,1,1,0.050000000000000044
+101,4xxx,Rolling,3,2,1,0.2333333333333334
+102,4xxx,Other milling processes,3,3,2,0.3555555555555555
+103,5xxx,Rolling,3,1,2,0.2333333333333334
+104,5xxx,Extrusion,1,1,1,0.050000000000000044
+105,5xxx,Drawing,3,1,1,0.17222222222222233
+106,5xxx,Other milling processes,3,1,2,0.2333333333333334
+107,6xxx,Rolling,1,2,2,0.17222222222222233
+108,6xxx,Extrusion,3,1,1,0.17222222222222233
+109,6xxx,Drawing,1,3,1,0.17222222222222233
+110,6xxx,Other milling processes,2,3,1,0.2333333333333334
+111,7xxx,Rolling,3,1,2,0.2333333333333334
+112,7xxx,Extrusion,2,3,2,0.2944444444444445
+113,7xxx,Drawing,1,1,2,0.1111111111111111
+114,7xxx,Other milling processes,3,1,1,0.17222222222222233
+115,8xxx,Rolling,1,3,1,0.17222222222222233
+116,8xxx,Extrusion,2,1,2,0.17222222222222233
+117,8xxx,Drawing,1,3,2,0.2333333333333334
+118,8xxx,Other milling processes,3,2,1,0.2333333333333334
+119,die cast,Building & construction,3,1,2,0.2333333333333334
+120,die cast,Transportation auto,2,2,2,0.2333333333333334
+121,die cast,Transportation other,1,3,1,0.17222222222222233
+122,die cast,Machine & industry,3,2,2,0.2944444444444445
+123,die cast,Electrical & equipment,2,2,1,0.17222222222222233
+124,die cast,Consumer durables,3,3,1,0.2944444444444445
+125,die cast,Other end uses,3,2,1,0.2333333333333334
+126,sand cast,Transportation auto,1,2,1,0.1111111111111111
+127,sand cast,Transportation other,3,3,1,0.2944444444444445
+128,sand cast,Machine & industry,1,2,1,0.1111111111111111
+129,sand cast,Electrical & equipment,3,3,1,0.2944444444444445
+130,sand cast,Consumer durables,2,2,2,0.2333333333333334
+131,sand cast,Other end uses,3,3,1,0.2944444444444445
+132,permanent- & semi-permanent mold cast,Transportation auto,1,3,1,0.17222222222222233
+133,permanent- & semi-permanent mold cast,Transportation other,1,2,2,0.17222222222222233
+134,permanent- & semi-permanent mold cast,Machine & industry,2,2,2,0.2333333333333334
+135,permanent- & semi-permanent mold cast,Electrical & equipment,3,2,2,0.2944444444444445
+136,permanent- & semi-permanent mold cast,Consumer durables,3,1,1,0.17222222222222233
+137,permanent- & semi-permanent mold cast,Other end uses,2,1,2,0.17222222222222233
+138,other cast,Other end uses,3,1,1,0.17222222222222233
+139,Import mill semifinished products,Rolling,3,3,1,429.88888888888897
+140,Import mill semifinished products,Extrusion,1,2,1,4.932222222222222
+141,Import mill semifinished products,Drawing,3,3,1,0.2944444444444445
+142,Import mill semifinished products,Other milling processes,3,1,2,0.2333333333333334
+143,Import mill semifinished products,Sheet & Plate,2,2,2,0.2333333333333334
+144,Import mill semifinished products,Foil,2,3,1,34.533333333333346
+145,Import mill semifinished products,Extruded Products,1,2,1,0.1111111111111111
+146,Import mill semifinished products,Wire,3,3,1,2.108222222222223
+147,Import mill semifinished products,Forging & impacts,3,2,2,0.2944444444444445
+148,Import mill semifinished products,Powerder & Paste,3,1,1,3.203333333333336
+149,Rolling,Scrap Rolling,1,1,1,0.050000000000000044
+150,Rolling,Sheet & Plate,1,2,2,689.3524789055559
+151,Rolling,Foil,2,3,2,0.2944444444444445
+152,Rolling,Export milling semifinished products,1,1,1,41.33000000000004
+153,Scrap Rolling,Forming scrap (generated),3,1,2,0.2333333333333334
+154,Extrusion,Scrap Extrusion,3,1,2,0.2333333333333334
+155,Extrusion,Extruded Products,1,2,1,319.3206814444444
+156,Extrusion,Export milling semifinished products,3,2,2,15.046111111111115
+157,Scrap Extrusion,Forming scrap (generated),3,3,1,0.2944444444444445
+158,Drawing,Scrap Drawing,1,3,2,0.2333333333333334
+159,Drawing,Wire,1,3,1,0.17222222222222233
+160,Drawing,Export milling semifinished products,3,2,1,1.950666666666667
+161,Scrap Drawing,Forming scrap (generated),3,2,1,0.2333333333333334
+162,Other milling processes,Scrap Other milling processes,3,3,2,0.3555555555555555
+163,Other milling processes,Forging & impacts,2,3,1,34.80391982666667
+164,Other milling processes,Powerder & Paste,2,2,2,0.2333333333333334
+165,Other milling processes,Export milling semifinished products,2,3,1,15.353333333333337
+166,Scrap Other milling processes,Forming scrap (generated),1,1,1,0.050000000000000044
+167,Sheet & Plate,Scrap Sheet & Plate,2,2,2,0.2333333333333334
+168,Sheet & Plate,Building & construction,1,3,1,0.17222222222222233
+169,Sheet & Plate,Transportation auto,1,2,1,0.1111111111111111
+170,Sheet & Plate,Transportation other,2,1,2,0.17222222222222233
+171,Sheet & Plate,Machine & industry,2,2,1,0.17222222222222233
+172,Sheet & Plate,Electrical & equipment,2,2,1,0.17222222222222233
+173,Sheet & Plate,Consumer durables,3,2,1,0.2333333333333334
+174,Sheet & Plate,Container & packages,2,2,1,0.17222222222222233
+175,Sheet & Plate,Other end uses,3,1,2,0.2333333333333334
+176,Scrap Sheet & Plate,Fabrication scrap (generated),1,2,2,0.17222222222222233
+177,Foil,Scrap Foil,3,2,1,0.2333333333333334
+178,Foil,Building & construction,2,3,2,0.2944444444444445
+179,Foil,Transportation auto,1,2,1,0.1111111111111111
+180,Foil,Transportation other,1,3,2,0.2333333333333334
+181,Foil,Machine & industry,1,1,1,0.050000000000000044
+182,Foil,Electrical & equipment,3,1,1,0.17222222222222233
+183,Foil,Consumer durables,2,1,1,0.1111111111111111
+184,Foil,Container & packages,1,1,1,0.050000000000000044
+185,Foil,Other end uses,1,3,1,0.17222222222222233
+186,Scrap Foil,Fabrication scrap (generated),1,2,1,0.1111111111111111
+187,Extruded Products,Scrap Extruded Products,3,1,2,0.2333333333333334
+188,Extruded Products,Building & construction,3,2,1,0.2333333333333334
+189,Extruded Products,Transportation auto,2,3,2,0.2944444444444445
+190,Extruded Products,Transportation other,3,3,1,0.2944444444444445
+191,Extruded Products,Machine & industry,1,3,2,0.2333333333333334
+192,Extruded Products,Electrical & equipment,2,1,2,0.17222222222222233
+193,Extruded Products,Consumer durables,1,2,2,0.17222222222222233
+194,Extruded Products,Other end uses,1,2,1,0.1111111111111111
+195,Scrap Extruded Products,Fabrication scrap (generated),3,2,1,0.2333333333333334
+196,Wire,Building & construction,2,3,2,0.2944444444444445
+197,Wire,Transportation other,3,1,1,0.17222222222222233
+198,Wire,Machine & industry,3,3,2,0.3555555555555555
+199,Wire,Electrical & equipment,2,3,1,0.2333333333333334
+200,Wire,Consumer durables,1,2,2,0.17222222222222233
+201,Wire,Other end uses,1,3,2,0.2333333333333334
+202,Forging & impacts,Transportation auto,2,2,1,0.17222222222222233
+203,Forging & impacts,Transportation other,1,1,2,0.1111111111111111
+204,Forging & impacts,Machine & industry,2,2,1,0.17222222222222233
+205,Forging & impacts,Electrical & equipment,2,1,2,0.17222222222222233
+206,Forging & impacts,Consumer durables,3,2,2,0.2944444444444445
+207,Forging & impacts,Container & packages,2,3,1,0.2333333333333334
+208,Forging & impacts,Other end uses,3,3,1,0.2944444444444445
+209,Powerder & Paste,Other end uses,1,1,1,0.050000000000000044
+210,Import finished consumption,Building & construction,1,1,2,0.1111111111111111
+211,Import finished consumption,Transportation auto,1,1,1,0.050000000000000044
+212,Import finished consumption,Transportation other,1,2,2,0.17222222222222233
+213,Import finished consumption,Machine & industry,3,2,2,0.2944444444444445
+214,Import finished consumption,Electrical & equipment,1,1,1,0.050000000000000044
+215,Import finished consumption,Consumer durables,2,3,1,0.2333333333333334
+216,Import finished consumption,Container & packages,2,2,2,0.2333333333333334
+217,Import finished consumption,Other end uses,2,2,2,0.2333333333333334
+218,Building & construction,Export finished consumption,3,2,1,0.2333333333333334
+219,Building & construction,Consumption Building & construction,1,1,1,70.27870535000005
+220,Transportation auto,Export finished consumption,1,1,1,0.050000000000000044
+221,Transportation auto,Consumption Transportation auto,1,1,1,86.85833665000008
+222,Transportation other,Export finished consumption,3,1,1,0.17222222222222233
+223,Transportation other,Consumption Transportation other,2,1,2,158.17976177722232
+224,Machine & industry,Export finished consumption,2,3,2,0.2944444444444445
+225,Machine & industry,Consumption Machine & industry,1,3,2,171.84411225333338
+226,Electrical & equipment,Export finished consumption,2,1,2,0.17222222222222233
+227,Electrical & equipment,Consumption Electrical & equipment,2,2,1,164.85850340555567
+228,Consumer durables,Export finished consumption,3,1,1,0.17222222222222233
+229,Consumer durables,Consumption Consumer durables,3,3,1,431.5713700611112
+230,Container & packages,Export finished consumption,3,3,2,0.3555555555555555
+231,Container & packages,Consumption Container & packages,3,2,2,500.50842412777786
+232,Other end uses,Export finished consumption,1,3,1,0.17222222222222233
+233,Other end uses,Consumption Other end uses,3,1,1,46.282216475000034
+234,EOL scrap Building & construction,EOL scrap (generated),2,2,2,68.66926080000002
+235,EOL scrap Transportation auto,EOL scrap (generated),1,1,2,155.68832944444443
+236,EOL scrap Transportation other,EOL scrap (generated),2,1,1,62.838766011111105
+237,EOL scrap Machine & industry,EOL scrap (generated),2,2,1,48.72618977333337
+238,EOL scrap Electrical & equipment,EOL scrap (generated),2,1,2,65.24870932500004
+239,EOL scrap Consumer durables,EOL scrap (generated),3,3,1,277.96971150222225
+240,EOL scrap Container & packages,EOL scrap (generated),3,1,1,292.7514453444446
+241,EOL scrap Other end uses,EOL scrap (generated),1,2,1,29.187353744444444

@@ -1,0 +1,6 @@
+{
+  "max_S1_to_M1_share": 0.3,
+  "min_M2_share": 0.2,
+  "max_D1_inflow": 300.0,
+  "max_yield_L2": 0.98
+}

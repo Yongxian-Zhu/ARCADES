@@ -1,0 +1,29 @@
+project_name: "aluminum_us_2022"
+solver: "optimization"   # or "bayesian"
+input_files:
+  flows: "flows.csv"
+  constraints: "constraints.csv"
+output_dir: "results"
+
+quality_to_sigma:
+  high:   0.05
+  medium: 0.15
+  low:    1.00
+default_rel_sigma: 0.50
+
+# Mass balance tightness
+balance_sigma_rel: 0.001
+balance_sigma_floor: 0.1
+
+# Bayesian-only parameters
+n_chains: 4
+n_draws: 2000
+n_tune: 2000
+target_accept: 0.95
+seed: 42
+
+# Constraint sigma policies
+sigma_aggregate_rel: 1.00
+sigma_aggregate_floor: 100.0
+sigma_pca_rel: 0.50
+sigma_pca_floor: 100.0
