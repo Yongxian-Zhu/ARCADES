@@ -1,4 +1,3 @@
-# Dynamic-Material-Flow-Analysis
 # Static and Dynamic Material Flow Analysis
 
 This repository contains an internal Argonne software framework for conducting **static and dynamic material flow analysis (MFA)** of technology, resource, recycling, and circular economy systems.
