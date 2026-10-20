@@ -5,3 +5,9 @@ pyyaml>=6.0
 openpyxl>=3.1        # reads the source workbook
 plotly>=5.18         # credible-interval Sankey diagrams (plots/sankey_ci.py)
 kaleido>=0.2.1       # static PDF/SVG/PNG export for Plotly figures
+pymc>=5.10,<6
+pytensor>=2.18
+arviz>=0.17
+xarray>=2023.12
+h5netcdf>=1.3
+

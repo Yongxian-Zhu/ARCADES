@@ -59,7 +59,11 @@ from arcade_mfa_aluminum.transfer import (
     precision_from_cov,
     save_prior_npy,
 )
-
+from arcade_mfa_aluminum.inference.hmc_nuts import (
+    HMCSamplerSettings,
+    run_flow_hmc_nuts,
+    save_hmc_nuts_result,
+)
 
 @dataclass
 class RunOutputs:
