@@ -1,0 +1,93 @@
+# configs/robustness_suite.yaml
+#
+# Robustness of the reported conclusions to the modelling assumptions that are
+# judgment calls rather than fitted quantities.
+#
+# The question is not whether individual flows shift -- they will -- but whether
+# the system-level conclusions survive. Each case therefore reports the
+# circularity indicators the paper actually claims, with credible intervals, so
+# a reader can see which findings are assumption-dependent and which are not.
+#
+# Run: python scripts/run_robustness_suite.py
+#
+# Each case applies a deep-merged override onto the base config. Anything not
+# named keeps the baseline value.
+
+base_config: configs/aluminum_2022.yaml
+
+# Flows tracked individually across cases, in addition to the aggregates.
+key_flows: [16, 18, 26, 27, 28]
+
+cases:
+  - name: baseline
+    overrides: {}
+
+  # --- how strongly the source-year posterior binds this year (R1-5) --------
+  # The 2017 system supplies prior structure for poorly observed routing. If a
+  # conclusion only holds while that prior is strong, it is carried by 2017
+  # rather than established by 2022 data, and must be reported as such.
+  #
+  # strength scales the prior PRECISION, so it is equivalent to inflating the
+  # transferred covariance by 1/sqrt(strength): 0.25 -> 2x, 0.0625 -> 4x,
+  # 0.01 -> 10x, 0.0025 -> 20x. The question the reviewer is really asking is
+  # how much the system may have changed in five years, so the range has to
+  # reach inflation factors well above 2; a sweep confined to 0.25-1.0 spans
+  # only 1x-2x and cannot distinguish a robust conclusion from a saturated one.
+  - name: prior_inflation_2x
+    overrides: { prior: { strength: 0.25 } }
+  - name: prior_inflation_4x
+    overrides: { prior: { strength: 0.0625 } }
+  - name: prior_inflation_10x
+    overrides: { prior: { strength: 0.01 } }
+  - name: prior_inflation_20x
+    overrides: { prior: { strength: 0.0025 } }
+  - name: prior_disabled
+    overrides: { prior: { strength: 0.0 } }
+
+  # --- pedigree to uncertainty mapping (R2-2, R2-6) -------------------------
+  # No codebook exists for the three confidence dimensions, so both the scale
+  # direction and the combination rule are inferred. This is the single largest
+  # unverified assumption in the pipeline.
+  - name: pedigree_sigma_halved
+    overrides: { observation_sigma: { pedigree_mapping: { global_multiplier: 0.5 } } }
+  - name: pedigree_sigma_doubled
+    overrides: { observation_sigma: { pedigree_mapping: { global_multiplier: 2.0 } } }
+  - name: pedigree_direction_inverted
+    overrides: { observation_sigma: { pedigree_mapping: { direction: lower_is_better } } }
+  - name: pedigree_combiner_max
+    overrides: { observation_sigma: { pedigree_mapping: { combiner: max } } }
+
+  # --- mass-balance tolerance (R2-5) ----------------------------------------
+  # Mass balance currently supplies most of the precision in the system, so how
+  # tightly it is imposed matters more than it might appear.
+  - name: mass_balance_tight_0.5pct
+    overrides: { mass_balance: { rel_sigma: 0.005 } }
+  - name: mass_balance_loose_2pct
+    overrides: { mass_balance: { rel_sigma: 0.02 } }
+  - name: mass_balance_loose_5pct
+    overrides: { mass_balance: { rel_sigma: 0.05 } }
+  - name: mass_balance_hard
+    overrides: { mass_balance: { mode: hard } }
+
+  # --- transferred allocation ratios ----------------------------------------
+  # The 2022 EOL loss flow is unobserved, so the routing prior determines how
+  # much of the collection indicator is evidence and how much is structure.
+  - name: allocation_tight
+    overrides: { allocation_constraints: { relaxation: 0.5 } }
+  - name: allocation_loose
+    overrides: { allocation_constraints: { relaxation: 3.0 } }
+  - name: allocation_disabled
+    overrides: { allocation_constraints: { enabled: false } }
+
+  # --- source weighting (R3-2, R3-4) ----------------------------------------
+  # Relative trust between reporting organisations. With only one 2022 source
+  # currently in the workbook these cases vary its weight; once Aluminum
+  # Association values are added they become the USGS-vs-industry comparison.
+  - name: observations_trusted_more
+    overrides: { observation_sigma: { observed_rel_sigma: 0.05 } }
+  - name: observations_trusted_less
+    overrides: { observation_sigma: { observed_rel_sigma: 0.20 } }
+
+  # --- reported zeros --------------------------------------------------------
+  - name: zero_flows_hard
+    overrides: { bounds: { zero_flow_upper: 0.0 } }

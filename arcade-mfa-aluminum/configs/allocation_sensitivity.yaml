@@ -1,0 +1,56 @@
+# configs/allocation_sensitivity.yaml
+#
+# Sensitivity-sweep grid for the 2017 -> 2022 allocation-ratio soft
+# constraints (aluminum_2022.yaml: allocation_constraints).
+#
+# How strongly the 2017 node splits should bind the 2022 reconciliation is a
+# modelling assumption rather than a fitted quantity: technological change over
+# five years is real, but most 2022 flows are unobserved and otherwise
+# unidentified. Too tight and genuine change is masked; too loose and the flows
+# remain unidentified. This grid quantifies that trade-off.
+#
+# Run: python scripts/run_allocation_sensitivity.py
+#
+# Each entry under `cases` overrides keys of `baseline` (which mirrors the
+# allocation_constraints block in configs/aluminum_2022.yaml). Unspecified
+# keys fall back to `baseline`.
+
+baseline:
+  enabled: true
+  shares_path: data/canonical/aluminum/allocation_shares_2017.npz
+  relaxation: 2.0
+  min_share_sigma: 0.02
+  max_share_sigma: 0.5
+  min_outflows: 2
+  exclude_nodes: []
+  linearization: map_warmup
+
+cases:
+  # Reference point: no allocation transfer at all. Everything else is
+  # measured against this case.
+  - name: off_baseline
+    overrides: { enabled: false }
+
+  # --- the main relaxation sweep -------------------------------------------
+  # tau_j = clip(relaxation * sigma_2017_j, min_share_sigma, max_share_sigma) * T_node
+  - name: tight
+    overrides: { relaxation: 1.0, min_share_sigma: 0.01 }
+  - name: moderate
+    overrides: { relaxation: 2.0, min_share_sigma: 0.02 }
+  - name: loose
+    overrides: { relaxation: 3.0, min_share_sigma: 0.05 }
+
+  # --- isolate the two knobs -------------------------------------------------
+  # Separates "how much do we scale the 2017 spread" from "what floor do we
+  # refuse to go below", which the three cases above vary together.
+  - name: relaxation_only_1x_no_floor
+    overrides: { relaxation: 1.0, min_share_sigma: 0.001 }
+  - name: floor_only_0.05_at_1x
+    overrides: { relaxation: 1.0, min_share_sigma: 0.05 }
+
+  # --- linearization check ---------------------------------------------------
+  # The node-total reference scale T_node should not materially change the
+  # answer. If it does, the linearization point is doing more work than it
+  # should and the result is fragile.
+  - name: linearize_on_prior_mean
+    overrides: { linearization: prior_mean }

@@ -1,0 +1,269 @@
+,v_name,result_vector
+0,"('bauxit_mine', 'bauxit')",35.435783851339586
+1,"('import_bauxit', 'bauxit')",54.70210094735849
+2,"('bauxit', 'export_bauxit')",13.397281596589748
+3,"('bauxit', 'bauxit_non_aluminum_use')",13.304904320123164
+4,"('bauxit', 'bauxit_refin_alumina')",63.43569888198517
+5,"('import_alumina', 'primari_smelt_hall_hauroult_aluminum')",37.53232283689734
+6,"('bauxit_refin_alumina', 'wast_bauxit')",5.474224279778715
+7,"('bauxit_refin_alumina', 'export_alumina')",21.415140176773093
+8,"('bauxit_refin_alumina', 'alumina_non_aluminum_use')",1.9080314368430917
+9,"('bauxit_refin_alumina', 'primari_smelt_hall_hauroult_aluminum')",34.63830298859027
+10,"('primari_smelt_hall_hauroult_aluminum', 'wast_alumina')",16.44663909436701
+11,"('primari_smelt_hall_hauroult_aluminum', 'remelt')",26.973097688699017
+12,"('primari_smelt_hall_hauroult_aluminum', 'refin')",28.75088904242158
+13,"('import_unwrought_aluminum_ingot', 'remelt')",5.561599943155465
+14,"('import_unwrought_aluminum_ingot', 'refin')",8.838252979109
+15,"('remelt', 'loss_remelt')",22.766601836280795
+16,"('remelt', 'wrought_aluminum_ingot')",108.25387536195656
+17,"('refin', 'loss_refin')",20.25042507546502
+18,"('refin', 'cast_aluminum_ingot')",66.76533836941184
+19,"('alloy_element_si', 'remelt')",5.7206949714129465
+20,"('alloy_element_si', 'refin')",7.987469019702928
+21,"('alloy_element_cu', 'remelt')",6.716009626349495
+22,"('alloy_element_cu', 'refin')",5.897407676339044
+23,"('alloy_element_mg', 'remelt')",8.655169409447424
+24,"('alloy_element_mg', 'refin')",2.5172372789891524
+25,"('alloy_element_mn', 'remelt')",8.831786350524522
+26,"('alloy_element_mn', 'refin')",0.5797975857496328
+27,"('alloy_element_fe', 'remelt')",-0.00030759803912382394
+28,"('alloy_element_fe', 'refin')",2.9465139640685706e-05
+29,"('alloy_element_zn', 'remelt')",-0.00030759803912382394
+30,"('alloy_element_zn', 'refin')",2.9465139640685706e-05
+31,"('alloy_element_other', 'remelt')",5.45452481826553
+32,"('alloy_element_other', 'refin')",8.107919437104728
+33,"('import_scrap', 'eol_scrap_gener')",17.998698790922987
+34,"('eol_scrap_gener', 'export_eol_scrap')",23.995262671030574
+35,"('eol_scrap_gener', 'loss_eol_scrap')",15.271436347986416
+36,"('eol_scrap_gener', 'eol_scrap_recycl')",45.69359330515618
+37,"('eol_scrap_recycl', 'remelt')",21.35774375344961
+38,"('eol_scrap_recycl', 'refin')",24.33584955170657
+39,"('form_scrap_gener', 'loss_form_scrap')",8.592583339521735
+40,"('form_scrap_gener', 'form_scrap_recycl')",18.077452812351673
+41,"('form_scrap_recycl', 'remelt')",18.07729449621205
+42,"('form_scrap_recycl', 'refin')",0.00015831613962023202
+43,"('fabric_scrap_gener', 'loss_fabric_scrap')",4.5527072354197005
+44,"('fabric_scrap_gener', 'fabric_scrap_recycl')",23.673894964134895
+45,"('fabric_scrap_recycl', 'remelt')",23.67317133679957
+46,"('fabric_scrap_recycl', 'refin')",0.000723627335325592
+47,"('wrought_aluminum_ingot', '1xxx')",15.941642144691349
+48,"('wrought_aluminum_ingot', '2xxx')",11.393757983006463
+49,"('wrought_aluminum_ingot', '3xxx')",15.360081034284528
+50,"('wrought_aluminum_ingot', '4xxx')",9.627343272331776
+51,"('wrought_aluminum_ingot', '5xxx')",15.596099899089195
+52,"('wrought_aluminum_ingot', '6xxx')",15.191195347161793
+53,"('wrought_aluminum_ingot', '7xxx')",14.824719248756944
+54,"('wrought_aluminum_ingot', '8xxx')",10.319036432634519
+55,"('cast_aluminum_ingot', 'export_cast_aluminum_ingot')",9.122564759770322
+56,"('cast_aluminum_ingot', 'die_cast')",17.357759507784117
+57,"('cast_aluminum_ingot', 'scrap_cast')",22.43325959310649
+58,"('cast_aluminum_ingot', 'sand_cast')",13.933177737836285
+59,"('cast_aluminum_ingot', 'scrap_sand_cast')",-0.053558942658808485
+60,"('cast_aluminum_ingot', 'perman_semi_perman_mold_cast')",15.80694409820538
+61,"('cast_aluminum_ingot', 'scrap_semi_perman_mold_cast')",-0.053558942658808485
+62,"('cast_aluminum_ingot', 'other_cast')",6.196615960056682
+63,"('cast_aluminum_ingot', 'scrap_other_cast')",-0.03377305115891279
+64,"('cast_aluminum_ingot', 'export_cast_semifinish_product')",4.489167242235578
+65,"('1xxx', 'roll')",5.387987966177234
+66,"('1xxx', 'extrus')",3.1359504027892378
+67,"('1xxx', 'draw')",2.4983760876083143
+68,"('1xxx', 'other_mill_process')",4.919327688116564
+69,"('2xxx', 'roll')",5.559430000352433
+70,"('2xxx', 'extrus')",3.7173783592512057
+71,"('2xxx', 'draw')",0.43866469815449244
+72,"('2xxx', 'other_mill_process')",1.678284925248333
+73,"('3xxx', 'roll')",6.003973533502696
+74,"('3xxx', 'extrus')",3.722038281476551
+75,"('3xxx', 'draw')",2.3109623165724993
+76,"('3xxx', 'other_mill_process')",3.3231069027327824
+77,"('4xxx', 'roll')",3.2695060773341074
+78,"('4xxx', 'other_mill_process')",6.357837194997668
+79,"('5xxx', 'roll')",5.906509745200772
+80,"('5xxx', 'extrus')",3.3982797678832855
+81,"('5xxx', 'draw')",2.5556316900942626
+82,"('5xxx', 'other_mill_process')",3.735678695910876
+83,"('6xxx', 'roll')",6.266126073975536
+84,"('6xxx', 'extrus')",4.263248487839675
+85,"('6xxx', 'draw')",3.0250741160628145
+86,"('6xxx', 'other_mill_process')",1.636746669283768
+87,"('7xxx', 'roll')",5.050740899994333
+88,"('7xxx', 'extrus')",3.0594163565497867
+89,"('7xxx', 'draw')",0.30080603807804873
+90,"('7xxx', 'other_mill_process')",6.413755954134776
+91,"('8xxx', 'roll')",1.900320606014993
+92,"('8xxx', 'extrus')",3.655535815459406
+93,"('8xxx', 'draw')",3.64871000802797
+94,"('8xxx', 'other_mill_process')",1.1144700031321495
+95,"('die_cast', 'build_construct')",3.0890854217454
+96,"('die_cast', 'transport_auto')",-0.7824760809365641
+97,"('die_cast', 'transport_other')",2.994568308592255
+98,"('die_cast', 'machin_industri')",3.606989018385451
+99,"('die_cast', 'electr_equip')",3.1939166301879345
+100,"('die_cast', 'consum_durabl')",3.5741842232804046
+101,"('die_cast', 'other_end_use')",1.681491986529236
+102,"('scrap_cast', 'cast_aluminum_ingot')",22.43325959310649
+103,"('sand_cast', 'transport_auto')",1.630556203300377
+104,"('sand_cast', 'transport_other')",3.8935076931533765
+105,"('sand_cast', 'machin_industri')",1.7551488526686307
+106,"('sand_cast', 'electr_equip')",1.8917405296770795
+107,"('sand_cast', 'consum_durabl')",2.8742991894248333
+108,"('sand_cast', 'other_end_use')",1.887925269611987
+109,"('perman_semi_perman_mold_cast', 'transport_auto')",0.3664547000825581
+110,"('perman_semi_perman_mold_cast', 'transport_other')",3.482604748873237
+111,"('perman_semi_perman_mold_cast', 'machin_industri')",3.1128309821288394
+112,"('perman_semi_perman_mold_cast', 'electr_equip')",3.031601496713191
+113,"('perman_semi_perman_mold_cast', 'consum_durabl')",3.7938670483559043
+114,"('perman_semi_perman_mold_cast', 'other_end_use')",2.019585122051651
+115,"('other_cast', 'other_end_use')",6.196615960056682
+116,"('import_mill_semifinish_product', 'roll')",12.968096053134072
+117,"('import_mill_semifinish_product', 'extrus')",10.12493921926219
+118,"('import_mill_semifinish_product', 'draw')",6.7392521612207
+119,"('import_mill_semifinish_product', 'other_mill_process')",-0.0008313735328992221
+120,"('import_mill_semifinish_product', 'sheet_plate')",-0.00043523561712316313
+121,"('import_mill_semifinish_product', 'foil')",11.497226463531344
+122,"('import_mill_semifinish_product', 'extrud_product')",-0.00048743907156813715
+123,"('import_mill_semifinish_product', 'wire')",3.7922835693885744
+124,"('import_mill_semifinish_product', 'forg_impact')",-0.0013157074583291962
+125,"('import_mill_semifinish_product', 'powerd_past')",0.8525884246368536
+126,"('roll', 'scrap_roll')",6.719018915146818
+127,"('roll', 'sheet_plate')",28.415567445559496
+128,"('roll', 'foil')",21.829880341627337
+129,"('roll', 'export_mill_semifinish_product')",-4.651775746647476
+130,"('scrap_roll', 'form_scrap_gener')",6.719018915146818
+131,"('extrus', 'scrap_extrus')",7.6270992325892735
+132,"('extrus', 'extrud_product')",29.85623776064138
+133,"('extrus', 'export_mill_semifinish_product')",-2.4065503027193134
+134,"('scrap_extrus', 'form_scrap_gener')",7.6270992325892735
+135,"('draw', 'scrap_draw')",6.871162277483755
+136,"('draw', 'wire')",15.894279096776101
+137,"('draw', 'export_mill_semifinish_product')",-1.2479642584407524
+138,"('scrap_draw', 'form_scrap_gener')",6.871162277483755
+139,"('other_mill_process', 'scrap_other_mill_process')",5.452755726653561
+140,"('other_mill_process', 'forg_impact')",16.346916788816255
+141,"('other_mill_process', 'powerd_past')",7.381638603574913
+142,"('other_mill_process', 'export_mill_semifinish_product')",-0.002934459020711973
+143,"('scrap_other_mill_process', 'form_scrap_gener')",5.452755726653561
+144,"('sheet_plate', 'scrap_sheet_plate')",7.948571578593733
+145,"('sheet_plate', 'build_construct')",2.5310390809701144
+146,"('sheet_plate', 'transport_auto')",10.94699108666703
+147,"('sheet_plate', 'transport_other')",-0.624665495628485
+148,"('sheet_plate', 'machin_industri')",1.5695560557741977
+149,"('sheet_plate', 'electr_equip')",0.5053446411949867
+150,"('sheet_plate', 'consum_durabl')",0.2765499569776501
+151,"('sheet_plate', 'contain_packag')",6.092371241904906
+152,"('sheet_plate', 'other_end_use')",-0.830625936511756
+153,"('scrap_sheet_plate', 'fabric_scrap_gener')",7.948571578593733
+154,"('foil', 'scrap_foil')",6.390489734464313
+155,"('foil', 'build_construct')",2.45908037301761
+156,"('foil', 'transport_auto')",6.2981103145256165
+157,"('foil', 'transport_other')",1.0750730522268213
+158,"('foil', 'machin_industri')",0.5061322580784658
+159,"('foil', 'electr_equip')",0.6874163079615377
+160,"('foil', 'consum_durabl')",4.761328167585345
+161,"('foil', 'contain_packag')",11.057740174271032
+162,"('foil', 'other_end_use')",0.09173642302793841
+163,"('scrap_foil', 'fabric_scrap_gener')",6.390489734464313
+164,"('extrud_product', 'scrap_extrud_product')",13.88754088649655
+165,"('extrud_product', 'build_construct')",3.1025524610593873
+166,"('extrud_product', 'transport_auto')",9.98193905681258
+167,"('extrud_product', 'transport_other')",-0.13486105615999916
+168,"('extrud_product', 'machin_industri')",1.9698160701634435
+169,"('extrud_product', 'electr_equip')",0.9937244634066258
+170,"('extrud_product', 'consum_durabl')",0.7159910554328386
+171,"('extrud_product', 'other_end_use')",-0.6609526156416144
+172,"('scrap_extrud_product', 'fabric_scrap_gener')",13.88754088649655
+173,"('wire', 'transport_auto')",4.235266180240281
+174,"('wire', 'transport_other')",9.571524161234601
+175,"('wire', 'machin_industri')",1.7192092475784433
+176,"('wire', 'electr_equip')",-0.0027556135745147588
+177,"('wire', 'consum_durabl')",2.832065707953885
+178,"('wire', 'other_end_use')",1.3312529827319795
+179,"('forg_impact', 'build_construct')",2.9896178689226933
+180,"('forg_impact', 'transport_other')",1.7798834179151983
+181,"('forg_impact', 'machin_industri')",1.8413240199911298
+182,"('forg_impact', 'electr_equip')",8.551972989163191
+183,"('forg_impact', 'consum_durabl')",0.5968798791596667
+184,"('forg_impact', 'contain_packag')",-0.0027803343403430603
+185,"('forg_impact', 'other_end_use')",0.5887032405463882
+186,"('powerd_past', 'other_end_use')",8.234227028211766
+187,"('import_finish_consumpt', 'build_construct')",5.689206107362292
+188,"('import_finish_consumpt', 'transport_auto')",-1.2090373614035548
+189,"('import_finish_consumpt', 'transport_other')",2.69247549481701
+190,"('import_finish_consumpt', 'machin_industri')",4.950976404625298
+191,"('import_finish_consumpt', 'electr_equip')",4.10847228096247
+192,"('import_finish_consumpt', 'consum_durabl')",3.8724943971594605
+193,"('import_finish_consumpt', 'contain_packag')",-0.0015092442087345894
+194,"('import_finish_consumpt', 'other_end_use')",-0.002324640787033873
+195,"('build_construct', 'export_finish_consumpt')",0.9104673731474947
+196,"('build_construct', 'consumpt_build_construct')",18.95011393993
+197,"('transport_auto', 'export_finish_consumpt')",8.69480725866382
+198,"('transport_auto', 'consumpt_transport_auto')",22.7729968406245
+199,"('transport_other', 'export_finish_consumpt')",4.249060646074224
+200,"('transport_other', 'consumpt_transport_other')",20.48104967894979
+201,"('machin_industri', 'export_finish_consumpt')",1.8907597758040497
+202,"('machin_industri', 'consumpt_machin_industri')",19.14122313358985
+203,"('electr_equip', 'export_finish_consumpt')",3.1147957343100297
+204,"('electr_equip', 'consumpt_electr_equip')",19.846637991382472
+205,"('consum_durabl', 'export_finish_consumpt')",3.3332499797029653
+206,"('consum_durabl', 'consumpt_consum_durabl')",19.964409645627022
+207,"('contain_packag', 'export_finish_consumpt')",-0.002719260049110613
+208,"('contain_packag', 'consumpt_contain_packag')",17.148541097675974
+209,"('other_end_use', 'export_finish_consumpt')",-0.0019038634708113296
+210,"('other_end_use', 'consumpt_other_end_use')",20.539538683298037
+211,"('eol_scrap_build_construct', 'eol_scrap_gener')",8.187861893378491
+212,"('eol_scrap_transport_auto', 'eol_scrap_gener')",8.573702867647599
+213,"('eol_scrap_transport_other', 'eol_scrap_gener')",8.42385995258927
+214,"('eol_scrap_machin_industri', 'eol_scrap_gener')",8.220802770381344
+215,"('eol_scrap_electr_equip', 'eol_scrap_gener')",8.310165078286019
+216,"('eol_scrap_consum_durabl', 'eol_scrap_gener')",8.513975095956326
+217,"('eol_scrap_contain_packag', 'eol_scrap_gener')",8.472751268061488
+218,"('eol_scrap_other_end_use', 'eol_scrap_gener')",8.258474606949639
+219,alloy_element_cu,-12.613417302688537
+220,alloy_element_fe,0.00027813289948313825
+221,alloy_element_mg,-11.172406688436578
+222,alloy_element_mn,-9.411583936274155
+223,alloy_element_other,-13.562444255370258
+224,alloy_element_si,-13.708163991115875
+225,alloy_element_zn,0.00027813289948313825
+226,alumina_non_aluminum_use,1.9080314368430917
+227,bauxit_mine,-35.435783851339586
+228,bauxit_non_aluminum_use,13.304904320123164
+229,consumpt_build_construct,18.95011393993
+230,consumpt_consum_durabl,19.964409645627022
+231,consumpt_contain_packag,17.148541097675974
+232,consumpt_electr_equip,19.846637991382472
+233,consumpt_machin_industri,19.14122313358985
+234,consumpt_other_end_use,20.539538683298037
+235,consumpt_transport_auto,22.7729968406245
+236,consumpt_transport_other,20.48104967894979
+237,eol_scrap_build_construct,-8.187861893378491
+238,eol_scrap_consum_durabl,-8.513975095956326
+239,eol_scrap_contain_packag,-8.472751268061488
+240,eol_scrap_electr_equip,-8.310165078286019
+241,eol_scrap_machin_industri,-8.220802770381344
+242,eol_scrap_other_end_use,-8.258474606949639
+243,eol_scrap_transport_auto,-8.573702867647599
+244,eol_scrap_transport_other,-8.42385995258927
+245,export_alumina,21.415140176773093
+246,export_bauxit,13.397281596589748
+247,export_cast_aluminum_ingot,9.122564759770322
+248,export_cast_semifinish_product,4.489167242235578
+249,export_eol_scrap,23.995262671030574
+250,export_finish_consumpt,22.18851764418266
+251,export_mill_semifinish_product,-8.309224766828255
+252,import_alumina,-37.53232283689734
+253,import_bauxit,-54.70210094735849
+254,import_finish_consumpt,-20.10075343852721
+255,import_mill_semifinish_product,-45.971316135493815
+256,import_scrap,-17.998698790922987
+257,import_unwrought_aluminum_ingot,-14.399852922264465
+258,loss_eol_scrap,15.271436347986416
+259,loss_fabric_scrap,4.5527072354197005
+260,loss_form_scrap,8.592583339521735
+261,loss_refin,20.25042507546502
+262,loss_remelt,22.766601836280795
+263,scrap_other_cast,-0.03377305115891279
+264,scrap_sand_cast,-0.053558942658808485
+265,scrap_semi_perman_mold_cast,-0.053558942658808485
+266,wast_alumina,16.44663909436701
+267,wast_bauxit,5.474224279778715

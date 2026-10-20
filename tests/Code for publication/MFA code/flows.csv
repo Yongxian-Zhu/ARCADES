@@ -1,0 +1,10 @@
+from_node_number,to_node_number,from_node_name,to_node_name,value_source1,value_source2,quality_source1,quality_source2,upper_bound,notes
+1,2,Mining,Smelting,1200,1150,high,medium,,Primary production
+2,3,Smelting,Casting,1100,,high,,,
+3,4,Casting,Manufacturing,1050,1080,medium,medium,,
+4,5,Manufacturing,Use Phase,1000,990,high,high,,
+5,6,Use Phase,End-of-Life,,,,,50,Negligible direct flow
+5,7,Use Phase,Stock,900,910,high,medium,,
+6,8,End-of-Life,Recycling,800,,medium,,,
+6,9,End-of-Life,Landfill,200,180,low,low,,
+8,2,Recycling,Smelting,750,,medium,,,Closed-loop scraps

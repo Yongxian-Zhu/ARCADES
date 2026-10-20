@@ -1,0 +1,100 @@
+aggregate_observation_files:
+- configs/aluminum_association_2022.yaml
+allocation_constraints:
+  enabled: true
+  exclude_nodes: []
+  linearization: map_warmup
+  max_share_sigma: 0.5
+  min_outflows: 2
+  min_share_sigma: 0.02
+  relaxation: 1.0
+  shares_path: data/canonical/aluminum/allocation_shares_2017.npz
+bounds:
+  observed_lower_frac: 0.2
+  observed_upper_frac: 1.8
+  zero_flow_upper: 1.0
+data:
+  n_flows: 234
+  source_name: 2022 results
+  workbook_path: data/raw/aluminum/US aluminum flows.xlsx
+diagnostics:
+  compare_to_2017_posterior: true
+  compute_convergence_summary: true
+  compute_node_balance: true
+  output_dir: runs/robustness\prior_inflation_10x
+formulation:
+  space: linear
+  type: flow_based
+inference:
+  map:
+    maxiter: 20000
+    method: trust-constr
+  method: truncated_gibbs
+  sampling:
+    n_chains: 4
+    n_draws: 800
+    n_tune: 2000
+    thin: 5
+mass_balance:
+  mode: soft
+  rel_sigma: 0.01
+observation_overrides:
+- flow_idx: 26
+  justification: customs-tracked scrap export, better measured than the source-level
+    score implies
+  relative_sigma: 0.05
+- flow_idx: 1
+  justification: customs-tracked import
+  relative_sigma: 0.05
+- flow_idx: 13
+  justification: customs-tracked import; USGS reports 4,150 kt/y across flow_idx 13
+    and 14
+  relative_sigma: 0.05
+- flow_idx: 14
+  justification: customs-tracked import; USGS reports 4,150 kt/y across flow_idx 13
+    and 14
+  relative_sigma: 0.05
+- flow_idx: 25
+  justification: customs-tracked import
+  relative_sigma: 0.05
+- flow_idx: 131
+  justification: customs-tracked import
+  relative_sigma: 0.05
+- flow_idx: 132
+  justification: customs-tracked import
+  relative_sigma: 0.05
+- flow_idx: 136
+  justification: customs-tracked import
+  relative_sigma: 0.05
+- flow_idx: 138
+  justification: customs-tracked import
+  relative_sigma: 0.05
+- flow_idx: 140
+  justification: customs-tracked import
+  relative_sigma: 0.05
+observation_sigma:
+  observed_rel_sigma: 0.1
+  pedigree_mapping:
+    combiner: geometric_mean
+    direction: higher_is_better
+    global_multiplier: 1.0
+    scale_max: 4.0
+    sigma_rel_best: 0.05
+    sigma_rel_worst: 1.0
+observation_sources: {}
+output:
+  posterior_mean_csv: runs/robustness\prior_inflation_10x\posterior_mean.csv
+  posterior_samples_npy: runs/robustness\prior_inflation_10x\posterior_samples.npy
+  save_allocation_shares: false
+  save_prior_for_transfer: false
+prior:
+  cov_path: data/canonical/aluminum/prior_cov_2017_to_2022.npy
+  enabled: true
+  inflation_factor: 1.5
+  mean_path: data/canonical/aluminum/prior_mean_2017_to_2022.npy
+  source_year: 2017
+  strength: 0.01
+run:
+  name: robustness_prior_inflation_10x
+  seed: 42
+  year: 2022

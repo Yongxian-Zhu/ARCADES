@@ -1,0 +1,74 @@
+# configs/aluminum_association_2022.yaml
+#
+# Aluminum Association ASR Table 20 figures for 2022, entered as constraints
+# on SUMS of model flows.
+#
+# AA reports at a coarser resolution than the model. Splitting a reported
+# total across flows in proportion to another source would invent detail AA
+# never published and partly restate the source being compared against, so
+# each line constrains only the total it actually reports.
+#
+# relative_sigma 0.05 reflects industry statistics compiled from member
+# reporting; the undifferentiated 2022 statistics carry 0.10 by default, so
+# AA is weighted roughly twice as strongly where the two disagree.
+#
+# Deliberately absent: Recovery of Secondary. AA excludes internal
+# run-around scrap, which the model cannot separate from traded scrap, so
+# the two quantities are not commensurable; it is used as a validation
+# check instead. Apparent Consumption, Inventory Change and Aluminum
+# Consumption are aggregate indicators on a different system boundary.
+#
+# flows are 0-based flow_idx in the 234-flow network.
+
+aggregate_observations:
+- name: AA Primary Aluminum Production
+  flows:
+  - 11
+  - 12
+  value: 908.0
+  relative_sigma: 0.05
+  source: Aluminum Association
+  justification: Aluminum Association ASR Table 20, primary production, 2022
+- name: AA Imports of Ingot
+  flows:
+  - 13
+  - 14
+  value: 3649.0
+  relative_sigma: 0.05
+  source: Aluminum Association
+  justification: Aluminum Association ASR Table 20, imports of ingot, 2022
+- name: AA Imports of Mill Products
+  flows:
+  - 131
+  - 132
+  - 133
+  - 134
+  - 135
+  - 136
+  - 137
+  - 138
+  - 139
+  - 140
+  value: 2043.0
+  relative_sigma: 0.05
+  source: Aluminum Association
+  justification: Aluminum Association ASR Table 20, imports of mill products, 2022
+- name: AA Exports of Ingot
+  flows:
+  - 70
+  - 71
+  value: 265.0
+  relative_sigma: 0.05
+  source: Aluminum Association
+  justification: Aluminum Association ASR Table 20, exports of ingot, 2022; covers
+    both cast and wrought unwrought metal, hence both routes
+- name: AA Exports of Mill Products
+  flows:
+  - 144
+  - 148
+  - 152
+  - 157
+  value: 803.0
+  relative_sigma: 0.05
+  source: Aluminum Association
+  justification: Aluminum Association ASR Table 20, exports of mill products, 2022

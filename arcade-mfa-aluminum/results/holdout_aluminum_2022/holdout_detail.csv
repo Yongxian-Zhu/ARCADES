@@ -1,0 +1,6 @@
+withheld_source,kind,name,withheld_value,sigma,posterior_median,ci_lo,ci_hi,inside_95
+Aluminum Association,aggregate,AA Primary Aluminum Production,908.0,45.400000000000006,1123.2521854453325,975.8335825123219,1276.268375660965,False
+Aluminum Association,aggregate,AA Imports of Ingot,3649.0,182.45000000000002,4637.753178393028,4406.982953482278,4872.645939490009,False
+Aluminum Association,aggregate,AA Imports of Mill Products,2043.0,102.15,1584.1996924141386,1495.4286853691267,1674.339654610001,False
+Aluminum Association,aggregate,AA Exports of Ingot,265.0,13.25,369.8876745518419,266.1486654630356,575.5053536774802,False
+Aluminum Association,aggregate,AA Exports of Mill Products,803.0,40.150000000000006,395.70121859974734,258.3840636604235,586.527328917657,False

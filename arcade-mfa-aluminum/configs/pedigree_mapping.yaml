@@ -1,0 +1,56 @@
+# configs/pedigree_mapping.yaml
+#
+# Sensitivity-sweep grid for the pedigree(coverage/frequency/spatial
+# boundary) -> observation-sigma mapping used in aluminum_2017.yaml
+# (observation_sigma.pedigree_mapping). No codebook for these 3 columns was
+# available for these three columns, so this mapping is the single largest
+# unverified assumption in the pipeline. Run
+# `python scripts/run_pedigree_sensitivity.py` to execute every case below
+# against the 2017 baseline and compare outputs.
+#
+# Each entry under `cases` overrides one or more keys of the `baseline`
+# mapping (identical to configs/aluminum_2017.yaml's pedigree_mapping block).
+# Unspecified keys fall back to `baseline`.
+
+baseline:
+  scale_max: 4.0
+  sigma_rel_best: 0.05
+  sigma_rel_worst: 1.0
+  global_multiplier: 1.0
+  combiner: geometric_mean
+  direction: higher_is_better
+
+cases:
+  - name: baseline
+    overrides: {}
+
+  # --- global multiplier sweep (coarsest, cheapest sensitivity check) -----
+  - name: multiplier_0.5x
+    overrides: { global_multiplier: 0.5 }
+  - name: multiplier_2x
+    overrides: { global_multiplier: 2.0 }
+  - name: multiplier_4x
+    overrides: { global_multiplier: 4.0 }
+
+  # --- combiner rule sweep --------------------------------------------------
+  - name: combiner_arithmetic_mean
+    overrides: { combiner: arithmetic_mean }
+  - name: combiner_max_dimension
+    overrides: { combiner: max }
+  - name: combiner_weighted_coverage_heavy
+    overrides: { combiner: weighted_mean, weights: [3.0, 1.0, 1.0] }
+
+  # --- direction sweep: the baseline is higher_is_better (4 = best), which
+  # matches the workbook. This case inverts it as a sensitivity check.
+  - name: direction_flipped_lower_is_better
+    overrides: { direction: lower_is_better }
+
+  # --- bounds sweep: tighten/loosen best/worst sigma bounds ----------------
+  - name: tighter_bounds_best0.02_worst0.5
+    overrides: { sigma_rel_best: 0.02, sigma_rel_worst: 0.5 }
+  - name: looser_bounds_best0.10_worst2.0
+    overrides: { sigma_rel_best: 0.10, sigma_rel_worst: 2.0 }
+
+  # --- flat/no-pedigree control: every flow gets the same relative sigma --
+  - name: control_flat_sigma_0.3
+    overrides: { sigma_rel_best: 0.3, sigma_rel_worst: 0.3 }

@@ -1,0 +1,242 @@
+Flow index,from_node_name,to_node_name,from_node_number,to_node_number,Indicator
+1,Bauxite mining,Bauxite,1,3,1
+2,Import of bauxite,Bauxite,2,3,1
+3,Bauxite,Export bauxite,3,85,1
+4,Bauxite,Bauxite non-aluminum use,3,86,1
+5,Bauxite,Bauxite refining (to alumina),3,5,1
+6,Import alumina,Primary smelting (Hall-Hauroult to aluminum),4,6,1
+7,Bauxite refining (to alumina),Waste bauxite,5,87,1
+8,Bauxite refining (to alumina),Export alumina,5,88,1
+9,Bauxite refining (to alumina),Alumina non-aluminum use,5,89,1
+10,Bauxite refining (to alumina),Primary smelting (Hall-Hauroult to aluminum),5,6,1
+11,Primary smelting (Hall-Hauroult to aluminum),Waste Alumina,6,90,1
+12,Primary smelting (Hall-Hauroult to aluminum),Remelting,6,8,1
+13,Primary smelting (Hall-Hauroult to aluminum),Refining,6,9,1
+14,Import unwrought aluminum ingot,Remelting,7,8,1
+15,Import unwrought aluminum ingot,Refining,7,9,1
+16,Remelting,Loss remelting,8,91,1
+17,Remelting,Wrought aluminum ingot,8,24,1
+18,Refining,Loss refining,9,92,1
+19,Refining,Cast aluminum ingot,9,25,1
+20,Alloying element - Si,Remelting,10,8,1
+21,Alloying element - Si,Refining,10,9,1
+22,Alloying element - Cu,Remelting,11,8,1
+23,Alloying element - Cu,Refining,11,9,1
+24,Alloying element - Mg,Remelting,12,8,1
+25,Alloying element - Mg,Refining,12,9,1
+26,Alloying element - Mn,Remelting,13,8,1
+27,Alloying element - Mn,Refining,13,9,1
+28,Alloying element - Fe,Remelting,14,8,0
+29,Alloying element - Fe,Refining,14,9,0
+30,Alloying element - Zn,Remelting,15,8,1
+31,Alloying element - Zn,Refining,15,9,1
+32,Alloying element - Other,Remelting,16,8,0
+33,Alloying element - Other,Refining,16,9,0
+34,Import scrap,EOL scrap (generated),17,18,1
+35,EOL scrap (generated),Export EOL scrap,18,93,1
+36,EOL scrap (generated),Loss EOL scrap,18,94,1
+37,EOL scrap (generated),EOL scrap (recycled),18,19,1
+38,EOL scrap (recycled),Remelting,19,8,1
+39,EOL scrap (recycled),Refining,19,9,1
+40,Forming scrap (generated),Loss forming scrap,20,95,1
+41,Forming scrap (generated),Forming scrap (recycled),20,21,1
+42,Forming scrap (recycled),Remelting,21,8,1
+43,Forming scrap (recycled),Refining,21,9,1
+44,Fabrication scrap (generated),Loss fabrication scrap,22,96,1
+45,Fabrication scrap (generated),Fabrication scrap (recycled),22,23,1
+46,Fabrication scrap (recycled),Remelting,23,8,1
+47,Fabrication scrap (recycled),Refining,23,9,1
+48,Wrought aluminum ingot,1xxx,24,42,1
+49,Wrought aluminum ingot,2xxx,24,43,1
+50,Wrought aluminum ingot,3xxx,24,44,1
+51,Wrought aluminum ingot,4xxx,24,45,1
+52,Wrought aluminum ingot,5xxx,24,46,1
+53,Wrought aluminum ingot,6xxx,24,47,1
+54,Wrought aluminum ingot,7xxx,24,48,1
+55,Wrought aluminum ingot,8xxx,24,49,1
+56,Cast aluminum ingot,36x,25,26,1
+57,Cast aluminum ingot,38x,25,27,1
+58,Cast aluminum ingot,2xx,25,28,1
+59,Cast aluminum ingot,3xx,25,29,1
+60,Cast aluminum ingot,4xx,25,30,1
+61,Cast aluminum ingot,5xx,25,31,1
+62,Cast aluminum ingot,7xx,25,32,1
+63,Cast aluminum ingot,Other,25,33,1
+64,36x,die cast,26,34,1
+65,38x,die cast,27,34,1
+66,2xx,sand cast,28,36,1
+67,3xx,sand cast,29,36,1
+68,4xx,sand cast,30,36,1
+69,5xx,sand cast,31,36,1
+70,7xx,sand cast,32,36,1
+71,Other,sand cast,33,36,1
+72,2xx,permanent- & semi-permanent mold cast,28,38,1
+73,3xx,permanent- & semi-permanent mold cast,29,38,1
+74,4xx,permanent- & semi-permanent mold cast,30,38,1
+75,5xx,permanent- & semi-permanent mold cast,31,38,1
+76,7xx,permanent- & semi-permanent mold cast,32,38,1
+77,Other,permanent- & semi-permanent mold cast,33,38,1
+78,Other,other cast,33,40,1
+79,Cast aluminum ingot,Export cast aluminum ingot,25,97,1
+80,die cast,Scrap - cast,34,35,1
+81,Scrap - cast,die cast,35,34,1
+82,sand cast,Scrap sand cast,36,37,1
+83,Scrap sand cast,sand cast,37,36,1
+84,permanent- & semi-permanent mold cast,Scrap semi-permanent mold cast,38,39,1
+85,Scrap semi-permanent mold cast,permanent- & semi-permanent mold cast,39,38,1
+86,other cast,Scrap other cast,40,41,1
+87,Scrap other cast,other cast,41,40,1
+88,die cast,Export cast semifinished products,34,98,1
+89,1xxx,Rolling,42,51,1
+90,1xxx,Extrusion,42,53,1
+91,1xxx,Drawing,42,55,1
+92,1xxx,Other milling processes,42,57,1
+93,2xxx,Rolling,43,51,1
+94,2xxx,Extrusion,43,53,1
+95,2xxx,Drawing,43,55,1
+96,2xxx,Other milling processes,43,57,1
+97,3xxx,Rolling,44,51,1
+98,3xxx,Extrusion,44,53,1
+99,3xxx,Drawing,44,55,1
+100,3xxx,Other milling processes,44,57,1
+101,4xxx,Rolling,45,51,1
+102,4xxx,Other milling processes,45,57,1
+103,5xxx,Rolling,46,51,1
+104,5xxx,Extrusion,46,53,1
+105,5xxx,Drawing,46,55,1
+106,5xxx,Other milling processes,46,57,1
+107,6xxx,Rolling,47,51,1
+108,6xxx,Extrusion,47,53,1
+109,6xxx,Drawing,47,55,1
+110,6xxx,Other milling processes,47,57,1
+111,7xxx,Rolling,48,51,1
+112,7xxx,Extrusion,48,53,1
+113,7xxx,Drawing,48,55,1
+114,7xxx,Other milling processes,48,57,1
+115,8xxx,Rolling,49,51,1
+116,8xxx,Extrusion,49,53,1
+117,8xxx,Drawing,49,55,1
+118,8xxx,Other milling processes,49,57,1
+119,die cast,Building & construction,34,69,1
+120,die cast,Transportation auto,34,70,1
+121,die cast,Transportation other,34,71,1
+122,die cast,Machine & industry,34,72,1
+123,die cast,Electrical & equipment,34,73,1
+124,die cast,Consumer durables,34,74,1
+125,die cast,Other end uses,34,76,1
+126,sand cast,Transportation auto,36,70,1
+127,sand cast,Transportation other,36,71,1
+128,sand cast,Machine & industry,36,72,1
+129,sand cast,Electrical & equipment,36,73,1
+130,sand cast,Consumer durables,36,74,1
+131,sand cast,Other end uses,36,76,1
+132,permanent- & semi-permanent mold cast,Transportation auto,38,70,1
+133,permanent- & semi-permanent mold cast,Transportation other,38,71,1
+134,permanent- & semi-permanent mold cast,Machine & industry,38,72,1
+135,permanent- & semi-permanent mold cast,Electrical & equipment,38,73,1
+136,permanent- & semi-permanent mold cast,Consumer durables,38,74,1
+137,permanent- & semi-permanent mold cast,Other end uses,38,76,1
+138,other cast,Other end uses,40,76,1
+139,Import mill semifinished products,Rolling,50,51,1
+140,Import mill semifinished products,Extrusion,50,53,0
+141,Import mill semifinished products,Drawing,50,55,1
+142,Import mill semifinished products,Other milling processes,50,57,0
+143,Import mill semifinished products,Sheet & Plate,50,59,0
+144,Import mill semifinished products,Foil,50,61,1
+145,Import mill semifinished products,Extruded Products,50,63,0
+146,Import mill semifinished products,Wire,50,65,1
+147,Import mill semifinished products,Forging & impacts,50,66,0
+148,Import mill semifinished products,Powerder & Paste,50,67,1
+149,Rolling,Scrap Rolling,51,52,1
+150,Rolling,Sheet & Plate,51,59,1
+151,Rolling,Foil,51,61,1
+152,Rolling,Export milling semifinished products,51,99,1
+153,Scrap Rolling,Forming scrap (generated),52,20,1
+154,Extrusion,Scrap Extrusion,53,54,1
+155,Extrusion,Extruded Products,53,63,1
+156,Extrusion,Export milling semifinished products,53,99,1
+157,Scrap Extrusion,Forming scrap (generated),54,20,1
+158,Drawing,Scrap Drawing,55,56,1
+159,Drawing,Wire,55,65,1
+160,Drawing,Export milling semifinished products,55,99,1
+161,Scrap Drawing,Forming scrap (generated),56,20,1
+162,Other milling processes,Scrap Other milling processes,57,58,1
+163,Other milling processes,Forging & impacts,57,66,1
+164,Other milling processes,Powerder & Paste,57,67,1
+165,Other milling processes,Export milling semifinished products,57,99,0
+166,Scrap Other milling processes,Forming scrap (generated),58,20,1
+167,Sheet & Plate,Scrap Sheet & Plate,59,60,1
+168,Sheet & Plate,Building & construction,59,69,1
+169,Sheet & Plate,Transportation auto,59,70,1
+170,Sheet & Plate,Transportation other,59,71,1
+171,Sheet & Plate,Machine & industry,59,72,1
+172,Sheet & Plate,Electrical & equipment,59,73,1
+173,Sheet & Plate,Consumer durables,59,74,1
+174,Sheet & Plate,Container & packages,59,75,1
+175,Sheet & Plate,Other end uses,59,76,1
+176,Scrap Sheet & Plate,Fabrication scrap (generated),60,22,1
+177,Foil,Scrap Foil,61,62,1
+178,Foil,Building & construction,61,69,1
+179,Foil,Transportation auto,61,70,1
+180,Foil,Transportation other,61,71,1
+181,Foil,Machine & industry,61,72,1
+182,Foil,Electrical & equipment,61,73,1
+183,Foil,Consumer durables,61,74,1
+184,Foil,Container & packages,61,75,1
+185,Foil,Other end uses,61,76,1
+186,Scrap Foil,Fabrication scrap (generated),62,22,1
+187,Extruded Products,Scrap Extruded Products,63,64,1
+188,Extruded Products,Building & construction,63,69,1
+189,Extruded Products,Transportation auto,63,70,1
+190,Extruded Products,Transportation other,63,71,1
+191,Extruded Products,Machine & industry,63,72,1
+192,Extruded Products,Electrical & equipment,63,73,1
+193,Extruded Products,Consumer durables,63,74,1
+194,Extruded Products,Other end uses,63,76,1
+195,Scrap Extruded Products,Fabrication scrap (generated),64,22,1
+196,Wire,Building & construction,65,69,1
+197,Wire,Transportation other,65,71,1
+198,Wire,Machine & industry,65,72,1
+199,Wire,Electrical & equipment,65,73,1
+200,Wire,Consumer durables,65,74,1
+201,Wire,Other end uses,65,76,1
+202,Forging & impacts,Transportation auto,66,70,1
+203,Forging & impacts,Transportation other,66,71,1
+204,Forging & impacts,Machine & industry,66,72,1
+205,Forging & impacts,Electrical & equipment,66,73,1
+206,Forging & impacts,Consumer durables,66,74,1
+207,Forging & impacts,Container & packages,66,75,0
+208,Forging & impacts,Other end uses,66,76,1
+209,Powerder & Paste,Other end uses,67,76,1
+210,Import finished consumption,Building & construction,68,69,1
+211,Import finished consumption,Transportation auto,68,70,1
+212,Import finished consumption,Transportation other,68,71,1
+213,Import finished consumption,Machine & industry,68,72,1
+214,Import finished consumption,Electrical & equipment,68,73,1
+215,Import finished consumption,Consumer durables,68,74,1
+216,Import finished consumption,Container & packages,68,75,0
+217,Import finished consumption,Other end uses,68,76,0
+218,Building & construction,Export finished consumption,69,100,1
+219,Building & construction,Consumption Building & construction,69,101,1
+220,Transportation auto,Export finished consumption,70,100,1
+221,Transportation auto,Consumption Transportation auto,70,102,1
+222,Transportation other,Export finished consumption,71,100,1
+223,Transportation other,Consumption Transportation other,71,103,1
+224,Machine & industry,Export finished consumption,72,100,1
+225,Machine & industry,Consumption Machine & industry,72,104,1
+226,Electrical & equipment,Export finished consumption,73,100,1
+227,Electrical & equipment,Consumption Electrical & equipment,73,105,1
+228,Consumer durables,Export finished consumption,74,100,1
+229,Consumer durables,Consumption Consumer durables,74,106,1
+230,Container & packages,Export finished consumption,75,100,0
+231,Container & packages,Consumption Container & packages,75,107,1
+232,Other end uses,Export finished consumption,76,100,0
+233,Other end uses,Consumption Other end uses,76,108,1
+234,EOL scrap Building & construction,EOL scrap (generated),77,18,1
+235,EOL scrap Transportation auto,EOL scrap (generated),78,18,1
+236,EOL scrap Transportation other,EOL scrap (generated),79,18,1
+237,EOL scrap Machine & industry,EOL scrap (generated),80,18,1
+238,EOL scrap Electrical & equipment,EOL scrap (generated),81,18,1
+239,EOL scrap Consumer durables,EOL scrap (generated),82,18,1
+240,EOL scrap Container & packages,EOL scrap (generated),83,18,1
+241,EOL scrap Other end uses,EOL scrap (generated),84,18,1

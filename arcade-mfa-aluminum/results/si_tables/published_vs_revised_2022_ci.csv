@@ -1,0 +1,233 @@
+from_node,to_node,pub_median,pub_ci_lo,pub_ci_hi,pub_ci_width,pub_sd,rev_median,rev_ci_lo,rev_ci_hi,rev_ci_width,ci_ratio_rev_over_pub
+Bauxite mining,Bauxite,213.2,204.4,213.2,8.8,2.64,198.6,120.5,275.3,154.8,17.52
+Import of bauxite,Bauxite,3608.2,3588.4,3608.2,19.8,5.87,3720.2,3511.4,3932.1,420.7,21.2
+Bauxite,Export bauxite,5.4,5.4,5.6,0.2,0.05,7.1,6.0,8.2,2.2,11.35
+Bauxite,Bauxite non-aluminum use,147.6,147.6,157.0,9.4,2.81,199.3,133.7,262.8,129.0,13.69
+Bauxite,Bauxite refining (to alumina),3669.2,3651.5,3686.3,34.8,8.87,3695.0,3473.0,3919.0,446.0,12.82
+Import alumina,Primary smelting (Hall-Hauroult to aluminum),1350.2,1327.7,1373.4,45.6,11.71,1298.4,1194.0,1405.9,211.9,4.64
+Bauxite refining (to alumina),Waste bauxite,2240.3,2225.3,2255.0,29.7,7.61,2070.3,1858.9,2281.7,422.7,14.23
+Bauxite refining (to alumina),Export alumina,144.1,135.3,152.9,17.6,4.48,225.9,196.2,256.7,60.5,3.44
+Bauxite refining (to alumina),Alumina non-aluminum use,667.5,650.5,684.0,33.5,8.56,735.0,649.0,823.3,174.3,5.2
+Bauxite refining (to alumina),Primary smelting (Hall-Hauroult to aluminum),617.4,605.1,629.4,24.3,6.19,650.0,582.2,718.6,136.4,5.62
+Primary smelting (Hall-Hauroult to aluminum),Waste Alumina,1269.9,1250.4,1289.6,39.2,9.99,978.8,846.5,1113.8,267.3,6.82
+Primary smelting (Hall-Hauroult to aluminum),Remelting,465.4,447.4,482.7,35.3,8.98,687.1,584.1,790.7,206.5,5.86
+Primary smelting (Hall-Hauroult to aluminum),Refining,232.6,232.6,246.4,13.8,4.06,279.2,184.4,374.2,189.8,13.78
+Import unwrought aluminum ingot,Refining,1583.8,1564.0,1604.1,40.1,10.26,1382.3,1298.9,1468.3,169.3,4.22
+Remelting,Loss remelting,226.8,205.4,248.3,42.9,11.01,89.7,6.6,223.5,216.9,5.06
+Remelting,Wrought aluminum ingot,8092.2,8074.0,8092.2,18.2,5.39,8676.2,7960.1,9391.9,1431.8,78.69
+Refining,Loss refining,186.4,174.5,198.6,24.1,6.26,87.9,26.8,149.8,123.0,5.1
+Refining,Cast aluminum ingot,2738.2,2721.9,2754.2,32.3,8.36,2449.7,2292.0,2605.7,313.8,9.72
+Alloying element - Si,Remelting,112.2,95.3,129.3,33.9,8.77,388.8,235.2,549.1,313.9,9.25
+Alloying element - Si,Refining,44.3,30.7,58.1,27.5,7.03,177.0,102.1,253.5,151.4,5.52
+Alloying element - Mg,Remelting,41.4,24.6,57.3,32.7,8.29,111.2,43.6,177.9,134.3,4.11
+Alloying element - Mg,Refining,11.1,4.8,17.5,12.7,3.28,0.4,0.0,1.1,1.0,0.08
+Alloying element - Other,Remelting,0.4,0.0,1.4,1.4,0.4,22.6,7.0,38.9,31.8,23.52
+Alloying element - Other,Refining,0.0,0.0,1.2,1.2,0.36,26.5,10.1,42.3,32.3,27.3
+Import scrap,EOL scrap (generated),622.3,598.4,646.3,47.9,12.29,710.3,657.9,762.7,104.8,2.19
+EOL scrap (generated),Export EOL scrap,1738.4,1711.1,1764.8,53.7,13.61,1736.8,1606.8,1861.7,254.8,4.75
+EOL scrap (generated),Loss EOL scrap,2216.9,2181.4,2253.5,72.1,18.43,1765.8,1311.3,2217.2,905.9,12.56
+EOL scrap (generated),EOL scrap (recycled),1913.4,1885.3,1941.4,56.1,14.36,1934.3,1725.5,2134.4,408.9,7.29
+EOL scrap (recycled),Remelting,1205.6,1182.3,1229.5,47.2,12.09,1294.6,1089.5,1502.6,413.1,8.75
+EOL scrap (recycled),Refining,707.5,691.5,724.1,32.6,8.31,642.2,485.1,797.6,312.5,9.59
+Forming scrap (generated),Loss forming scrap,12.5,0.0,25.9,25.9,6.65,62.3,18.6,109.4,90.8,3.5
+Forming scrap (generated),Forming scrap (recycled),2257.6,2224.9,2288.7,63.8,16.12,2295.0,1697.1,2901.2,1204.1,18.88
+Forming scrap (recycled),Remelting,2257.5,2225.0,2288.8,63.7,16.07,2301.3,1705.8,2911.5,1205.6,18.92
+Forming scrap (recycled),Refining,0.0,0.0,2.2,2.2,0.65,0.5,0.0,1.1,1.1,0.49
+Fabrication scrap (generated),Loss fabrication scrap,42.6,25.2,59.9,34.6,8.87,37.7,13.6,62.3,48.7,1.41
+Fabrication scrap (generated),Fabrication scrap (recycled),922.7,903.1,941.3,38.2,9.71,882.9,767.8,997.5,229.7,6.01
+Fabrication scrap (recycled),Remelting,594.2,578.0,610.1,32.1,8.23,887.5,772.2,1000.9,228.7,7.13
+Fabrication scrap (recycled),Refining,328.7,311.4,345.7,34.2,8.75,0.6,0.1,1.3,1.2,0.04
+Wrought aluminum ingot,1xxx,1047.8,1039.8,1055.6,15.7,4.0,1411.5,909.8,1919.4,1009.6,64.13
+Wrought aluminum ingot,2xxx,131.2,123.5,138.6,15.1,3.89,155.1,86.4,225.2,138.8,9.19
+Wrought aluminum ingot,3xxx,1675.1,1663.8,1686.3,22.5,5.65,1629.6,997.4,2234.5,1237.1,55.1
+Wrought aluminum ingot,4xxx,0.0,0.0,5.4,5.4,1.61,93.1,46.6,141.2,94.6,17.48
+Wrought aluminum ingot,5xxx,1909.7,1884.9,1935.7,50.7,12.86,2089.2,1385.1,2794.9,1409.8,27.79
+Wrought aluminum ingot,6xxx,2694.8,2665.0,2724.0,58.9,15.07,2773.8,2192.6,3387.2,1194.7,20.27
+Wrought aluminum ingot,7xxx,634.2,623.4,644.8,21.3,5.41,484.6,338.1,631.1,293.0,13.73
+Wrought aluminum ingot,8xxx,0.0,0.0,4.3,4.3,1.27,69.7,30.2,111.4,81.2,19.02
+Cast aluminum ingot,36x,139.8,128.1,151.4,23.3,5.99,131.2,108.1,154.1,46.0,1.98
+Cast aluminum ingot,38x,1364.7,1357.6,1372.1,14.6,3.69,1189.5,1063.5,1313.9,250.4,17.18
+Cast aluminum ingot,2xx,5.6,4.1,7.2,3.1,0.78,5.9,5.1,6.7,1.6,0.53
+Cast aluminum ingot,3xx,593.0,585.0,600.9,15.9,4.06,546.4,486.1,607.2,121.1,7.61
+Cast aluminum ingot,4xx,6.6,4.2,9.1,4.9,1.25,8.0,6.9,9.1,2.2,0.44
+Cast aluminum ingot,5xx,37.6,29.6,45.4,15.8,4.04,44.8,38.6,50.9,12.3,0.78
+Cast aluminum ingot,7xx,4.0,1.0,7.1,6.1,1.56,8.1,6.9,9.2,2.3,0.37
+Cast aluminum ingot,Other,302.0,296.5,307.5,11.0,2.79,267.1,233.9,300.7,66.7,6.09
+36x,die cast,139.8,128.1,151.4,23.3,5.99,131.1,108.1,154.1,46.0,1.97
+38x,die cast,1364.7,1357.6,1372.1,14.6,3.69,1194.1,1067.6,1320.7,253.1,17.36
+2xx,sand cast,4.0,3.0,4.9,1.9,0.49,1.9,1.6,2.2,0.7,0.34
+3xx,sand cast,198.2,192.4,203.9,11.5,2.93,187.9,160.0,216.2,56.2,4.88
+4xx,sand cast,4.7,3.3,6.2,2.9,0.72,2.7,2.3,3.1,0.9,0.3
+5xx,sand cast,12.4,8.1,16.7,8.6,2.21,15.0,12.5,17.4,4.9,0.57
+7xx,sand cast,0.0,0.0,1.4,1.4,0.41,2.6,2.1,3.0,0.9,0.66
+Other,sand cast,85.8,79.8,92.0,12.1,3.1,83.2,69.6,97.0,27.4,2.25
+2xx,permanent- & semi-permanent mold cast,1.7,0.4,2.9,2.6,0.65,4.0,3.4,4.6,1.2,0.48
+3xx,permanent- & semi-permanent mold cast,394.8,387.7,402.0,14.2,3.66,358.2,309.7,404.8,95.2,6.68
+4xx,permanent- & semi-permanent mold cast,1.9,0.1,3.7,3.6,0.91,5.2,4.4,6.0,1.6,0.45
+5xx,permanent- & semi-permanent mold cast,25.3,19.0,31.4,12.3,3.15,29.6,25.0,34.3,9.2,0.75
+7xx,permanent- & semi-permanent mold cast,4.1,1.9,6.3,4.4,1.11,5.5,4.7,6.3,1.7,0.38
+Other,permanent- & semi-permanent mold cast,168.4,161.2,175.5,14.4,3.65,161.3,137.8,185.7,47.9,3.34
+Other,other cast,47.6,41.9,53.5,11.6,2.93,22.6,17.6,27.7,10.1,0.87
+Cast aluminum ingot,Export cast aluminum ingot,284.8,277.3,292.6,15.3,3.88,254.5,223.9,280.0,56.1,3.67
+die cast,Scrap - cast,528.6,511.1,545.5,34.5,8.69,404.1,180.6,628.5,447.8,12.99
+Scrap - cast,die cast,528.6,511.1,545.5,34.5,8.69,404.0,181.0,628.7,447.8,12.99
+sand cast,Scrap sand cast,195.7,188.6,202.7,14.1,3.6,205.6,99.0,311.1,212.0,15.01
+Scrap sand cast,sand cast,195.7,188.6,202.7,14.1,3.6,206.0,100.1,311.4,211.3,14.96
+permanent- & semi-permanent mold cast,Scrap semi-permanent mold cast,195.9,188.5,203.2,14.7,3.77,158.3,65.5,249.4,183.9,12.47
+Scrap semi-permanent mold cast,permanent- & semi-permanent mold cast,195.9,188.5,203.2,14.7,3.77,158.4,65.6,249.4,183.8,12.47
+other cast,Scrap other cast,3.8,2.2,5.4,3.3,0.84,15.2,6.9,23.6,16.6,5.07
+Scrap other cast,other cast,3.8,2.2,5.4,3.3,0.84,15.2,7.0,23.6,16.6,5.05
+die cast,Export cast semifinished products,34.2,29.7,38.7,9.0,2.33,18.5,14.3,22.6,8.4,0.93
+1xxx,Rolling,608.6,601.3,616.0,14.7,3.75,987.9,538.7,1430.7,892.0,60.49
+1xxx,Extrusion,294.8,285.9,303.4,17.6,4.5,263.4,82.0,453.4,371.3,21.16
+1xxx,Drawing,144.5,137.4,151.8,14.4,3.65,108.9,64.9,152.4,87.5,6.08
+1xxx,Other milling processes,0.0,0.0,3.5,3.5,1.05,53.1,12.2,93.7,81.5,22.95
+2xxx,Rolling,83.7,77.2,90.0,12.8,3.24,71.2,26.0,116.9,90.9,7.13
+2xxx,Extrusion,47.6,41.1,54.2,13.0,3.32,72.5,26.7,118.3,91.7,7.03
+2xxx,Drawing,0.0,0.0,4.0,4.0,1.18,4.2,1.6,6.8,5.2,1.31
+2xxx,Other milling processes,0.0,0.0,6.2,6.2,1.84,7.8,3.4,12.3,8.9,1.45
+3xxx,Rolling,1646.1,1637.4,1654.8,17.3,4.36,1237.9,688.2,1771.1,1082.8,62.53
+3xxx,Extrusion,21.0,15.4,26.9,11.5,2.93,324.3,115.9,543.2,427.3,37.22
+3xxx,Drawing,7.8,2.9,12.7,9.8,2.49,45.2,13.8,78.5,64.7,6.61
+3xxx,Other milling processes,0.1,0.0,7.1,7.1,2.1,22.7,6.2,40.4,34.2,4.85
+4xxx,Rolling,0.0,0.0,5.0,5.0,1.48,25.8,8.7,43.1,34.4,6.87
+4xxx,Other milling processes,0.0,0.0,4.6,4.6,1.37,67.4,27.9,107.7,79.8,17.26
+5xxx,Rolling,1798.7,1786.8,1810.8,24.0,6.12,1846.9,1202.1,2495.6,1293.5,53.95
+5xxx,Extrusion,66.5,58.3,74.9,16.6,4.28,163.6,82.4,244.0,161.6,9.74
+5xxx,Drawing,44.7,36.4,53.0,16.6,4.23,47.9,18.6,77.7,59.0,3.55
+5xxx,Other milling processes,0.0,0.0,9.8,9.8,2.95,29.7,10.2,49.4,39.2,4.01
+6xxx,Rolling,554.0,542.4,565.5,23.2,5.9,899.6,466.2,1351.8,885.6,38.24
+6xxx,Extrusion,2083.8,2060.4,2106.2,45.8,11.65,1831.1,1393.0,2254.7,861.8,18.82
+6xxx,Drawing,57.0,46.9,67.2,20.3,5.16,45.4,7.7,86.9,79.2,3.91
+6xxx,Other milling processes,0.0,0.0,8.6,8.6,2.54,5.5,0.7,11.4,10.7,1.24
+7xxx,Rolling,242.6,224.6,261.1,36.4,9.37,177.4,74.6,281.9,207.3,5.69
+7xxx,Extrusion,183.7,168.7,199.3,30.6,7.91,142.8,41.7,248.9,207.2,6.76
+7xxx,Drawing,0.0,0.0,5.8,5.8,1.74,1.9,0.1,4.7,4.5,0.78
+7xxx,Other milling processes,207.7,197.1,218.3,21.1,5.39,162.2,78.9,239.7,160.8,7.6
+8xxx,Rolling,0.0,0.0,4.9,4.9,1.48,6.1,1.0,11.4,10.3,2.11
+8xxx,Extrusion,0.0,0.0,5.4,5.4,1.62,31.3,7.7,55.0,47.4,8.84
+8xxx,Drawing,0.0,0.0,4.8,4.8,1.45,29.2,8.0,52.6,44.6,9.27
+8xxx,Other milling processes,0.0,0.0,9.3,9.3,2.72,3.0,0.7,5.3,4.6,0.5
+die cast,Building & construction,45.4,34.9,56.4,21.5,5.53,19.7,3.3,38.2,34.9,1.62
+die cast,Transportation auto,993.1,979.8,1006.6,26.8,6.86,896.3,745.0,1045.0,299.9,11.19
+die cast,Transportation other,147.7,138.3,157.4,19.1,4.88,153.1,72.7,235.2,162.5,8.52
+die cast,Machine & industry,44.9,35.1,54.6,19.5,5.03,47.1,16.3,78.2,61.9,3.17
+die cast,Electrical & equipment,41.2,31.1,51.3,20.2,5.2,55.0,18.2,91.2,73.0,3.61
+die cast,Consumer durables,119.4,110.2,128.6,18.4,4.7,86.9,34.7,141.0,106.2,5.77
+die cast,Other end uses,78.6,70.2,86.7,16.5,4.17,49.6,8.5,94.4,85.9,5.22
+sand cast,Transportation auto,145.1,130.2,160.0,29.8,7.51,200.6,156.3,243.9,87.6,2.94
+sand cast,Transportation other,29.1,21.7,36.9,15.2,3.94,43.6,14.3,72.2,58.0,3.81
+sand cast,Machine & industry,22.5,16.8,28.3,11.5,2.92,8.7,3.0,14.6,11.6,1.01
+sand cast,Electrical & equipment,14.3,7.0,21.5,14.4,3.64,9.5,2.2,16.8,14.6,1.01
+sand cast,Consumer durables,52.7,45.7,59.8,14.1,3.57,20.0,7.2,32.7,25.5,1.81
+sand cast,Other end uses,41.3,24.5,58.5,34.0,8.72,12.7,2.3,25.0,22.8,0.67
+permanent- & semi-permanent mold cast,Transportation auto,352.0,331.6,372.1,40.5,10.45,369.5,303.2,434.0,130.8,3.23
+permanent- & semi-permanent mold cast,Transportation other,60.5,50.3,70.7,20.4,5.22,82.2,42.8,122.8,79.9,3.91
+permanent- & semi-permanent mold cast,Machine & industry,31.8,24.4,39.2,14.7,3.74,18.2,4.4,33.1,28.7,1.95
+permanent- & semi-permanent mold cast,Electrical & equipment,23.1,13.2,33.0,19.8,5.12,21.4,4.4,38.8,34.3,1.74
+permanent- & semi-permanent mold cast,Consumer durables,76.3,66.6,86.3,19.6,5.02,42.6,14.9,70.8,55.9,2.85
+permanent- & semi-permanent mold cast,Other end uses,52.3,33.8,71.0,37.2,9.49,30.5,10.6,51.0,40.4,1.09
+other cast,Other end uses,47.6,41.9,53.5,11.6,2.93,22.8,17.8,27.9,10.1,0.87
+Import mill semifinished products,Rolling,1606.0,1587.2,1606.0,18.8,5.68,1216.0,1139.5,1291.5,152.0,8.1
+Import mill semifinished products,Extrusion,48.8,46.2,48.8,2.6,0.78,9.1,8.9,9.6,0.7,0.27
+Import mill semifinished products,Drawing,294.0,279.9,307.7,27.8,7.2,253.4,228.4,277.5,49.1,1.76
+Import mill semifinished products,Other milling processes,119.9,115.9,124.0,8.1,2.08,0.5,0.1,1.2,1.1,0.14
+Import mill semifinished products,Sheet & Plate,17.1,10.1,24.0,13.9,3.56,0.4,0.0,1.0,1.0,0.07
+Import mill semifinished products,Foil,162.8,155.6,162.8,7.2,2.13,169.1,157.1,181.3,24.2,3.37
+Import mill semifinished products,Extruded Products,7.8,0.0,16.5,16.5,4.2,0.3,0.0,0.8,0.8,0.05
+Import mill semifinished products,Wire,7.9,7.5,7.9,0.4,0.12,7.3,6.6,8.0,1.4,3.39
+Import mill semifinished products,Forging & impacts,29.9,21.9,37.9,16.0,4.05,0.5,0.0,1.1,1.1,0.07
+Import mill semifinished products,Powerder & Paste,20.5,19.3,20.5,1.1,0.34,16.6,15.3,17.9,2.6,2.28
+Rolling,Scrap Rolling,1308.6,1292.1,1325.3,33.2,8.45,1373.4,855.2,1907.5,1052.3,31.67
+Rolling,Sheet & Plate,4106.0,4091.9,4119.8,27.9,7.12,4039.7,3696.4,4387.6,691.2,24.78
+Rolling,Foil,381.5,363.7,399.0,35.3,8.93,476.1,392.6,559.9,167.3,4.74
+Rolling,Export milling semifinished products,744.1,743.9,777.6,33.7,9.89,644.3,568.3,722.2,154.0,4.57
+Scrap Rolling,Forming scrap (generated),1308.6,1292.1,1325.3,33.2,8.45,1377.7,860.0,1911.6,1051.7,31.65
+Extrusion,Scrap Extrusion,688.8,666.3,711.3,45.0,11.51,622.6,337.7,910.7,573.0,12.73
+Extrusion,Extruded Products,2011.7,2011.7,2031.6,19.9,5.86,2166.6,1956.4,2376.8,420.5,21.13
+Extrusion,Export milling semifinished products,46.0,46.0,49.1,3.1,0.9,72.8,29.9,91.1,61.2,19.99
+Scrap Extrusion,Forming scrap (generated),688.8,666.3,711.3,45.0,11.51,622.8,337.4,910.7,573.4,12.74
+Drawing,Scrap Drawing,95.4,84.7,106.2,21.5,5.45,194.9,158.0,233.0,75.0,3.5
+Drawing,Wire,445.0,428.2,462.1,33.9,8.62,330.6,280.7,381.3,100.6,2.97
+Drawing,Export milling semifinished products,7.5,7.5,8.0,0.4,0.13,11.5,3.8,14.9,11.1,25.17
+Scrap Drawing,Forming scrap (generated),95.4,84.7,106.2,21.5,5.45,195.4,158.1,233.5,75.4,3.51
+Other milling processes,Scrap Other milling processes,177.1,165.0,189.5,24.5,6.25,166.2,94.3,234.0,139.8,5.71
+Other milling processes,Forging & impacts,104.4,104.4,111.0,6.6,1.95,134.6,116.1,153.3,37.1,5.64
+Other milling processes,Powerder & Paste,0.0,0.0,8.7,8.7,2.59,38.6,27.3,49.5,22.2,2.57
+Other milling processes,Export milling semifinished products,46.1,46.1,50.0,4.0,1.17,13.4,13.2,13.9,0.7,0.18
+Scrap Other milling processes,Forming scrap (generated),177.1,165.0,189.5,24.5,6.25,166.4,94.4,234.3,139.9,5.71
+Sheet & Plate,Scrap Sheet & Plate,844.9,826.6,862.8,36.2,9.39,789.5,674.8,902.6,227.9,6.29
+Sheet & Plate,Building & construction,464.3,450.0,478.2,28.2,7.18,140.7,17.1,293.3,276.2,9.79
+Sheet & Plate,Transportation auto,520.8,487.6,554.8,67.2,17.07,720.4,587.6,852.2,264.5,3.94
+Sheet & Plate,Transportation other,584.6,569.6,599.9,30.3,7.73,507.8,406.1,613.0,207.0,6.83
+Sheet & Plate,Machine & industry,270.8,260.0,281.9,21.9,5.63,236.6,174.4,297.9,123.6,5.64
+Sheet & Plate,Electrical & equipment,120.4,107.4,133.2,25.8,6.57,160.8,126.0,194.7,68.7,2.66
+Sheet & Plate,Consumer durables,237.9,224.7,250.5,25.8,6.58,231.2,170.5,292.7,122.1,4.74
+Sheet & Plate,Container & packages,1049.3,1028.8,1070.0,41.2,10.47,1229.4,1032.1,1435.8,403.7,9.8
+Sheet & Plate,Other end uses,30.1,11.7,48.6,36.9,9.49,29.0,21.4,36.8,15.4,0.42
+Scrap Sheet & Plate,Fabrication scrap (generated),844.9,826.6,862.8,36.2,9.39,786.4,672.4,899.6,227.2,6.27
+Foil,Scrap Foil,9.8,0.0,22.7,22.7,6.27,27.2,20.2,34.1,13.8,0.61
+Foil,Building & construction,0.1,0.0,10.5,10.5,3.13,21.4,7.4,34.9,27.5,2.63
+Foil,Transportation auto,0.0,0.0,12.2,12.2,3.64,35.1,27.1,43.0,15.8,1.3
+Foil,Transportation other,0.0,0.0,8.5,8.5,2.53,11.7,9.1,14.2,5.1,0.59
+Foil,Machine & industry,0.0,0.0,5.9,5.9,1.75,3.1,2.4,3.7,1.4,0.23
+Foil,Electrical & equipment,0.0,0.0,7.1,7.1,2.12,5.1,3.9,6.2,2.3,0.33
+Foil,Consumer durables,101.3,86.9,115.7,28.8,7.32,136.9,112.8,161.3,48.5,1.68
+Foil,Container & packages,432.9,403.9,462.8,58.8,14.92,402.1,336.3,468.1,131.8,2.24
+Foil,Other end uses,0.1,0.0,19.5,19.5,5.81,0.9,0.6,1.1,0.5,0.02
+Scrap Foil,Fabrication scrap (generated),9.8,0.0,22.7,22.7,6.27,27.1,20.1,34.0,13.8,0.61
+Extruded Products,Scrap Extruded Products,110.5,80.2,141.0,60.8,15.51,109.6,87.5,132.2,44.7,0.74
+Extruded Products,Building & construction,815.7,776.5,855.2,78.7,19.96,705.6,583.8,829.0,245.2,3.12
+Extruded Products,Transportation auto,190.7,171.6,209.6,38.0,9.69,257.7,203.8,310.2,106.4,2.8
+Extruded Products,Transportation other,170.4,145.7,194.6,48.9,12.56,385.1,311.9,458.9,147.0,3.01
+Extruded Products,Machine & industry,243.8,226.9,260.9,34.0,8.66,186.1,139.7,232.0,92.3,2.72
+Extruded Products,Electrical & equipment,216.9,202.7,231.2,28.5,7.28,239.0,192.2,285.4,93.1,3.26
+Extruded Products,Consumer durables,235.5,218.6,252.6,34.1,8.72,256.0,208.3,303.4,95.1,2.79
+Extruded Products,Other end uses,36.0,20.6,50.5,29.9,7.61,38.7,29.6,47.6,18.0,0.6
+Scrap Extruded Products,Fabrication scrap (generated),110.5,80.2,141.0,60.8,15.51,110.1,88.0,132.7,44.7,0.73
+Wire,Building & construction,0.1,0.0,12.6,12.6,3.77,7.5,0.7,17.0,16.3,1.3
+Wire,Transportation other,0.0,0.0,13.5,13.5,4.03,10.4,7.6,13.2,5.5,0.41
+Wire,Machine & industry,0.0,0.0,6.3,6.3,1.86,8.9,7.0,10.8,3.8,0.61
+Wire,Electrical & equipment,453.3,432.9,473.1,40.2,10.34,296.3,247.7,345.4,97.7,2.43
+Wire,Consumer durables,0.0,0.0,5.9,5.9,1.74,9.9,7.6,12.2,4.6,0.78
+Wire,Other end uses,0.0,0.0,20.6,20.6,6.04,5.7,4.6,6.9,2.3,0.11
+Forging & impacts,Transportation auto,0.0,0.0,13.5,13.5,4.01,30.1,24.5,35.8,11.3,0.84
+Forging & impacts,Transportation other,54.4,37.7,71.1,33.4,8.52,84.6,70.2,99.0,28.8,0.86
+Forging & impacts,Machine & industry,5.8,0.0,15.9,15.9,4.57,4.5,3.5,5.5,2.0,0.13
+Forging & impacts,Electrical & equipment,0.1,0.0,15.0,15.0,4.49,0.4,0.3,0.5,0.2,0.01
+Forging & impacts,Consumer durables,23.1,7.3,39.4,32.1,8.18,10.7,8.6,12.8,4.2,0.13
+Forging & impacts,Container & packages,35.2,22.7,47.4,24.7,6.29,0.1,0.0,0.2,0.2,0.01
+Forging & impacts,Other end uses,15.7,0.0,39.8,39.8,11.18,4.6,3.6,5.6,2.0,0.05
+Powerder & Paste,Other end uses,20.4,11.6,29.3,17.7,4.58,55.0,43.7,65.9,22.2,1.25
+Import finished consumption,Building & construction,211.6,194.8,227.9,33.1,8.39,193.4,169.9,217.7,47.8,1.44
+Import finished consumption,Transportation auto,578.7,538.1,620.0,81.9,20.93,653.4,586.2,719.9,133.7,1.63
+Import finished consumption,Transportation other,205.7,187.8,222.9,35.1,8.88,224.8,198.9,250.7,51.8,1.48
+Import finished consumption,Machine & industry,251.7,236.8,266.4,29.6,7.48,246.4,217.6,274.8,57.2,1.93
+Import finished consumption,Electrical & equipment,476.3,446.1,506.4,60.3,15.48,512.8,456.8,567.1,110.3,1.83
+Import finished consumption,Consumer durables,683.2,651.8,715.3,63.5,16.32,924.2,836.9,1011.3,174.4,2.75
+Import finished consumption,Container & packages,53.4,38.4,68.4,30.0,7.6,0.5,0.1,1.1,1.1,0.04
+Import finished consumption,Other end uses,0.1,0.0,5.9,5.9,1.76,0.3,0.0,0.8,0.8,0.14
+Building & construction,Export finished consumption,70.4,28.9,112.1,83.2,21.07,44.8,20.2,70.0,49.8,0.6
+Building & construction,Consumption Building & construction,1466.3,1418.2,1515.1,96.9,24.84,1050.9,880.0,1237.9,357.9,3.69
+Transportation auto,Export finished consumption,869.5,825.9,913.5,87.6,22.26,863.0,474.9,1245.0,770.1,8.79
+Transportation auto,Consumption Transportation auto,1910.8,1849.7,1910.9,61.2,18.27,2300.3,1876.3,2730.8,854.5,13.96
+Transportation other,Export finished consumption,242.1,222.9,261.2,38.4,9.77,228.1,111.6,345.4,233.8,6.09
+Transportation other,Consumption Transportation other,1010.3,966.9,1010.3,43.4,12.9,1282.0,1101.0,1464.6,363.7,8.38
+Machine & industry,Export finished consumption,105.9,73.0,138.9,66.0,16.9,116.5,52.8,180.4,127.6,1.93
+Machine & industry,Consumption Machine & industry,765.2,741.2,789.8,48.6,12.32,641.4,542.1,740.4,198.3,4.08
+Electrical & equipment,Export finished consumption,292.7,261.2,323.1,61.9,15.74,304.1,171.5,439.3,267.8,4.33
+Electrical & equipment,Consumption Electrical & equipment,1052.9,1019.8,1053.0,33.2,9.91,999.6,843.0,1162.1,319.1,9.61
+Consumer durables,Export finished consumption,210.4,178.5,242.6,64.1,16.26,228.8,124.2,332.6,208.4,3.25
+Consumer durables,Consumption Consumer durables,1319.3,1319.1,1363.3,44.2,13.2,1497.5,1342.5,1650.6,308.2,6.98
+Container & packages,Export finished consumption,39.8,0.0,91.5,91.5,24.76,0.2,0.0,0.7,0.7,0.01
+Container & packages,Consumption Container & packages,1530.3,1529.9,1588.6,58.8,17.62,1634.7,1424.8,1850.9,426.1,7.25
+Other end uses,Export finished consumption,38.6,23.4,53.5,30.1,7.75,0.4,0.0,1.1,1.0,0.03
+Other end uses,Consumption Other end uses,283.7,268.1,295.6,27.5,7.49,249.4,199.6,302.7,103.1,3.74
+EOL scrap Building & construction,EOL scrap (generated),264.9,264.9,277.9,13.0,3.86,240.8,81.2,427.0,345.9,26.6
+EOL scrap Transportation auto,EOL scrap (generated),1261.1,1261.1,1316.8,55.8,16.47,779.1,318.2,1514.8,1196.6,21.46
+EOL scrap Transportation other,EOL scrap (generated),509.0,509.0,529.8,20.8,6.25,571.6,223.7,918.8,695.1,33.43
+EOL scrap Machine & industry,EOL scrap (generated),254.6,254.6,266.8,12.1,3.67,214.7,73.3,398.6,325.4,26.82
+EOL scrap Electrical & equipment,EOL scrap (generated),341.0,341.0,356.3,15.3,4.63,274.1,97.0,518.8,421.8,27.49
+EOL scrap Consumer durables,EOL scrap (generated),849.9,849.6,884.5,34.8,10.37,779.4,281.0,1334.1,1053.1,30.24
+EOL scrap Container & packages,EOL scrap (generated),1530.0,1529.9,1590.2,60.3,18.04,1630.8,1396.1,1866.2,470.1,7.79
+EOL scrap Other end uses,EOL scrap (generated),236.4,236.4,250.5,14.1,4.23,162.7,59.1,347.1,287.9,20.44

@@ -1,0 +1,272 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Generic DMFA Framework — Architecture & Modeling Steps</title>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 1100px;
+         margin: 30px auto; color: #222; line-height: 1.55; padding: 0 20px; }
+  h1 { color: #1a3e72; border-bottom: 3px solid #1a3e72; padding-bottom: 8px; }
+  h2 { color: #1a3e72; margin-top: 36px; }
+  h3 { color: #2a5298; }
+  .box { background: #f4f7fb; border-left: 4px solid #2a5298;
+         padding: 12px 18px; margin: 14px 0; border-radius: 4px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+  th, td { border: 1px solid #cfd8e3; padding: 8px 10px; text-align: left;
+           vertical-align: top; }
+  th { background: #1a3e72; color: white; }
+  tr:nth-child(even) { background: #f7f9fc; }
+  code { background: #eef2f7; padding: 2px 5px; border-radius: 3px; font-size: 0.92em; }
+  .fig-caption { font-style: italic; color: #555; text-align: center;
+                 margin-top: -6px; margin-bottom: 22px; }
+  svg { display: block; margin: 14px auto; max-width: 100%; height: auto; }
+  .footer { margin-top: 40px; font-size: 0.85em; color: #777;
+            border-top: 1px solid #ddd; padding-top: 12px; }
+</style>
+</head>
+<body>
+
+<h1>Generic Dynamic Material Flow Analysis (DMFA) Framework</h1>
+<p>This document presents a modular framework supporting both
+<b>flow-driven</b> and <b>stock-driven</b> dynamic MFA with integrated
+<b>Monte Carlo</b> uncertainty propagation. It generalizes prior
+project-specific implementations [1][2] for reuse across commodities
+and product systems.</p>
+
+<!-- ========================================================== -->
+<h2>1. Architecture Overview</h2>
+
+<svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3"
+            orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1a3e72"/>
+    </marker>
+    <style>
+      .layer  { fill:#eaf0fa; stroke:#1a3e72; stroke-width:1.5; }
+      .module { fill:#ffffff; stroke:#2a5298; stroke-width:1.2; }
+      .core   { fill:#dceaff; stroke:#1a3e72; stroke-width:1.5; }
+      .title  { font: bold 15px 'Segoe UI', Arial; fill:#1a3e72; }
+      .label  { font: 12px 'Segoe UI', Arial; fill:#222; }
+      .small  { font: 11px 'Segoe UI', Arial; fill:#333; }
+    </style>
+  </defs>
+
+  <!-- Input layer -->
+  <rect class="layer" x="20" y="20" width="860" height="110" rx="8"/>
+  <text x="40" y="45" class="title">INPUT LAYER</text>
+  <rect class="module" x="40" y="60"  width="190" height="55" rx="5"/>
+  <text x="55" y="80"  class="label">Historical demand /</text>
+  <text x="55" y="98"  class="label">stock data</text>
+  <rect class="module" x="245" y="60" width="190" height="55" rx="5"/>
+  <text x="260" y="80" class="label">Population / GDP</text>
+  <text x="260" y="98" class="label">projections</text>
+  <rect class="module" x="450" y="60" width="190" height="55" rx="5"/>
+  <text x="465" y="80" class="label">Lifetime parameters</text>
+  <text x="465" y="98" class="label">(μ, σ, distribution)</text>
+  <rect class="module" x="655" y="60" width="205" height="55" rx="5"/>
+  <text x="670" y="80" class="label">Uncertainty specs</text>
+  <text x="670" y="98" class="label">(per parameter)</text>
+
+  <!-- Core layer -->
+  <rect class="layer" x="20" y="160" width="860" height="270" rx="8"/>
+  <text x="40" y="185" class="title">CORE MODULES</text>
+
+  <rect class="core" x="40"  y="205" width="190" height="80" rx="5"/>
+  <text x="55"  y="230" class="label">A. Lifetime /</text>
+  <text x="55"  y="248" class="label">Survival Module</text>
+  <text x="55"  y="270" class="small">Normal · Weibull · Lognormal</text>
+
+  <rect class="core" x="245" y="205" width="190" height="80" rx="5"/>
+  <text x="260" y="230" class="label">B. Flow-Driven</text>
+  <text x="260" y="248" class="label">DMFA</text>
+  <text x="260" y="270" class="small">Stock = Σ inflow · S(t-i)</text>
+
+  <rect class="core" x="450" y="205" width="190" height="80" rx="5"/>
+  <text x="465" y="230" class="label">C. Stock-Driven</text>
+  <text x="465" y="248" class="label">DMFA</text>
+  <text x="465" y="270" class="small">Logistic / Gompertz fit</text>
+
+  <rect class="core" x="655" y="205" width="205" height="80" rx="5"/>
+  <text x="670" y="230" class="label">D. Monte Carlo</text>
+  <text x="670" y="248" class="label">Engine</text>
+  <text x="670" y="270" class="small">Parameter sampling · CIs</text>
+
+  <rect class="core" x="245" y="320" width="395" height="80" rx="5"/>
+  <text x="260" y="345" class="label">E. Sub-product / Alloy Allocation</text>
+  <text x="260" y="368" class="small">Splits aggregate demand by alloy ratio matrix</text>
+  <text x="260" y="385" class="small">(e.g., 18 alloys in vehicle case [1])</text>
+
+  <!-- Output layer -->
+  <rect class="layer" x="20" y="460" width="860" height="80" rx="8"/>
+  <text x="40" y="485" class="title">OUTPUT LAYER</text>
+  <rect class="module" x="40"  y="500" width="250" height="30" rx="4"/>
+  <text x="55"  y="520" class="label">Stock · inflow · outflow time series</text>
+  <rect class="module" x="305" y="500" width="280" height="30" rx="4"/>
+  <text x="320" y="520" class="label">Distributional outputs (p5/p50/p95)</text>
+  <rect class="module" x="600" y="500" width="260" height="30" rx="4"/>
+  <text x="615" y="520" class="label">CSV / Excel export · plots</text>
+
+  <!-- Arrows between layers -->
+  <line x1="450" y1="130" x2="450" y2="160" stroke="#1a3e72"
+        stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="450" y1="430" x2="450" y2="460" stroke="#1a3e72"
+        stroke-width="2" marker-end="url(#arrow)"/>
+</svg>
+<p class="fig-caption">Figure 1. Layered architecture of the generic DMFA framework.</p>
+
+<!-- ========================================================== -->
+<h2>2. Modeling Step Figure</h2>
+
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr2" markerWidth="10" markerHeight="10" refX="9" refY="3"
+            orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#2a5298"/>
+    </marker>
+    <style>
+      .step  { fill:#dceaff; stroke:#1a3e72; stroke-width:1.5; }
+      .flow  { fill:#fff3cd; stroke:#b8860b; stroke-width:1.5; }
+      .stock { fill:#d4edda; stroke:#1e7e34; stroke-width:1.5; }
+      .mc    { fill:#f8d7da; stroke:#a71d2a; stroke-width:1.5; }
+      .t     { font: bold 13px 'Segoe UI', Arial; fill:#222; }
+      .s     { font: 11px 'Segoe UI', Arial; fill:#333; }
+      .h     { font: bold 14px 'Segoe UI', Arial; fill:#1a3e72; }
+    </style>
+  </defs>
+
+  <!-- Step 1 -->
+  <rect class="step" x="20" y="30" width="200" height="70" rx="6"/>
+  <text x="35" y="55" class="t">1. Define Scope</text>
+  <text x="35" y="75" class="s">Product, region, horizon,</text>
+  <text x="35" y="90" class="s">sub-products / alloys</text>
+
+  <!-- Step 2 -->
+  <rect class="step" x="250" y="30" width="200" height="70" rx="6"/>
+  <text x="265" y="55" class="t">2. Collect Data</text>
+  <text x="265" y="75" class="s">Demand / stock series,</text>
+  <text x="265" y="90" class="s">drivers, lifetimes</text>
+
+  <!-- Step 3 -->
+  <rect class="step" x="480" y="30" width="200" height="70" rx="6"/>
+  <text x="495" y="55" class="t">3. Choose Mode</text>
+  <text x="495" y="75" class="s">Flow-driven or</text>
+  <text x="495" y="90" class="s">Stock-driven</text>
+
+  <!-- Step 4 -->
+  <rect class="step" x="710" y="30" width="170" height="70" rx="6"/>
+  <text x="725" y="55" class="t">4. Set Lifetime</text>
+  <text x="725" y="75" class="s">Normal / Weibull,</text>
+  <text x="725" y="90" class="s">μ, σ, max age</text>
+
+  <!-- Arrows row 1 -->
+  <line x1="220" y1="65" x2="250" y2="65" stroke="#2a5298" stroke-width="2" marker-end="url(#arr2)"/>
+  <line x1="450" y1="65" x2="480" y2="65" stroke="#2a5298" stroke-width="2" marker-end="url(#arr2)"/>
+  <line x1="680" y1="65" x2="710" y2="65" stroke="#2a5298" stroke-width="2" marker-end="url(#arr2)"/>
+
+  <!-- Branch label -->
+  <text x="60"  y="140" class="h">Flow-Driven Path</text>
+  <text x="520" y="140" class="h">Stock-Driven Path</text>
+
+  <!-- Flow-driven steps -->
+  <rect class="flow" x="20" y="155" width="430" height="60" rx="6"/>
+  <text x="35" y="178" class="t">5F. Apply cohort survival convolution</text>
+  <text x="35" y="200" class="s">Stock(p,t) = Σ inflow(p,i) · S(t-i)   [as in prior code [1][2]]</text>
+
+  <rect class="flow" x="20" y="225" width="430" height="60" rx="6"/>
+  <text x="35" y="248" class="t">6F. Compute outflow from mass balance</text>
+  <text x="35" y="270" class="s">Scrap(t) = Inflow(t) − ΔStock(t)</text>
+
+  <!-- Stock-driven steps -->
+  <rect class="stock" x="480" y="155" width="400" height="60" rx="6"/>
+  <text x="495" y="178" class="t">5S. Fit logistic on stock per capita / GDP</text>
+  <text x="495" y="200" class="s">s(t) = K / (1 + exp(−r·(t − t₀)))</text>
+
+  <rect class="stock" x="480" y="225" width="400" height="60" rx="6"/>
+  <text x="495" y="248" class="t">6S. Project total stock; back-calculate inflow</text>
+  <text x="495" y="270" class="s">Multiply by population/GDP; solve cohort eq.</text>
+
+  <!-- Merge arrows -->
+  <line x1="235" y1="285" x2="235" y2="320" stroke="#2a5298" stroke-width="2" marker-end="url(#arr2)"/>
+  <line x1="680" y1="285" x2="680" y2="320" stroke="#2a5298" stroke-width="2" marker-end="url(#arr2)"/>
+
+  <!-- Step 7 MC -->
+  <rect class="mc" x="150" y="325" width="600" height="60" rx="6"/>
+  <text x="165" y="350" class="t">7. Monte Carlo Uncertainty Propagation</text>
+  <text x="165" y="372" class="s">Repeat N iterations sampling inflow/stock, lifetime params, driver projections</text>
+
+  <line x1="450" y1="385" x2="450" y2="420" stroke="#2a5298" stroke-width="2" marker-end="url(#arr2)"/>
+
+  <!-- Step 8 -->
+  <rect class="step" x="150" y="425" width="290" height="70" rx="6"/>
+  <text x="165" y="450" class="t">8. Validate &amp; Summarize</text>
+  <text x="165" y="470" class="s">Mass balance check;</text>
+  <text x="165" y="487" class="s">percentile bands (p5, p50, p95)</text>
+
+  <rect class="step" x="460" y="425" width="290" height="70" rx="6"/>
+  <text x="475" y="450" class="t">9. Export &amp; Visualize</text>
+  <text x="475" y="470" class="s">CSV / Excel; time-series plots</text>
+  <text x="475" y="487" class="s">with uncertainty envelopes</text>
+
+  <line x1="440" y1="460" x2="460" y2="460" stroke="#2a5298" stroke-width="2" marker-end="url(#arr2)"/>
+</svg>
+<p class="fig-caption">Figure 2. End-to-end modeling steps with branching paths
+for flow-driven and stock-driven DMFA.</p>
+
+<!-- ========================================================== -->
+<h2>3. Module Reference Table</h2>
+<table>
+  <tr><th>Module</th><th>Purpose</th><th>Key Equations / Inputs</th></tr>
+  <tr><td>A. Lifetime</td><td>Provides survival function S(τ)</td>
+      <td>Normal / Weibull / Lognormal CDF</td></tr>
+  <tr><td>B. Flow-Driven</td><td>Compute stock &amp; scrap from inflow</td>
+      <td>Stock(t)=Σ inflow(i)·S(t−i); generalizes prior code [1][2]</td></tr>
+  <tr><td>C. Stock-Driven</td><td>Project future stock; derive inflow</td>
+      <td>Logistic / Gompertz fit; recursive inflow solution</td></tr>
+  <tr><td>D. Monte Carlo</td><td>Propagate parameter uncertainty</td>
+      <td>N iterations, percentile summaries</td></tr>
+  <tr><td>E. Allocation</td><td>Split aggregate demand by sub-product</td>
+      <td>alloy_ratio matrix (e.g., 18 alloys [1])</td></tr>
+</table>
+
+<h2>4. Adaptation Checklist for New Commodities</h2>
+<div class="box">
+  <ol>
+    <li>Update <code>lifetime_spec</code> (e.g., consumer durable μ=20 σ=6;
+        electrical μ=50 σ=16; machinery μ=40 σ=13 [2]).</li>
+    <li>Provide historical demand or stock CSV.</li>
+    <li>Define sub-product allocation matrix if applicable.</li>
+    <li>Specify uncertainty distributions per parameter.</li>
+    <li>Select saturation model for stock-driven mode (logistic/Gompertz).</li>
+    <li>Run Monte Carlo; validate mass balance; export outputs.</li>
+  </ol>
+</div>
+
+<div class="footer">
+  Generic DMFA Framework · Architecture &amp; Modeling Steps reference document.
+</div>
+
+</body>
+</html>
+
+							<script>
+                            	
+							</script>
+                        </body>
+                        </html>
+                    

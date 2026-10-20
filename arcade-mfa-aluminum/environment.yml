@@ -1,0 +1,16 @@
+name: arcade-mfa-aluminum
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy>=1.24
+  - pandas>=2.0
+  - scipy>=1.10
+  - pyyaml>=6.0
+  - openpyxl>=3.1
+  - plotly>=5.18
+  - python-kaleido>=0.2.1
+  - pytest>=7.4
+  - pip
+  - pip:
+      - -e .

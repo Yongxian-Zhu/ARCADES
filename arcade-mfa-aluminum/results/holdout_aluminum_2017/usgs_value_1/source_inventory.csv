@@ -1,0 +1,25 @@
+flow_idx,flow_label,source,value,coverage,frequency,spatial,sigma,relative_sigma
+0,bauxite_mining -> bauxite,USGS value 2,229.0,1.0,2.0,4.0,74.30813348214298,0.32448966586088634
+1,import_of_bauxite -> bauxite,USGS value 2,4360.0,4.0,3.0,4.0,218.0,0.05
+2,bauxite -> export_bauxite,USGS value 2,40.0,4.0,3.0,4.0,3.8856511221676375,0.09714127805419094
+3,bauxite -> bauxite_non_aluminum_use,USGS value 2,229.0,1.0,2.0,4.0,74.30813348214298,0.32448966586088634
+4,bauxite -> bauxite_refining_to_alumina,USGS value 2,4320.0,1.0,1.0,4.0,1591.5016074126472,0.3684031498640387
+5,import_alumina -> primary_smelting_hall_hauroult_to_aluminum,USGS value 2,1300.0,4.0,3.0,4.0,65.0,0.05
+6,bauxite_refining_to_alumina -> waste_bauxite,USGS value 2,2376.0,1.0,1.0,4.0,875.325884076956,0.3684031498640387
+7,bauxite_refining_to_alumina -> export_alumina,USGS value 2,450.0,4.0,3.0,4.0,43.713575124385926,0.09714127805419094
+9,bauxite_refining_to_alumina -> primary_smelting_hall_hauroult_to_aluminum,USGS value 2,770.0,4.0,3.0,4.0,74.79878410172702,0.09714127805419094
+15,remelting -> loss_remelting,USGS value 2,212.0,1.0,1.0,3.0,151.7375279440052,0.7157430563396472
+17,refining -> loss_refining,USGS value 2,98.0,1.0,1.0,3.0,70.14281952128542,0.7157430563396471
+18,refining -> cast_aluminum_ingot,Other literature,3177.0,1.0,1.0,1.0,3177.0,1.0
+39,wrought_aluminum_ingot -> 1xxx,Other literature,2336.0,1.0,1.0,1.0,2336.0,1.0
+40,wrought_aluminum_ingot -> 2xxx,Other literature,85.0,1.0,1.0,1.0,85.0,1.0
+41,wrought_aluminum_ingot -> 3xxx,Other literature,1256.0,1.0,1.0,1.0,1256.0,1.0
+42,wrought_aluminum_ingot -> 4xxx,Other literature,50.0,1.0,1.0,1.0,50.0,1.0
+43,wrought_aluminum_ingot -> 5xxx,Other literature,3047.0,1.0,1.0,1.0,3047.0,1.0
+44,wrought_aluminum_ingot -> 6xxx,Other literature,3771.0,1.0,1.0,1.0,3771.0,1.0
+45,wrought_aluminum_ingot -> 7xxx,Other literature,254.0,1.0,1.0,1.0,254.0,1.0
+46,wrought_aluminum_ingot -> 8xxx,Other literature,267.0,1.0,1.0,1.0,267.0,1.0
+162,sheet_plate -> transportation_other,Other literature,662.0,1.0,1.0,3.0,473.82190329684636,0.7157430563396471
+172,foil -> transportation_other,Other literature,27.0,1.0,1.0,3.0,19.32506252117047,0.715743056339647
+182,extruded_products -> transportation_other,Other literature,212.0,1.0,1.0,3.0,151.7375279440052,0.7157430563396472
+226,eol_scrap_building_construction -> eol_scrap_generated,Other literature,795.0,1.0,1.0,1.0,795.0,1.0

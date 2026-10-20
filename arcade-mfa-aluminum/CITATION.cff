@@ -1,0 +1,50 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software or the data it reconciles, please cite the
+  accompanying paper.
+title: >-
+  Bayesian material flow analysis of the U.S. aluminum cycle (2017, 2022)
+abstract: >-
+  Reproducible code and data for a Bayesian material flow analysis of the
+  United States aluminum cycle, reconciling a 234-flow network against
+  multi-source observations under mass-balance and bound constraints and
+  reporting a credible interval for every flow.
+type: software
+license: BSD-3-Clause
+authors:
+  - family-names: Zhu
+    given-names: Yongxian
+    email: yongxian.zhu@anl.gov
+    affiliation: Argonne National Laboratory
+  - family-names: Thierry
+    given-names: David
+  - family-names: Reck
+    given-names: Barbara K.
+  - family-names: Wahl
+    given-names: Madeleine
+  - family-names: Supekar
+    given-names: Sarang
+preferred-citation:
+  type: article
+  title: >-
+    Mapping Aluminum Flows in the United States using Bayesian Material Flow
+    Analysis
+  authors:
+    - family-names: Zhu
+      given-names: Yongxian
+    - family-names: Thierry
+      given-names: David
+    - family-names: Reck
+      given-names: Barbara K.
+    - family-names: Wahl
+      given-names: Madeleine
+    - family-names: Supekar
+      given-names: Sarang
+  journal: ChemRxiv
+  year: 2026
+  month: 2
+  doi: 10.26434/chemrxiv.15000222/v1
+  url: https://doi.org/10.26434/chemrxiv.15000222/v1
+  notes: >-
+    Preprint. This entry will be updated with the journal reference on
+    publication.

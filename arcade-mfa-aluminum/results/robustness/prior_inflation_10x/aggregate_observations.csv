@@ -1,0 +1,6 @@
+name,source,n_flows,value,sigma,justification,reconciled_median,reconciled_ci_lo,reconciled_ci_hi,deviation,z_vs_sigma
+AA Primary Aluminum Production,Aluminum Association,2,908.0,45.400000000000006,"Aluminum Association ASR Table 20, primary production, 2022",911.9845662946932,827.0761773115036,1005.3546511577098,3.9845662946931952,0.08776577741614966
+AA Imports of Ingot,Aluminum Association,2,3649.0,182.45000000000002,"Aluminum Association ASR Table 20, imports of ingot, 2022",3978.3995009956816,3751.99016774172,4201.754700543497,329.3995009956816,1.8054234091295236
+AA Imports of Mill Products,Aluminum Association,10,2043.0,102.15,"Aluminum Association ASR Table 20, imports of mill products, 2022",1745.4624885712487,1625.1892915526748,1868.055346710796,-297.53751142875126,-2.912750968465504
+AA Exports of Ingot,Aluminum Association,2,265.0,13.25,"Aluminum Association ASR Table 20, exports of ingot, 2022; covers both cast and wrought unwrought metal, hence both routes",274.43905308820376,250.32624733875474,300.4926277123039,9.439053088203764,0.7123813651474539
+AA Exports of Mill Products,Aluminum Association,4,803.0,40.150000000000006,"Aluminum Association ASR Table 20, exports of mill products, 2022",765.2751419789121,691.8723199897432,840.2757788039729,-37.724858021087925,-0.9395979581840079

@@ -1,0 +1,159 @@
+# arcade_aluminum_package/configs/aluminum_2022.yaml
+# 2022 U.S. aluminum MFA run configuration.
+# Depends on aluminum_2017.yaml having been run first to produce the transfer prior.
+
+run:
+  name: aluminum_2022_update
+  year: 2022
+  seed: 42
+
+data:
+  workbook_path: data/raw/aluminum/US aluminum flows.xlsx
+  source_name: "2022 results"        # authoritative sheet; the observation_2022 column is used as y_obs
+  n_flows: 234                       # SAME 233-variable indexing as 2017 (verified identical)
+
+formulation:
+  type: flow_based
+  space: linear
+
+prior:
+  enabled: true
+  source_year: 2017
+  mean_path: data/canonical/aluminum/prior_mean_2017_to_2022.npy
+  cov_path: data/canonical/aluminum/prior_cov_2017_to_2022.npy
+  inflation_factor: 1.5   # config knob -- see transfer.build_2022_prior_from_2017 docstring
+
+# Mass balance is imposed as a RELAXED accounting constraint, not as exact
+# equality. Reported statistics from different sources are mutually
+# inconsistent, so forcing residuals to zero would hide that inconsistency
+# inside the flow estimates instead of reporting it. Residuals are penalized
+# relative to node throughput, so one relative tolerance is meaningful across a
+# network spanning several orders of magnitude:
+#     sigma_i = rel_sigma * (node throughput from a MAP warm-up)
+# Residuals are reported in kt/y and as a percentage of throughput.
+# mode: hard reproduces exact equality for comparison.
+# Relative trust between observation sources. A multiplier below 1 tightens a
+# source's likelihood sigma (more trusted), above 1 loosens it. Every reported
+# value is used regardless; weighting decides how strongly each one pulls, so
+# disagreements between sources are reconciled rather than resolved by
+# discarding data. Sources not listed here take a multiplier of 1.0.
+observation_sources: {}
+
+# Per-flow uncertainty overrides, with justification recorded alongside.
+# Scrap exports are customs-tracked at the HS-code level and are among the
+# best-measured quantities in the system; the source-level pedigree score does
+# not distinguish them from modelled quantities reported by the same source.
+# Trade flows are recorded at the border by customs declaration rather than
+# estimated, so they are better measured than a source-level pedigree score
+# implies. 5% relative sigma is applied to every observed cross-border flow.
+observation_overrides:
+  - flow_idx: 26            # EOL scrap (generated) -> Export EOL scrap
+    relative_sigma: 0.05
+    justification: customs-tracked scrap export, better measured than the source-level score implies
+  - flow_idx: 1             # Import of bauxite -> Bauxite
+    relative_sigma: 0.05
+    justification: customs-tracked import
+  - flow_idx: 13            # Import unwrought aluminum ingot -> Remelting
+    relative_sigma: 0.05
+    justification: customs-tracked import; USGS reports 4,150 kt/y across flow_idx 13 and 14
+  - flow_idx: 14            # Import unwrought aluminum ingot -> Refining
+    relative_sigma: 0.05
+    justification: customs-tracked import; USGS reports 4,150 kt/y across flow_idx 13 and 14
+  - flow_idx: 25            # Import scrap -> EOL scrap (generated)
+    relative_sigma: 0.05
+    justification: customs-tracked import
+  - flow_idx: 131           # Import mill semifinished products -> Rolling
+    relative_sigma: 0.05
+    justification: customs-tracked import
+  - flow_idx: 132           # Import mill semifinished products -> Extrusion
+    relative_sigma: 0.05
+    justification: customs-tracked import
+  - flow_idx: 136           # Import mill semifinished products -> Foil
+    relative_sigma: 0.05
+    justification: customs-tracked import
+  - flow_idx: 138           # Import mill semifinished products -> Wire
+    relative_sigma: 0.05
+    justification: customs-tracked import
+  - flow_idx: 140           # Import mill semifinished products -> Powder & Paste
+    relative_sigma: 0.05
+    justification: customs-tracked import
+
+# Totals reported by sources that publish at a coarser resolution than the
+# model. Each entry constrains a SUM of flows rather than any single flow.
+aggregate_observation_files:
+  - configs/aluminum_association_2022.yaml
+
+mass_balance:
+  mode: soft
+  rel_sigma: 0.01            # 1% of node throughput
+
+bounds:
+  observed_lower_frac: 0.2
+  observed_upper_frac: 1.8
+  # Room given to a flow reported as exactly zero, in kt/y. A reported zero
+  # usually means "not measured" or "below reporting threshold" rather than
+  # "provably absent", so it is not pinned to a numerically negligible
+  # interval. Set to 0 for a hard zero.
+  zero_flow_upper: 1.0
+
+# Allocation-ratio soft constraints transferred from the 2017 posterior.
+#
+# Only about a fifth of 2022 flows are observed, leaving many unidentified:
+# their posterior spread approaches what a uniform distribution over the whole
+# feasible range would give. The 2017 posterior knows how each node splits its
+# throughput, which is exactly the missing structure.
+#
+# x_j / sum_k x_k = s_j is LINEAR once s_j is a constant from 2017, so it enters
+# as a quadratic penalty: mass balance and bounds stay HARD, these stay soft.
+#   tau_j = clip(relaxation * sigma_2017_j, min_share_sigma, max_share_sigma) * T_node
+# `relaxation` is the adjustable knob; sweep it with
+# scripts/run_allocation_sensitivity.py before reporting.
+allocation_constraints:
+  enabled: true
+  shares_path: data/canonical/aluminum/allocation_shares_2017.npz
+  # Tightened from 2.0. The 2022 EOL loss/uncollected flow carries no
+  # observation at all, so a loose routing prior lets an unmeasured residual
+  # absorb every structural change and drive the reported collection rate.
+  # Node routing is exactly the "poorly observed allocation relationship" the
+  # source-year prior exists to inform. Swept in the robustness suite.
+  relaxation: 1.0            # multiplier on the 2017 posterior share sd
+  min_share_sigma: 0.02      # floor, so a very tight 2017 share cannot act as a hard constraint five years later
+  max_share_sigma: 0.5       # cap: a share sd of 0.5 carries no information anyway
+  min_outflows: 2
+  exclude_nodes: []          # node ids whose 2017 split should NOT be carried forward
+  linearization: map_warmup  # map_warmup | prior_mean | observed
+
+observation_sigma:
+  # Applied to any source carrying pedigree scores. Must match the convention
+  # used in the workbook and in the 2017 config: on this scale 4 is the highest
+  # confidence. Omitting this block silently falls back to the opposite
+  # convention and inverts every pedigree-scored sigma.
+  pedigree_mapping:
+    scale_max: 4.0
+    sigma_rel_best: 0.05
+    sigma_rel_worst: 1.0
+    global_multiplier: 1.0
+    combiner: geometric_mean
+    direction: higher_is_better
+  observed_rel_sigma: 0.10    # sources without pedigree scores (e.g. observation_2022)
+
+inference:
+  method: truncated_gibbs   # truncated_gibbs (respects bounds and mass balance) | laplace_nullspace (legacy; can emit out-of-bounds draws)
+  map:
+    method: trust-constr
+    maxiter: 20000            # generous cap; with the exact Hessian the solve converges on xtol well inside it
+  sampling:
+    n_chains: 4
+    n_draws: 2000
+    n_tune: 2000              # burn-in sweeps discarded per chain
+    thin: 5                   # keep every 5th sweep: coordinate Gibbs is autocorrelated
+
+diagnostics:
+  compute_node_balance: true
+  compute_convergence_summary: true
+  compare_to_2017_posterior: true
+  output_dir: runs/aluminum_2022_update
+
+output:
+  posterior_mean_csv: runs/aluminum_2022_update/posterior_mean.csv
+  posterior_samples_npy: runs/aluminum_2022_update/posterior_samples.npy
